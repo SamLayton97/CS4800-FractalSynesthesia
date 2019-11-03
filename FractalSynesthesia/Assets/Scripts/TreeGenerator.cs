@@ -58,7 +58,8 @@ public class TreeGenerator : MonoBehaviour
                 // create and scale, rotate, and position new branch
                 Transform currBranch = Instantiate(branchPrefab, trunk).transform;
                 currBranch.localScale = new Vector3(1f / trunk.localScale.x, 1f / trunk.localScale.y, 1f / trunk.localScale.z) * 0.8f;
-                currBranch.GetChild(0).Rotate(new Vector3(45f, i * 360f / branchCount), Space.Self);
+                currBranch.Rotate(new Vector3(45f, i * 360f / branchCount), Space.Self);
+                currBranch.localPosition += Vector3.up * trunk.GetChild(0).localScale.y * 2f;
 
                 // treat new branch as a trunk and continue generation
                 GenerateTree(currBranch, generation + 1);

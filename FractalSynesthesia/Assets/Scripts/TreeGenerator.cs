@@ -62,30 +62,26 @@ public class TreeGenerator : MonoBehaviour
         List<Transform> toGrow = new List<Transform>();
         toGrow.Add(trunk);
 
-        // initialize starting and target scale of trunk
+        // growth of starting trunk
         float branchGrowth = 0;
-        Vector3 startingScale = new Vector3(1, 0, 1);
-        Debug.Log("here!");
         Vector3 targetScale = Vector3.one;
+        Vector3 startingScale = new Vector3(targetScale.x, 0, targetScale.z);
         trunk.localScale = startingScale;
 
         // continue to generate while fractal tree hasn't ended
         do
         {
-            // if last branch in generation hasn't finished growing
-            if (toGrow[toGrow.Count - 1].localScale.y < targetScale.y)
+            // scale each growing branch over time
+            foreach (Transform currTrunk in toGrow)
             {
-                // scale each growing branch over time
-                foreach (Transform currTrunk in toGrow)
-                {
-                    // scale branch up over time
-                    branchGrowth += Time.deltaTime * growthRate;
-                    currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
-                    yield return new WaitForEndOfFrame();
-                }
+                // scale branch up over time
+                branchGrowth += Time.deltaTime * growthRate;
+                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
+                yield return new WaitForEndOfFrame();
             }
-            // otherwise (i.e., time to branch)
-            else
+
+            // if last branch in generation has finished growing
+            if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
             {
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -111,10 +107,10 @@ public class TreeGenerator : MonoBehaviour
                         currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
 
-                        // store starting and target scales of next branch generation
-                        Debug.Log(new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z));
-                        branchTargetScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.7f;
-                        branchStartingScale = new Vector3(branchTargetScale.x, 0, branchTargetScale.z);
+                        // store target scale of next branch generation
+                        Debug.Log(Vector3.one * 0.7f);
+                        branchTargetScale = Vector3.one * 0.7f;
+                        //branchStartingScale = new Vector3(branchTargetScale.x, 0, branchTargetScale.z);
                         currBranch.localScale = branchStartingScale;
 
                         // add to list of future trunks
@@ -122,13 +118,12 @@ public class TreeGenerator : MonoBehaviour
                     }
                 }
 
-                // treat new branches as trunks and continue generating
+                // treat new branches as trunks and generating again
                 branchGrowth = 0;
                 toGrow = new List<Transform>(newBranches);
-                startingScale = branchStartingScale;
                 targetScale = branchTargetScale;
             }
-        } while (generation <= maxGenerations);
+        } while (generation <= maxGenerations + 1);
 
         Debug.Log("Done!");
     }

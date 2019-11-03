@@ -42,12 +42,15 @@ public class TreeGenerator : MonoBehaviour
     {
         // create n branches from around top of trunk
         // NOTE: currently hard-set to 4 for easy testing
-        for (int i = 0; i < 1; i++)
+        int branchCount = 4;
+        for (int i = 0; i < branchCount; i++)
         {
             // create, position, rotate and scale branches of current trunk
             GameObject currBranch = Instantiate(baseBranch, transform);
             currBranch.transform.localPosition = 
                 Quaternion.Euler(trunk.localEulerAngles.x, trunk.localEulerAngles.y, trunk.localEulerAngles.z) * new Vector3(0, trunk.localScale.y * 2, 0);
+            currBranch.transform.Rotate(new Vector3(45, i * (360f / branchCount), 0));
+            currBranch.transform.localScale *= 0.8f;
         }
     }
 }

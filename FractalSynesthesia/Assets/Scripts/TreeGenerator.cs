@@ -65,23 +65,24 @@ public class TreeGenerator : MonoBehaviour
         // initialize starting and target scale of trunk
         float branchGrowth = 0;
         Vector3 startingScale = new Vector3(1, 0, 1);
+        Debug.Log("here!");
         Vector3 targetScale = Vector3.one;
         trunk.localScale = startingScale;
 
         // while generation has not exceeded limit
-        while (generation <= maxGenerations)
+        while (!(generation > maxGenerations))
         {
             // scale each growing branch over time
             foreach (Transform currTrunk in toGrow)
             {
                 // scale branch up over time
                 branchGrowth += Time.deltaTime * growthRate;
-                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
+                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, Mathf.Max(0.05f, branchGrowth));
                 yield return new WaitForEndOfFrame();
             }
 
-            // if last branch in generation has finished growing
-            if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
+            // if last branch in generation has finished growing and this isn't the last generation
+            if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y && generation != maxGenerations)
             {
                 // initialize list storing branches created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -107,13 +108,17 @@ public class TreeGenerator : MonoBehaviour
                         // add to list of future trunks
                         newBranches.Add(currBranch);
                     }
-
-                    // treat new branches as trunks and continue generating
-                    branchGrowth = 0;
-                    toGrow = new List<Transform>(newBranches);
-                    generation++;
                 }
+
+                // treat new branches as trunks and continue generating
+                branchGrowth = 0;
+                toGrow = new List<Transform>(newBranches);
+                generation++;
+
+                //Debug.Log(startingScale + " " + targetScale);
             }
         }
+
+        Debug.Log("Done!");
     }
 }

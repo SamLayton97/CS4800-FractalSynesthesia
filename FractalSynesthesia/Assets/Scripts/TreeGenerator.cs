@@ -9,7 +9,7 @@ using UnityEngine;
 public class TreeGenerator : MonoBehaviour
 {
     // branching configuration variables
-    [Range(1, 50)]
+    [Range(1, 10)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
     [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
 
@@ -68,8 +68,8 @@ public class TreeGenerator : MonoBehaviour
                 {
                     // create, scale, rotate, and position new branch
                     Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                    currBranch.localScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.8f;
-                    currBranch.Rotate(new Vector3(45f, i * 360f / branchCount), Space.Self);
+                    currBranch.localScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.7f;
+                    currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
                     currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
 
                     // add to list of future trunks

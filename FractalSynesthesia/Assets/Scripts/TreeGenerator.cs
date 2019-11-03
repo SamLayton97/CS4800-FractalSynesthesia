@@ -69,7 +69,7 @@ public class TreeGenerator : MonoBehaviour
         Vector3 targetScale = Vector3.one;
         trunk.localScale = startingScale;
 
-        // while generation has not exceeded limit
+        // continue to generate while fractal tree hasn't ended
         do
         {
             // scale each growing branch over time
@@ -77,11 +77,11 @@ public class TreeGenerator : MonoBehaviour
             {
                 // scale branch up over time
                 branchGrowth += Time.deltaTime * growthRate;
-                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, Mathf.Max(0.05f, branchGrowth));
+                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
                 yield return new WaitForEndOfFrame();
             }
 
-            // if last branch in generation has finished growing and this isn't the last generation
+            // if last branch in generation has finished growing and fractal will continue generating
             if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y && generation != maxGenerations)
             {
                 // initialize list storing branches created by this generation
@@ -114,8 +114,6 @@ public class TreeGenerator : MonoBehaviour
                 // treat new branches as trunks and continue generating
                 branchGrowth = 0;
                 toGrow = new List<Transform>(newBranches);
-
-                //Debug.Log(startingScale + " " + targetScale);
             }
         } while (generation <= maxGenerations);
 

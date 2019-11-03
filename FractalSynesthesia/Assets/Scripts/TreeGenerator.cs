@@ -9,7 +9,7 @@ using UnityEngine;
 public class TreeGenerator : MonoBehaviour
 {
     // branching support variables
-    [SerializeField] GameObject startingTrunk;      // branch object spawned -- initialized to trunk placed in scene
+    [SerializeField] GameObject baseBranch;         // branch object spawned -- initialized to trunk placed in scene
 
     /// <summary>
     /// Used for initialization
@@ -17,8 +17,8 @@ public class TreeGenerator : MonoBehaviour
     void Awake()
     {
         // if not already set, retrieve starting branch of tree
-        if (!startingTrunk)
-            startingTrunk = transform.GetChild(0).gameObject;
+        if (!baseBranch)
+            baseBranch = transform.GetChild(0).gameObject;
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class TreeGenerator : MonoBehaviour
         // TODO: retrieve data from music analysis
 
         // generate fractal tree from trunk
-        GenerateTree(startingTrunk.transform);
+        GenerateTree(baseBranch.transform);
     }
 
     /// <summary>
@@ -42,10 +42,12 @@ public class TreeGenerator : MonoBehaviour
     {
         // create n branches from around top of trunk
         // NOTE: currently hard-set to 4 for easy testing
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 1; i++)
         {
-            GameObject currBranch = Instantiate(startingTrunk, transform);
-            
+            // create, position, rotate and scale branches of current trunk
+            GameObject currBranch = Instantiate(baseBranch, transform);
+            currBranch.transform.localPosition = 
+                Quaternion.Euler(trunk.localEulerAngles.x, trunk.localEulerAngles.y, trunk.localEulerAngles.z) * new Vector3(0, trunk.localScale.y * 2, 0);
         }
     }
 }

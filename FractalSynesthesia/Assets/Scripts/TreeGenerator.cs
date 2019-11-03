@@ -56,7 +56,7 @@ public class TreeGenerator : MonoBehaviour
     IEnumerator GenerateTree(Transform trunk, int maxGenerations)
     {
         // initialize a generation counter
-        int generation = 1;
+        int generation = 0;
 
         // create list of trunks to grow and append starting trunk
         List<Transform> toGrow = new List<Transform>();
@@ -85,11 +85,6 @@ public class TreeGenerator : MonoBehaviour
             {
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
-                generation++;
-
-                // initialize vectors storing new branch scales
-                Vector3 branchTargetScale = new Vector3();
-                Vector3 branchStartingScale = new Vector3();
 
                 // branch from each grown trunk
                 foreach (Transform currTrunk in toGrow)
@@ -97,32 +92,36 @@ public class TreeGenerator : MonoBehaviour
                     // ensure trunk has grown to target length
                     currTrunk.localScale = targetScale;
 
+                    // skip branching if this is last generation
+                    if (generation == maxGenerations)
+                        continue;
+
                     // create n branches from roughly top of trunk
                     // NOTE: count hard set to 4 for testing
                     int branchCount = 4;
                     for (int i = 0; i < branchCount; i++)
                     {
-                        // create, rotate, and position new branch
+                        // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
                         currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
-
-                        // store target scale of next branch generation
-                        Debug.Log(Vector3.one * 0.7f);
-                        branchTargetScale = Vector3.one * 0.7f;
-                        //branchStartingScale = new Vector3(branchTargetScale.x, 0, branchTargetScale.z);
-                        currBranch.localScale = branchStartingScale;
+                        currBranch.localScale = startingScale;
 
                         // add to list of future trunks
                         newBranches.Add(currBranch);
                     }
                 }
 
+                // TODO: determine target scale of next branch generation
+                targetScale = Vector3.one * 0.7f;
+
                 // treat new branches as trunks and generating again
                 branchGrowth = 0;
+                generation++;
                 toGrow = new List<Transform>(newBranches);
-                targetScale = branchTargetScale;
             }
-        } while (generation <= maxGenerations + 1);
+        } while (generation <= maxGenerations);
+
+        Debug.Log("Done!");
     }
 }

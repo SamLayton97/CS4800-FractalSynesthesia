@@ -6,13 +6,28 @@ using UnityEngine;
 /// Pulls spectrum data from a given audio track.
 /// Also handles playing of tracks.
 /// </summary>
+[DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(TreeGenerator))]
 public class TrackAnalyzer : MonoBehaviour
 {
     // audio support variables
     AudioSource myAudioSource;          // audio source to play tracks from
-    TreeGenerator myGenerator;          // component which generates fractal
+
+    /// <summary>
+    /// Read-access property returning the length of the track in seconds
+    /// </summary>
+    public float TrackLength
+    {
+        get
+        {
+            // get audio source component if null
+            if (!myAudioSource)
+                myAudioSource = GetComponent<AudioSource>();
+
+            // return track length
+            return myAudioSource.clip.length;
+        }
+    }
 
     /// <summary>
     /// Used for initialization
@@ -20,7 +35,8 @@ public class TrackAnalyzer : MonoBehaviour
     void Awake()
     {
         // retrieve and initialize audio source
-        myAudioSource = GetComponent<AudioSource>();
+        if (!myAudioSource) 
+            myAudioSource = GetComponent<AudioSource>();
         if (!myAudioSource.clip)
             myAudioSource.clip = Resources.Load<AudioClip>("Gorillaz - On Melancholy Hill");
 

@@ -18,22 +18,18 @@ public class TreeGenerator : MonoBehaviour
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree should finish growing when song is over
 
-    /// <summary>
-    /// Read-access property returning number of generations
-    /// fractal tree undergoes before breaking
-    /// </summary>
-    public int MaxGenerations
-    {
-        get { return maxGenerations; }
-    }
+    // track analysis support variables
+    TrackAnalyzer myAnalyzer;                       // component used to analyze a given track
 
+    #region Unity Methods
 
     /// <summary>
     /// Used for initialization
     /// </summary>
     void Awake()
     {
-        // retrieve starting branch of tree
+        // retrieve references to relevant components/child objects
+        myAnalyzer = GetComponent<TrackAnalyzer>();
         startingTrunk = transform.GetChild(0);
     }
 
@@ -45,6 +41,10 @@ public class TreeGenerator : MonoBehaviour
         // generate tree from starting branch
         StartCoroutine(GenerateTree(startingTrunk, maxGenerations));
     }
+
+    #endregion
+
+    #region Coroutines
 
     /// <summary>
     /// Recursive coroutine which generates a fractal tree
@@ -124,4 +124,7 @@ public class TreeGenerator : MonoBehaviour
 
         Debug.Log("Done!");
     }
+
+    #endregion
+
 }

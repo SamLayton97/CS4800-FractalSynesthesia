@@ -71,19 +71,23 @@ public class TreeGenerator : MonoBehaviour
         // while generation has not exceeded limit
         while (generation <= maxGenerations)
         {
-            // initialize list storing branches created by this generation
-            List<Transform> newBranches = new List<Transform>();
-
-            // for each unbranched trunk
+            // scale each growing branch over time
             foreach (Transform currTrunk in toGrow)
             {
                 // scale branch up over time
                 branchGrowth += Time.deltaTime * growthRate;
                 currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
                 yield return new WaitForEndOfFrame();
-                
-                // branch when trunk finishes growing
-                if (currTrunk.localScale.y >= targetScale.y)
+            }
+
+            // if last branch in generation has finished growing
+            if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
+            {
+                // initialize list storing branches created by this generation
+                List<Transform> newBranches = new List<Transform>();
+
+                // branch from each grown trunk
+                foreach (Transform currTrunk in toGrow)
                 {
                     // create n branches from roughly top of trunk
                     // NOTE: count hard set to 4 for testing
@@ -104,7 +108,7 @@ public class TreeGenerator : MonoBehaviour
                         newBranches.Add(currBranch);
                     }
 
-                    // treat each new branch as a trunk for next generation
+                    // treat new branches as trunks and continue generating
                     branchGrowth = 0;
                     toGrow = new List<Transform>(newBranches);
                     generation++;

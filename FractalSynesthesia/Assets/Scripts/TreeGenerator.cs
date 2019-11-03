@@ -70,7 +70,7 @@ public class TreeGenerator : MonoBehaviour
         trunk.localScale = startingScale;
 
         // while generation has not exceeded limit
-        while (!(generation > maxGenerations))
+        do
         {
             // scale each growing branch over time
             foreach (Transform currTrunk in toGrow)
@@ -86,6 +86,7 @@ public class TreeGenerator : MonoBehaviour
             {
                 // initialize list storing branches created by this generation
                 List<Transform> newBranches = new List<Transform>();
+                generation++;
 
                 // branch from each grown trunk
                 foreach (Transform currTrunk in toGrow)
@@ -113,11 +114,10 @@ public class TreeGenerator : MonoBehaviour
                 // treat new branches as trunks and continue generating
                 branchGrowth = 0;
                 toGrow = new List<Transform>(newBranches);
-                generation++;
 
                 //Debug.Log(startingScale + " " + targetScale);
             }
-        }
+        } while (generation <= maxGenerations);
 
         Debug.Log("Done!");
     }

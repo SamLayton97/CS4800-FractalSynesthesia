@@ -11,16 +11,18 @@ public class TreeGenerator : MonoBehaviour
     // branching configuration variables
     [Range(1, 50)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
-    [SerializeField] GameObject baseBranch;         // branch object spawned -- initialized to trunk placed in scene
+    [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
+
+    // generation support variables
+    Transform startingTrunk;                        // transform of initial branch object to build tree from
 
     /// <summary>
     /// Used for initialization
     /// </summary>
     void Awake()
     {
-        // if not already set, retrieve starting branch of tree
-        if (!baseBranch)
-            baseBranch = transform.GetChild(0).gameObject;
+        // retrieve starting branch of tree
+        startingTrunk = transform.GetChild(0);
     }
 
     /// <summary>
@@ -30,8 +32,8 @@ public class TreeGenerator : MonoBehaviour
     {
         // TODO: retrieve data from music analysis
 
-        // generate fractal tree from trunk
-        GenerateTree(baseBranch.transform, 1);
+        // generate tree from starting branch
+        GenerateTree(startingTrunk, 0);
     }
 
     /// <summary>
@@ -40,33 +42,28 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     /// <param name="trunk">current 'trunk' of tree to 
     /// grow branches from</param>
+    /// <param name="generation">current generation of fractal</param>
     void GenerateTree(Transform trunk, int generation)
     {
-        // create list of future trunks to branch from
-        List<Transform> branchFrom = new List<Transform>();
+        // TODO: manipulate tree's color using music data
 
-        // create n branches from around top of trunk
-        // NOTE: currently hard-set to 4 for easy testing
-        int branchCount = 4;
-        for (int i = 0; i < branchCount; i++)
-        {
-            // create, rotate, scale, and position branches of current trunk
-            Transform currBranch = Instantiate(trunk, transform).transform;
-            currBranch.Rotate(new Vector3(45, i * (360f / branchCount), 0));
-            currBranch.localScale *= 0.8f;
-            currBranch.localPosition = Quaternion.Euler(trunk.localEulerAngles.x / 2f, trunk.localEulerAngles.y / 2f, trunk.localEulerAngles.z / 2f) * 
-                (trunk.localPosition + (Vector3.up * trunk.localScale.y * 0.95f)) + 
-                Quaternion.Euler(currBranch.localEulerAngles.x, currBranch.localEulerAngles.y, currBranch.localEulerAngles.z) * (Vector3.up * currBranch.localScale.y);
-
-            // add branch to future trunks to branch from
-            branchFrom.Add(currBranch.transform);
-        }
-
-        // if tree hasn't reached max number of generations, continue with each new branch
+        // if fractal hasn't exceeded generation limit
         if (generation < maxGenerations)
         {
-            foreach (Transform branch in branchFrom)
-                GenerateTree(branch, generation + 1);
+            // create n branches from roughly top of trunk
+            // NOTE: count hard set to 4 for testing
+            int branchCount = 4;
+            for (int i = 0; i < branchCount; i++)
+            {
+                // create and scale, rotate, and position new branch
+                Transform currBranch = Instantiate(branchPrefab, trunk).transform;
+                currBranch.localScale = new Vector3(1f / trunk.localScale.x, 1f / trunk.localScale.y, 1f / trunk.localScale.z) * 0.8f;
+                currBranch.GetChild(0).Rotate(45, i * 360f / branchCount, 0);
+
+                // treat new branch as a trunk and continue generation
+                GenerateTree(currBranch, generation + 1);
+            }
+            
         }
     }
 }

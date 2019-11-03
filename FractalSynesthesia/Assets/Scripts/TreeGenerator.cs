@@ -63,6 +63,7 @@ public class TreeGenerator : MonoBehaviour
         toGrow.Add(trunk);
 
         // initialize starting and target scale of trunk
+        float branchGrowth = 0;
         Vector3 startingScale = new Vector3(1, 0, 1);
         Vector3 targetScale = Vector3.one;
         trunk.localScale = startingScale;
@@ -76,15 +77,14 @@ public class TreeGenerator : MonoBehaviour
             // for each unbranched trunk
             foreach (Transform currTrunk in toGrow)
             {
-                // TODO: scale branch up over time
-                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, currTrunk.localScale.y + Time.deltaTime * growthRate);
+                // scale branch up over time
+                branchGrowth += Time.deltaTime * growthRate;
+                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
                 yield return new WaitForEndOfFrame();
-
+                
                 // branch when trunk finishes growing
                 if (currTrunk.localScale.y >= targetScale.y)
                 {
-                    Debug.Log("branch!");
-
                     // create n branches from roughly top of trunk
                     // NOTE: count hard set to 4 for testing
                     int branchCount = 4;
@@ -96,8 +96,8 @@ public class TreeGenerator : MonoBehaviour
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
 
                         // store starting and target scales of next branch generation
-                        startingScale = new Vector3(1f / currTrunk.localScale.x, 0, 1f / currTrunk.localScale.z) * 0.7f;
                         targetScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.7f;
+                        startingScale = new Vector3(targetScale.x, 0, targetScale.z);
                         currBranch.localScale = startingScale;
 
                         // add to list of future trunks
@@ -105,6 +105,7 @@ public class TreeGenerator : MonoBehaviour
                     }
 
                     // treat each new branch as a trunk for next generation
+                    branchGrowth = 0;
                     toGrow = new List<Transform>(newBranches);
                     generation++;
                 }

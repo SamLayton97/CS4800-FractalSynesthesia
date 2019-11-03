@@ -124,7 +124,5 @@ public class TreeGenerator : MonoBehaviour
                 targetScale = branchTargetScale;
             }
         } while (generation <= maxGenerations + 1);
-
-        Debug.Log("Done!");
     }
 }

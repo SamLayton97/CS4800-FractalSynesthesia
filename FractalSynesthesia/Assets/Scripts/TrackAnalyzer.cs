@@ -7,10 +7,12 @@ using UnityEngine;
 /// Also handles playing of tracks.
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(TreeGenerator))]
 public class TrackAnalyzer : MonoBehaviour
 {
     // audio support variables
     AudioSource myAudioSource;          // audio source to play tracks from
+    TreeGenerator myGenerator;          // component which generates fractal
 
     /// <summary>
     /// Used for initialization
@@ -22,7 +24,7 @@ public class TrackAnalyzer : MonoBehaviour
         if (!myAudioSource.clip)
             myAudioSource.clip = Resources.Load<AudioClip>("Gorillaz - On Melancholy Hill");
 
-        // play track
+        // start track
         myAudioSource.Play();
     }
 }

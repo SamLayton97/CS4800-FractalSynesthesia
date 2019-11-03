@@ -6,6 +6,7 @@ using UnityEngine;
 /// Generates a fractal tree using L-system and adjusted
 /// by values of music analyzer.
 /// </summary>
+[RequireComponent(typeof(TrackAnalyzer))]
 public class TreeGenerator : MonoBehaviour
 {
     // branching configuration variables
@@ -15,6 +16,16 @@ public class TreeGenerator : MonoBehaviour
 
     // generation support variables
     Transform startingTrunk;                        // transform of initial branch object to build tree from
+
+    /// <summary>
+    /// Read-access property returning number of generations
+    /// fractal tree undergoes before breaking
+    /// </summary>
+    public int MaxGenerations
+    {
+        get { return maxGenerations; }
+    }
+
 
     /// <summary>
     /// Used for initialization
@@ -30,10 +41,8 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Start()
     {
-        // TODO: retrieve data from music analysis
-
         // generate tree from starting branch
-        StartCoroutine(GenerateTree(startingTrunk, maxGenerations));
+        //StartCoroutine(GenerateTree(startingTrunk, maxGenerations));
     }
 
     /// <summary>
@@ -48,9 +57,13 @@ public class TreeGenerator : MonoBehaviour
         // initialize a generation counter
         int generation = 1;
 
-        // create list of trunks to branch from and append starting trunk
-        List<Transform> branchFrom = new List<Transform>();
-        branchFrom.Add(trunk);
+        // create list of trunks to grow and append starting trunk
+        List<Transform> toGrow = new List<Transform>();
+        toGrow.Add(trunk);
+
+        // initialize starting and target scale of trunk
+        Vector3 startingScale = new Vector3(1, 0, 1);
+        Vector3 targetScale = Vector3.one;
 
         // while generation has not exceeded limit
         while (generation <= maxGenerations)
@@ -59,28 +72,32 @@ public class TreeGenerator : MonoBehaviour
             List<Transform> newBranches = new List<Transform>();
 
             // for each unbranched trunk
-            foreach (Transform currTrunk in branchFrom)
+            foreach (Transform currTrunk in toGrow)
             {
+                // TODO: scale branch up over time
+                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, 1);
+                yield return new WaitForEndOfFrame();
+
                 // create n branches from roughly top of trunk
                 // NOTE: count hard set to 4 for testing
-                int branchCount = 4;
-                for (int i = 0; i < branchCount; i++)
-                {
-                    // create, scale, rotate, and position new branch
-                    Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                    currBranch.localScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.7f;
-                    currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
-                    currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
+                //int branchCount = 4;
+                //for (int i = 0; i < branchCount; i++)
+                //{
+                //    // create, scale, rotate, and position new branch
+                //    Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
+                //    currBranch.localScale = new Vector3(1f / currTrunk.localScale.x, 1f / currTrunk.localScale.y, 1f / currTrunk.localScale.z) * 0.7f;
+                //    currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
+                //    currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
 
-                    // add to list of future trunks
-                    newBranches.Add(currBranch);
-                }
+                //    // add to list of future trunks
+                //    newBranches.Add(currBranch);
+                //}
             }
 
             // treat each new branch as a trunk for next generation
-            branchFrom = new List<Transform>(newBranches);
-            generation++;
-            yield return new WaitForEndOfFrame();
+            //toGrow = new List<Transform>(newBranches);
+            //generation++;
+            //yield return new WaitForEndOfFrame();
         }
     }
 }

@@ -8,5 +8,44 @@ using UnityEngine;
 /// </summary>
 public class TreeGenerator : MonoBehaviour
 {
+    // branching support variables
+    [SerializeField] GameObject startingTrunk;      // branch object spawned -- initialized to trunk placed in scene
 
+    /// <summary>
+    /// Used for initialization
+    /// </summary>
+    void Awake()
+    {
+        // if not already set, retrieve starting branch of tree
+        if (!startingTrunk)
+            startingTrunk = transform.GetChild(0).gameObject;
+    }
+
+    /// <summary>
+    /// Called once before first frame of Update()
+    /// </summary>
+    void Start()
+    {
+        // TODO: retrieve data from music analysis
+
+        // generate fractal tree from trunk
+        GenerateTree(startingTrunk.transform);
+    }
+
+    /// <summary>
+    /// Recusively generates a fractal tree from 
+    /// starting 'trunk'
+    /// </summary>
+    /// <param name="trunk">current 'trunk' of tree to 
+    /// grow branches from</param>
+    void GenerateTree(Transform trunk)
+    {
+        // create n branches from around top of trunk
+        // NOTE: currently hard-set to 4 for easy testing
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject currBranch = Instantiate(startingTrunk, transform);
+            
+        }
+    }
 }

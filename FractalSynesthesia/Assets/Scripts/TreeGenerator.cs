@@ -24,7 +24,7 @@ public class TreeGenerator : MonoBehaviour
     [SerializeField] float sampleRate = 1f;         // rate (per second) which generator samples values from track analyzer
     float sampleTime = 0;
     float sampleTimeCounter = 0;
-    List<float> rangeDominanceSamples =             // list storing samples of dominant frequency band
+    List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
 
     #region Unity Methods
@@ -65,7 +65,8 @@ public class TreeGenerator : MonoBehaviour
         sampleTimeCounter += Time.deltaTime;
         if (sampleTimeCounter >= sampleTime)
         {
-            Debug.Log("sample");
+            // sample various musical data
+            dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
 
             // reset counter
             sampleTimeCounter = 0;
@@ -108,7 +109,7 @@ public class TreeGenerator : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
-            // if last branch in generation has finished growing
+            // if last branch in generation has finished growing, branch
             if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
             {
                 // initialize list storing branches to be created by this generation
@@ -143,6 +144,10 @@ public class TreeGenerator : MonoBehaviour
 
                 // TODO: determine target scale of next branch generation
                 targetScale = Vector3.one * 0.7f;
+
+                // reset music sample lists for next generation
+                Debug.Log(dominantRangeSamples.Count);
+                dominantRangeSamples.Clear();
 
                 // treat new branches as trunks and generating again
                 branchGrowth = 0;

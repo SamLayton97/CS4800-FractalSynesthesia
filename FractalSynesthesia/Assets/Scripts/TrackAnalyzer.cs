@@ -37,6 +37,14 @@ public class TrackAnalyzer : MonoBehaviour
     }
 
     /// <summary>
+    /// Read-access property returning whether analyzed track is playing
+    /// </summary>
+    public bool TrackIsPlaying
+    {
+        get { return myAudioSource.isPlaying; }
+    }
+
+    /// <summary>
     /// Read-access property returning the length of the track in seconds
     /// </summary>
     public float TrackLength

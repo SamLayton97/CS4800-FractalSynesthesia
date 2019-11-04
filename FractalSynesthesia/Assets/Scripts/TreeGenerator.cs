@@ -27,6 +27,9 @@ public class TreeGenerator : MonoBehaviour
     List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
 
+    // structure support variables
+    float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
+
     #region Unity Methods
 
     /// <summary>
@@ -61,8 +64,10 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // increment sample time counter only if track is playing
+        if (TrackAnalyzer.Instance.TrackIsPlaying) sampleTimeCounter += Time.deltaTime;
+
         // sample music data when when appropriate
-        sampleTimeCounter += Time.deltaTime;
         if (sampleTimeCounter >= sampleTime)
         {
             // sample various musical data
@@ -112,6 +117,10 @@ public class TreeGenerator : MonoBehaviour
             // if last branch in generation has finished growing, branch
             if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
             {
+                // TODO: calculate structure defining variables using music data
+                branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
+                Debug.Log(branchAngle);
+
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
 
@@ -133,7 +142,7 @@ public class TreeGenerator : MonoBehaviour
                     {
                         // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                        currBranch.Rotate(new Vector3(60f, i * 360f / branchCount), Space.Self);
+                        currBranch.Rotate(new Vector3(branchAngle, i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
                         currBranch.localScale = startingScale * 0.4f;
 
@@ -146,7 +155,6 @@ public class TreeGenerator : MonoBehaviour
                 targetScale = Vector3.one * 0.7f;
 
                 // reset music sample lists for next generation
-                Debug.Log(dominantRangeSamples.Count);
                 dominantRangeSamples.Clear();
 
                 // treat new branches as trunks and generating again

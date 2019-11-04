@@ -15,6 +15,8 @@ public class TreeGenerator : MonoBehaviour
     [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
     [SerializeField] Vector2 branchAngleRange =     // range within which branches can grow at angle from
         new Vector2();
+    [Range(3, 15)]
+    [SerializeField] int maxBranches = 5;           // max number of branches tree can grow per generation
 
     // generation support variables
     Transform startingTrunk;                        // transform of initial branch object to build tree from
@@ -31,7 +33,7 @@ public class TreeGenerator : MonoBehaviour
 
     // structure support variables
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
-    int branchCount = 4;
+    int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
 
     #region Unity Methods
 
@@ -123,7 +125,8 @@ public class TreeGenerator : MonoBehaviour
             {
                 // TODO: calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
-                
+                branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
+                Debug.Log(deviatiionScaleSamples.Average() + " " + branchCount);
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();

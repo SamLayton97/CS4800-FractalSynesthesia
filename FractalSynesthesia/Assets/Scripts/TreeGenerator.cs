@@ -26,9 +26,12 @@ public class TreeGenerator : MonoBehaviour
     float sampleTimeCounter = 0;
     List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
+    List<float> deviatiionScaleSamples =            // list storing samples of deviation scales among frequency bands
+        new List<float>();
 
     // structure support variables
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
+    int branchCount = 4;
 
     #region Unity Methods
 
@@ -72,6 +75,7 @@ public class TreeGenerator : MonoBehaviour
         {
             // sample various musical data
             dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
+            deviatiionScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
 
             // reset counter
             sampleTimeCounter = 0;
@@ -119,7 +123,7 @@ public class TreeGenerator : MonoBehaviour
             {
                 // TODO: calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
-                Debug.Log(branchAngle);
+                
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -136,8 +140,6 @@ public class TreeGenerator : MonoBehaviour
                         continue;
 
                     // create n branches from roughly top of trunk
-                    // NOTE: count hard set to 4 for testing
-                    int branchCount = 4;
                     for (int i = 0; i < branchCount; i++)
                     {
                         // create, rotate, position, and scale new branch
@@ -156,6 +158,7 @@ public class TreeGenerator : MonoBehaviour
 
                 // reset music sample lists for next generation
                 dominantRangeSamples.Clear();
+                deviatiionScaleSamples.Clear();
 
                 // treat new branches as trunks and generating again
                 branchGrowth = 0;

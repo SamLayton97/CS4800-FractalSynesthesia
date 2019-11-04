@@ -16,7 +16,6 @@ public class ChangeBranchColor : MonoBehaviour
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
 
-
     /// <summary>
     /// Used for initialization
     /// </summary>

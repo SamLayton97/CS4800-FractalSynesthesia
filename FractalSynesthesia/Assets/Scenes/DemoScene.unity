@@ -419,6 +419,7 @@ MonoBehaviour:
   branchPrefab: {fileID: 5714919142320326094, guid: 7be178bc77ba23849b450664f5c825cd,
     type: 3}
   branchAngleRange: {x: 10, y: 60}
+  sampleRate: 1
 --- !u!114 &1895968066
 MonoBehaviour:
   m_ObjectHideFlags: 0

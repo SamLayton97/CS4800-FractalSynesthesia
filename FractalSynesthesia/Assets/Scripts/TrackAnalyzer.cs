@@ -11,10 +11,14 @@ using UnityEngine;
 public class TrackAnalyzer : MonoBehaviour
 {
     // audio support variables
-    AudioSource myAudioSource;          // audio source to play tracks from
+    AudioSource myAudioSource;                      // audio source to play tracks from
+    float[] samples = new float[1024];              // array of audio samples
+    float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
+
+    #region Properties
 
     /// <summary>
     /// Read-access property returning this instance of track analyzer
@@ -40,6 +44,10 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Unity Methods
+
     /// <summary>
     /// Used for initialization
     /// </summary>
@@ -57,4 +65,19 @@ public class TrackAnalyzer : MonoBehaviour
         // start track
         myAudioSource.Play();
     }
+
+    /// <summary>
+    /// Called once per frame
+    /// </summary>
+    void Update()
+    {
+        // retrieve spectrum data of audio clip
+        myAudioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
+
+        // TODO: make frequency bands of spectrum data
+
+    }
+
+    #endregion
+
 }

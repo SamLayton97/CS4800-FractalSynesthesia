@@ -6,7 +6,6 @@ using UnityEngine;
 /// Generates a fractal tree using L-system and adjusted
 /// by values of music analyzer.
 /// </summary>
-[RequireComponent(typeof(TrackAnalyzer))]
 public class TreeGenerator : MonoBehaviour
 {
     // branching configuration variables
@@ -18,9 +17,6 @@ public class TreeGenerator : MonoBehaviour
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
 
-    // track analysis support variables
-    TrackAnalyzer myAnalyzer;                       // component used to analyze a given track
-
     #region Unity Methods
 
     /// <summary>
@@ -28,13 +24,8 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        // retrieve references to relevant components/child objects
-        myAnalyzer = GetComponent<TrackAnalyzer>();
+        // retrieve references to trunk to grow tree from
         startingTrunk = transform.GetChild(0);
-
-        // set trees growth rate
-        // NOTE: tree should finish growing when song ends
-        growthRate = (maxGenerations + 1) / myAnalyzer.TrackLength;
     }
 
     /// <summary>
@@ -42,6 +33,10 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // set trees growth rate
+        // NOTE: tree should finish growing approximately when song ends
+        growthRate = (maxGenerations + 1) / TrackAnalyzer.Instance.TrackLength;
+
         // generate tree from starting branch
         StartCoroutine(GenerateTree(startingTrunk, maxGenerations));
     }
@@ -108,7 +103,7 @@ public class TreeGenerator : MonoBehaviour
                     {
                         // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                        currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
+                        currBranch.Rotate(new Vector3(60f, i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
                         currBranch.localScale = startingScale * 0.4f;
 

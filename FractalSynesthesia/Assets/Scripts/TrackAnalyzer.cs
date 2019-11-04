@@ -14,6 +14,7 @@ public class TrackAnalyzer : MonoBehaviour
     AudioSource myAudioSource;                      // audio source to play tracks from
     float[] samples = new float[1024];              // array of audio samples
     float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
+    int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -56,6 +57,18 @@ public class TrackAnalyzer : MonoBehaviour
         // set universally-retrievable instance to self
         instance = this;
 
+        // initialize sample count for each frequency band
+        // NOTE: hz covered by each frequency band based
+        // on: https://www.youtube.com/watch?v=mHk3ZiKNH48
+        for (int i = 0; i < frequencyBands.Length; i++)
+        {
+            sampleCounts[i] = (int)Mathf.Pow(2, i) * 2;
+            if (i == frequencyBands.Length - 1)
+                sampleCounts[i] += 2;
+
+            Debug.Log(sampleCounts[i]);
+        }
+
         // retrieve and initialize audio source
         if (!myAudioSource) 
             myAudioSource = GetComponent<AudioSource>();
@@ -74,7 +87,11 @@ public class TrackAnalyzer : MonoBehaviour
         // retrieve spectrum data of audio clip
         myAudioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
 
-        // TODO: make frequency bands of spectrum data
+        // generate frequency bands of spectrum data
+        //for (int i = 0; i < frequencyBands.Length; i++)
+        //{
+
+        //}
 
     }
 

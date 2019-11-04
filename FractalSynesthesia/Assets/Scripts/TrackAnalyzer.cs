@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +17,9 @@ public class TrackAnalyzer : MonoBehaviour
     float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
     int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
     float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
+
+    // analysis variables
+    float bandStdDev = 0f;                          // standard deviation of frequency bands
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -44,6 +48,15 @@ public class TrackAnalyzer : MonoBehaviour
             // return track length
             return myAudioSource.clip.length;
         }
+    }
+
+    /// <summary>
+    /// Read-access property returning standard 
+    /// deviation of frequency band values
+    /// </summary>
+    public float BandStandardDeviation
+    {
+        get { return bandStdDev; }
     }
 
     #endregion
@@ -100,6 +113,10 @@ public class TrackAnalyzer : MonoBehaviour
             }
             frequencyBands[i] = sampleSum / currSample * frequencyMagnifier;
         }
+
+        // update standard deviation of frequency bands
+        float bandAverage = frequencyBands.Average();
+        bandStdDev = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length);
 
     }
 

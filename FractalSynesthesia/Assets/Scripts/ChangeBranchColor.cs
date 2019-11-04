@@ -31,11 +31,12 @@ public class ChangeBranchColor : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // match HSV-color of branch with track analysis values
-        branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
-            Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
-            1 - TrackAnalyzer.Instance.BandDeviationScale,
-            TrackAnalyzer.Instance.LeadVoiceDominance),
-            Mathf.Min(Time.deltaTime * adjustRate, 1f));
+        // if track is playing, match HSV-color of branch with track analysis values
+        if (TrackAnalyzer.Instance.TrackIsPlaying)
+            branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
+                Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
+                1 - TrackAnalyzer.Instance.BandDeviationScale,
+                TrackAnalyzer.Instance.LeadVoiceDominance),
+                Mathf.Min(Time.deltaTime * adjustRate, 1f));
     }
 }

@@ -22,6 +22,7 @@ public class TrackAnalyzer : MonoBehaviour
     float bandDevScale = 0f;                        // scale of deviation among frequency bands
     float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
     float leadDominance = 0f;                       // measures how much lead voice is dominant over accompaniment
+    float approximateVolume = 0f;                   // approximate volume of track at given moment, ranging from 0 to 1
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -87,6 +88,16 @@ public class TrackAnalyzer : MonoBehaviour
         get { return leadDominance; }
     }
 
+    /// <summary>
+    /// Read-access property returning approximate
+    /// volume of track at given moment
+    /// </summary>
+    public float ApproximateVolume
+    {
+        get { return approximateVolume; }
+    }
+
+
     #endregion
 
     #region Unity Methods
@@ -124,33 +135,40 @@ public class TrackAnalyzer : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // retrieve spectrum data of audio clip
-        myAudioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
-
-        // update frequency bands
-        // NOTE: calculations for each band based on: https://www.youtube.com/watch?v=mHk3ZiKNH48
-        int currSample = 0;
-        for (int i = 0; i < frequencyBands.Length; i++)
+        // if track is playing, analyze it
+        if (TrackIsPlaying)
         {
-            // calculate average value over sample range
-            float sampleSum = 0;
-            for (int j = 0; j < sampleCounts[i]; j++)
+            // retrieve spectrum data of audio clip
+            myAudioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
+
+            // update frequency bands
+            // NOTE: calculations for each band based on: https://www.youtube.com/watch?v=mHk3ZiKNH48
+            int currSample = 0;
+            for (int i = 0; i < frequencyBands.Length; i++)
             {
-                sampleSum += samples[currSample] * (currSample + 1);
-                currSample++;
+                // calculate average value over sample range
+                float sampleSum = 0;
+                for (int j = 0; j < sampleCounts[i]; j++)
+                {
+                    sampleSum += samples[currSample] * (currSample + 1);
+                    currSample++;
+                }
+                frequencyBands[i] = sampleSum / currSample * frequencyMagnifier;
             }
-            frequencyBands[i] = sampleSum / currSample * frequencyMagnifier;
+
+            // update standard deviation scale of frequency bands
+            float bandAverage = frequencyBands.Average();
+            bandDevScale = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length) /
+                Mathf.Max(frequencyBands.Max() - frequencyBands.Average(), frequencyBands.Average() - frequencyBands.Min());
+
+            // update lead frequency range/voice and its dominance
+            float maxBand = frequencyBands.Max();
+            dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / (frequencyBands.Length - 1);
+            leadDominance = 1 - (bandAverage / maxBand);
+
+            // update approximate volume of track
+            approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
         }
-
-        // update standard deviation of frequency bands
-        float bandAverage = frequencyBands.Average();
-        bandDevScale = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length) /
-            Mathf.Max(frequencyBands.Max() - frequencyBands.Average(), frequencyBands.Average() - frequencyBands.Min());
-
-        // update lead frequency range/voice and its dominance
-        float maxBand = frequencyBands.Max();
-        dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / (frequencyBands.Length - 1);
-        leadDominance = 1 - (bandAverage / maxBand);
     }
 
     #endregion

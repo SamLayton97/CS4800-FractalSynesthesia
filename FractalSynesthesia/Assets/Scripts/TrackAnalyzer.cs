@@ -20,6 +20,7 @@ public class TrackAnalyzer : MonoBehaviour
 
     // analysis variables
     float bandStdDev = 0f;                          // standard deviation of frequency bands
+    float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -57,6 +58,15 @@ public class TrackAnalyzer : MonoBehaviour
     public float BandStandardDeviation
     {
         get { return bandStdDev; }
+    }
+
+    /// <summary>
+    /// Read-access property returning dominant
+    /// range of frequency bands
+    /// </summary>
+    public float DominantRange
+    {
+        get { return dominantRange; }
     }
 
     #endregion
@@ -118,6 +128,8 @@ public class TrackAnalyzer : MonoBehaviour
         float bandAverage = frequencyBands.Average();
         bandStdDev = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length);
 
+        // update dominant frequency range
+        dominantRange = (float)System.Array.IndexOf(frequencyBands, frequencyBands.Max()) / frequencyBands.Length;
     }
 
     #endregion

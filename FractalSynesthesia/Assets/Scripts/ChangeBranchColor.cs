@@ -17,7 +17,7 @@ public class ChangeBranchColor : MonoBehaviour
     Color targetColor = Color.black;            // color branch shifts to over time
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
-    float shiftCounter = 0;
+    float shiftTargetCounter = 0;
     List<Color> colorSamples =                  // colors sampled from track over time -- used to determine next target color
         new List<Color>();
 
@@ -36,17 +36,17 @@ public class ChangeBranchColor : MonoBehaviour
     void Update()
     {
         // adjust material color to target over time
-        shiftCounter += Time.deltaTime * adjustRate;
-        branchRenderer.material.color = Color.Lerp(branchRenderer.material.color, targetColor, shiftCounter);
+        shiftTargetCounter += Time.deltaTime * adjustRate;
+        branchRenderer.material.color = Color.Lerp(branchRenderer.material.color, targetColor, shiftTargetCounter);
 
         // TODO: retrieve hsv-color sample from track analyzer
-        Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation);
+        Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange);
 
         // when color has fully shifted to target
-        if (shiftCounter >= 1)
+        if (shiftTargetCounter >= 1)
         {
-            // TODO: find new target color
-            
+            // TODO: find new target color and reset counter
+            shiftTargetCounter = 0;
         }
     }
 }

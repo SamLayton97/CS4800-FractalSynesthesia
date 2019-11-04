@@ -13,7 +13,7 @@ public class TrackAnalyzer : MonoBehaviour
     // audio support variables
     AudioSource myAudioSource;                      // audio source to play tracks from
     float[] samples = new float[1024];              // array of audio samples
-    public float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
+    float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
     int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
     float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
 
@@ -66,8 +66,6 @@ public class TrackAnalyzer : MonoBehaviour
             sampleCounts[i] = (int)Mathf.Pow(2, i) * 2;
             if (i == frequencyBands.Length - 1)
                 sampleCounts[i] += 2;
-
-            Debug.Log(sampleCounts[i]);
         }
 
         // retrieve and initialize audio source

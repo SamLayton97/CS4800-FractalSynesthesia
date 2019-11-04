@@ -40,7 +40,8 @@ public class ChangeBranchColor : MonoBehaviour
         branchRenderer.material.color = Color.Lerp(branchRenderer.material.color, targetColor, shiftTargetCounter);
 
         // TODO: retrieve hsv-color sample from track analyzer
-        Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange);
+        Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange +
+            " " + TrackAnalyzer.Instance.LeadVoiceDominance);
 
         // when color has fully shifted to target
         if (shiftTargetCounter >= 1)

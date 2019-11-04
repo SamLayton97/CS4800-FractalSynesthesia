@@ -21,6 +21,7 @@ public class TrackAnalyzer : MonoBehaviour
     // analysis variables
     float bandStdDev = 0f;                          // standard deviation of frequency bands
     float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
+    float leadDominance = 0f;                       // measures how much lead voice is dominant over accompaniment
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -67,6 +68,15 @@ public class TrackAnalyzer : MonoBehaviour
     public float DominantRange
     {
         get { return dominantRange; }
+    }
+
+    /// <summary>
+    /// Read-access property returning how dominant
+    /// lead voice is over its accompaniment
+    /// </summary>
+    public float LeadVoiceDominance
+    {
+        get { return leadDominance; }
     }
 
     #endregion
@@ -128,8 +138,10 @@ public class TrackAnalyzer : MonoBehaviour
         float bandAverage = frequencyBands.Average();
         bandStdDev = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length);
 
-        // update dominant frequency range
-        dominantRange = (float)System.Array.IndexOf(frequencyBands, frequencyBands.Max()) / frequencyBands.Length;
+        // update lead frequency range/voice and its dominance
+        float maxBand = frequencyBands.Max();
+        dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / frequencyBands.Length;
+        leadDominance = maxBand - bandAverage;
     }
 
     #endregion

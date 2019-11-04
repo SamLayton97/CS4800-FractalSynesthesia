@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -8,14 +9,23 @@ using UnityEngine;
 /// </summary>
 public class TreeGenerator : MonoBehaviour
 {
-    // branching configuration variables
+    // branching configuration
     [Range(1, 10)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
     [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
+    [SerializeField] Vector2 branchAngleRange =     // range within which branches can grow at angle from
+        new Vector2();
 
     // generation support variables
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
+
+    // music data sampling variables
+    [SerializeField] float sampleRate = 1f;         // rate (per second) which generator samples values from track analyzer
+    float sampleTime = 0;
+    float sampleTimeCounter = 0;
+    List<float> rangeDominanceSamples =             // list storing samples of dominant frequency band
+        new List<float>();
 
     #region Unity Methods
 
@@ -26,6 +36,9 @@ public class TreeGenerator : MonoBehaviour
     {
         // retrieve references to trunk to grow tree from
         startingTrunk = transform.GetChild(0);
+
+        // calculate time between samples
+        sampleTime = 1f / sampleRate;
     }
 
     /// <summary>
@@ -42,6 +55,22 @@ public class TreeGenerator : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// Called once per frame
+    /// </summary>
+    void Update()
+    {
+        // sample music data when when appropriate
+        sampleTimeCounter += Time.deltaTime;
+        if (sampleTimeCounter >= sampleTime)
+        {
+            Debug.Log("sample");
+
+            // reset counter
+            sampleTimeCounter = 0;
+        }
+    }
 
     #region Coroutines
 

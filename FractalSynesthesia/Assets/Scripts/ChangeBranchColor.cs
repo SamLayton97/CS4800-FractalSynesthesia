@@ -10,11 +10,12 @@ public class ChangeBranchColor : MonoBehaviour
 {
     // configuration variables
     [Range(0, 120)]
-    [SerializeField] float adjustRate = 1f;     // rate at which branch color shifts to its target
+    [SerializeField] float adjustRate = 1f;             // rate at which branch color shifts to its target
 
     // color setting support variables
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
+
 
     /// <summary>
     /// Used for initialization

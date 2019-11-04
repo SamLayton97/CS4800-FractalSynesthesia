@@ -109,7 +109,7 @@ public class TreeGenerator : MonoBehaviour
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
                         currBranch.Rotate(new Vector3(35f, i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
-                        currBranch.localScale = startingScale;
+                        currBranch.localScale = startingScale * 0.4f;
 
                         // add to list of future trunks
                         newBranches.Add(currBranch);

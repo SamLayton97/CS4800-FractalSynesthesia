@@ -26,9 +26,6 @@ public class ChangeBranchColor : MonoBehaviour
     {
         // retrieve reference to child's material component
         branchRenderer = GetComponentInChildren<Renderer>();
-
-        // clamp adjust rate to within target frame rate
-        adjustRate = Mathf.Min(adjustRate, Application.targetFrameRate);
     }
 
     /// <summary>
@@ -41,9 +38,9 @@ public class ChangeBranchColor : MonoBehaviour
             Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
             1,
             TrackAnalyzer.Instance.LeadVoiceDominance),
-            Time.deltaTime);
+            Mathf.Min(Time.deltaTime * adjustRate, 1f));
 
-        Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange +
-            " " + TrackAnalyzer.Instance.LeadVoiceDominance);
+        //Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange +
+        //    " " + TrackAnalyzer.Instance.LeadVoiceDominance);
     }
 }

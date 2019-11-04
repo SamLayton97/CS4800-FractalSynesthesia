@@ -16,7 +16,7 @@ public class TreeGenerator : MonoBehaviour
 
     // generation support variables
     Transform startingTrunk;                        // transform of initial branch object to build tree from
-    float growTime = 1f;                            // time (seconds) it takes branches grow before splitting -- entire tree finishes growing when song is over
+    float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
 
     // track analysis support variables
     TrackAnalyzer myAnalyzer;                       // component used to analyze a given track
@@ -32,8 +32,9 @@ public class TreeGenerator : MonoBehaviour
         myAnalyzer = GetComponent<TrackAnalyzer>();
         startingTrunk = transform.GetChild(0);
 
-        // set growth rate such that tree finishes growing when song ends
-        growTime = myAnalyzer.TrackLength / maxGenerations;
+        // set trees growth rate
+        // NOTE: tree should finish growing when song ends
+        growthRate = (maxGenerations + 1) / myAnalyzer.TrackLength;
     }
 
     /// <summary>
@@ -78,7 +79,7 @@ public class TreeGenerator : MonoBehaviour
             foreach (Transform currTrunk in toGrow)
             {
                 // scale branch up over time
-                branchGrowth += Time.deltaTime * growTime;
+                branchGrowth += Time.deltaTime * growthRate;
                 currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
                 yield return new WaitForEndOfFrame();
             }

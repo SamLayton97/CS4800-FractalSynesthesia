@@ -140,8 +140,8 @@ public class TrackAnalyzer : MonoBehaviour
 
         // update lead frequency range/voice and its dominance
         float maxBand = frequencyBands.Max();
-        dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / frequencyBands.Length;
-        leadDominance = maxBand - bandAverage;
+        dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / (frequencyBands.Length - 1);
+        leadDominance = 1 - (bandAverage / maxBand);
     }
 
     #endregion

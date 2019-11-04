@@ -9,15 +9,13 @@ using UnityEngine;
 public class ChangeBranchColor : MonoBehaviour
 {
     // configuration variables
-    [Range(0, 1)]
-    [SerializeField] float adjustRate = 1f;     // rate at which branch shifts from one color to the next
-                                                // NOTE: 1 denotes near-instantaneous change in branch's color
+    [Range(0, 120)]
+    [SerializeField] float adjustRate = 1f;     // rate at which branch color shifts to its target
 
     // color setting support variables
-    Color targetColor = Color.black;            // color branch shifts to over time
+    Color targetColor = Color.white;            // color branch shifts to over time
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
-    float shiftTargetCounter = 0;
     List<Color> colorSamples =                  // colors sampled from track over time -- used to determine next target color
         new List<Color>();
 
@@ -28,6 +26,9 @@ public class ChangeBranchColor : MonoBehaviour
     {
         // retrieve reference to child's material component
         branchRenderer = GetComponentInChildren<Renderer>();
+
+        // clamp adjust rate to within target frame rate
+        adjustRate = Mathf.Min(adjustRate, Application.targetFrameRate);
     }
 
     /// <summary>
@@ -35,19 +36,14 @@ public class ChangeBranchColor : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // adjust material color to target over time
-        shiftTargetCounter += Time.deltaTime * adjustRate;
-        branchRenderer.material.color = Color.Lerp(branchRenderer.material.color, targetColor, shiftTargetCounter);
+        // match color of branch with track analysis values
+        branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
+            Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
+            1,
+            TrackAnalyzer.Instance.LeadVoiceDominance),
+            Time.deltaTime);
 
-        // TODO: retrieve hsv-color sample from track analyzer
         Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange +
             " " + TrackAnalyzer.Instance.LeadVoiceDominance);
-
-        // when color has fully shifted to target
-        if (shiftTargetCounter >= 1)
-        {
-            // TODO: find new target color and reset counter
-            shiftTargetCounter = 0;
-        }
     }
 }

@@ -13,11 +13,8 @@ public class ChangeBranchColor : MonoBehaviour
     [SerializeField] float adjustRate = 1f;     // rate at which branch color shifts to its target
 
     // color setting support variables
-    Color targetColor = Color.white;            // color branch shifts to over time
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
-    List<Color> colorSamples =                  // colors sampled from track over time -- used to determine next target color
-        new List<Color>();
 
     /// <summary>
     /// Used for initialization
@@ -33,7 +30,7 @@ public class ChangeBranchColor : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // match color of branch with track analysis values
+        // match HSV-color of branch with track analysis values
         branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
             Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
             1 - TrackAnalyzer.Instance.BandDeviationScale,

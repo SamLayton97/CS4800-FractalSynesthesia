@@ -93,8 +93,9 @@ public class TreeGenerator : MonoBehaviour
                 // branch from each grown trunk
                 foreach (Transform currTrunk in toGrow)
                 {
-                    // ensure trunk has grown to target length
+                    // max trunk growth and lock color
                     currTrunk.localScale = targetScale;
+                    currTrunk.GetComponent<ChangeBranchColor>().enabled = false;
 
                     // skip branching if this is last generation
                     if (generation == maxGenerations)

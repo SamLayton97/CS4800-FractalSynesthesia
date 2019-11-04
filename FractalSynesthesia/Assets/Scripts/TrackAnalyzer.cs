@@ -19,7 +19,7 @@ public class TrackAnalyzer : MonoBehaviour
     float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
 
     // analysis variables
-    float bandStdDev = 0f;                          // standard deviation of frequency bands
+    float bandDevScale = 0f;                        // scale of deviation among frequency bands
     float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
     float leadDominance = 0f;                       // measures how much lead voice is dominant over accompaniment
 
@@ -53,12 +53,12 @@ public class TrackAnalyzer : MonoBehaviour
     }
 
     /// <summary>
-    /// Read-access property returning standard 
-    /// deviation of frequency band values
+    /// Read-access property returning scale of
+    /// deviation among frequency bands
     /// </summary>
-    public float BandStandardDeviation
+    public float BandDeviationScale
     {
-        get { return bandStdDev; }
+        get { return bandDevScale; }
     }
 
     /// <summary>
@@ -136,7 +136,8 @@ public class TrackAnalyzer : MonoBehaviour
 
         // update standard deviation of frequency bands
         float bandAverage = frequencyBands.Average();
-        bandStdDev = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length);
+        bandDevScale = Mathf.Sqrt(frequencyBands.Select(x => (x - bandAverage) * (x - bandAverage)).Sum() / frequencyBands.Length) /
+            Mathf.Max(frequencyBands.Max() - frequencyBands.Average(), frequencyBands.Average() - frequencyBands.Min());
 
         // update lead frequency range/voice and its dominance
         float maxBand = frequencyBands.Max();

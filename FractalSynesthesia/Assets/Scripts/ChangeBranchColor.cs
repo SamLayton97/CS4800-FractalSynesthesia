@@ -36,11 +36,8 @@ public class ChangeBranchColor : MonoBehaviour
         // match color of branch with track analysis values
         branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
             Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
-            1,
+            1 - TrackAnalyzer.Instance.BandDeviationScale,
             TrackAnalyzer.Instance.LeadVoiceDominance),
             Mathf.Min(Time.deltaTime * adjustRate, 1f));
-
-        //Debug.Log(TrackAnalyzer.Instance.BandStandardDeviation + " " + TrackAnalyzer.Instance.DominantRange +
-        //    " " + TrackAnalyzer.Instance.LeadVoiceDominance);
     }
 }

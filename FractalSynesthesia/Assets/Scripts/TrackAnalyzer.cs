@@ -13,6 +13,17 @@ public class TrackAnalyzer : MonoBehaviour
     // audio support variables
     AudioSource myAudioSource;          // audio source to play tracks from
 
+    // pseudo-singleton support
+    static TrackAnalyzer instance;
+
+    /// <summary>
+    /// Read-access property returning this instance of track analyzer
+    /// </summary>
+    public static TrackAnalyzer Instance
+    {
+        get { return instance; }
+    }
+
     /// <summary>
     /// Read-access property returning the length of the track in seconds
     /// </summary>
@@ -34,6 +45,9 @@ public class TrackAnalyzer : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        // set universally-retrievable instance to self
+        instance = this;
+
         // retrieve and initialize audio source
         if (!myAudioSource) 
             myAudioSource = GetComponent<AudioSource>();

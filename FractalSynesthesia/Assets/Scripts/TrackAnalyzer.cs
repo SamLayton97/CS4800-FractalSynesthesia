@@ -178,7 +178,6 @@ public class TrackAnalyzer : MonoBehaviour
             // update approximate volume of track and lead voice
             approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
             melodyVolume = Mathf.Clamp01(maxBand / 3.5f);
-            Debug.Log(melodyVolume);
         }
     }
 

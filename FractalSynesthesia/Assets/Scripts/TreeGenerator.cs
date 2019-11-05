@@ -32,6 +32,8 @@ public class TreeGenerator : MonoBehaviour
         new List<float>();
     List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
+    List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
+        new List<float>();
     List<float> melodicRangeSamples =               // list storing samples of song's melodic range
         new List<float>();
 
@@ -86,6 +88,7 @@ public class TreeGenerator : MonoBehaviour
             dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
             deviatiionScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
             approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
+            melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
 
             // sample melodic range values
             // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
@@ -140,6 +143,7 @@ public class TreeGenerator : MonoBehaviour
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
                 branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
+                branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
                 branchHeightNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
                 // initialize list storing branches to be created by this generation
@@ -172,12 +176,14 @@ public class TreeGenerator : MonoBehaviour
                 }
 
                 // set target scale of next branch generation
-                targetScale = new Vector3(branchGirth, branchGirth, branchGirth);
+                Debug.Log(branchLength);
+                targetScale = new Vector3(branchGirth, branchLength, branchGirth);
 
                 // reset music sample lists for next generation
                 dominantRangeSamples.Clear();
                 deviatiionScaleSamples.Clear();
                 approximateVolumeSamples.Clear();
+                melodyVolumeSamples.Clear();
                 melodicRangeSamples.Clear();
 
                 // treat new branches as trunks and generating again

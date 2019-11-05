@@ -21,6 +21,7 @@ public class TreeGenerator : MonoBehaviour
     [SerializeField] int maxBranches = 5;           // max number of branches tree can grow per generation
 
     // generation support variables
+    IEnumerator growTree;                // coroutine controlling growth of fractal tree over course of track
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
 
@@ -70,10 +71,9 @@ public class TreeGenerator : MonoBehaviour
         growthRate = (maxGenerations + 1) / TrackAnalyzer.Instance.TrackLength;
 
         // generate tree from starting branch
-        StartCoroutine(GenerateTree(startingTrunk, maxGenerations));
+        growTree = GenerateTree(startingTrunk, maxGenerations);
+        StartCoroutine(growTree);
     }
-
-    #endregion
 
     /// <summary>
     /// Called once per frame
@@ -102,6 +102,8 @@ public class TreeGenerator : MonoBehaviour
         }
     }
 
+    #endregion
+
     #region Coroutines
 
     /// <summary>
@@ -126,7 +128,7 @@ public class TreeGenerator : MonoBehaviour
         Vector3 startingScale = new Vector3(targetScale.x, 0, targetScale.z);
         trunk.localScale = startingScale;
 
-        // continue to generate while fractal tree hasn't ended
+        // continue to generate while fractal tree hasn't reached max generations
         do
         {
             // scale each growing branch over time
@@ -136,6 +138,16 @@ public class TreeGenerator : MonoBehaviour
                 branchGrowth += Time.deltaTime * growthRate;
                 currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
                 yield return new WaitForEndOfFrame();
+
+                // if song sends before tree finishes generating, stop generating
+                // NOTE: Solution is quick fix for times where fractal cannot keep
+                // up with song. Next major update will push scaling control to
+                // branches themselves rather than in this controller.
+                if (!TrackAnalyzer.Instance.TrackIsPlaying)
+                {
+                    Debug.Log("Stop!");
+                    StopCoroutine(growTree);
+                }
             }
 
             // if last branch in generation has finished growing, branch

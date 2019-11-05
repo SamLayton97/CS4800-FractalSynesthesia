@@ -17,11 +17,13 @@ public class TreeGenerator : MonoBehaviour
         new Vector2();
     [Range(10f, 50f)]
     [SerializeField] float angleNoiseScaler = 30f;  // max additional degrees branches can grow, caused by randomization in generation
-    [Range(3, 15)]
-    [SerializeField] int maxBranches = 5;           // max number of branches tree can grow per generation
+    [Range(2, 10)]
+    [SerializeField] int averageBranchCount = 5;    // average number of branches tree can grow per generation
+    [Range(1, 5)]
+    [SerializeField] int branchDeviationRange = 3;  // +/- total number of branches made during a generation -- affected by average deviation scale
 
     // generation support variables
-    IEnumerator growTree;                // coroutine controlling growth of fractal tree over course of track
+    IEnumerator growTree;                           // coroutine controlling growth of fractal tree over course of track
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
 
@@ -31,7 +33,7 @@ public class TreeGenerator : MonoBehaviour
     float sampleTimeCounter = 0;
     List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
-    List<float> deviatiionScaleSamples =            // list storing samples of deviation scales among frequency bands
+    List<float> deviationScaleSamples =            // list storing samples of deviation scales among frequency bands
         new List<float>();
     List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
@@ -88,7 +90,7 @@ public class TreeGenerator : MonoBehaviour
         {
             // sample various musical data from analyzer
             dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
-            deviatiionScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
+            deviationScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
             approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
             melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
 
@@ -152,7 +154,9 @@ public class TreeGenerator : MonoBehaviour
             {
                 // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
-                branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
+                float averageDeviation = deviationScaleSamples.Average();
+                branchCount = averageBranchCount + 
+                    Mathf.FloorToInt(Random.Range(-1 * branchDeviationRange * averageDeviation, branchDeviationRange * averageDeviation));
                 branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
                 branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
                 branchNoise = Mathf.Sqrt(melodicRangeSamples.Average());
@@ -192,7 +196,7 @@ public class TreeGenerator : MonoBehaviour
 
                 // reset music sample lists for next generation
                 dominantRangeSamples.Clear();
-                deviatiionScaleSamples.Clear();
+                deviationScaleSamples.Clear();
                 approximateVolumeSamples.Clear();
                 melodyVolumeSamples.Clear();
                 melodicRangeSamples.Clear();

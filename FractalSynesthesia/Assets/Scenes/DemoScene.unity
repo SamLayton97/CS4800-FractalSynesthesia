@@ -400,7 +400,8 @@ MonoBehaviour:
     type: 3}
   branchAngleRange: {x: 10, y: 50}
   angleNoiseScaler: 20
-  maxBranches: 7
+  averageBranchCount: 4
+  branchDeviationRange: 3
   sampleRate: 1
 --- !u!114 &1895968066
 MonoBehaviour:

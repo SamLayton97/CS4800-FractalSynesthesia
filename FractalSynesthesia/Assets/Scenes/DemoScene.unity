@@ -341,11 +341,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5714919142320326193, guid: 7be178bc77ba23849b450664f5c825cd,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be178bc77ba23849b450664f5c825cd, type: 3}
 --- !u!4 &1760943655 stripped
@@ -400,11 +395,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49555f59fb500ca4ca5d315ab69f9057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxGenerations: 7
+  maxGenerations: 4
   branchPrefab: {fileID: 5714919142320326094, guid: 7be178bc77ba23849b450664f5c825cd,
     type: 3}
   branchAngleRange: {x: 10, y: 60}
-  maxBranches: 6
+  maxBranches: 7
   sampleRate: 1
 --- !u!114 &1895968066
 MonoBehaviour:

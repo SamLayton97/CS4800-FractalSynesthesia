@@ -108,7 +108,7 @@ public class TreeGenerator : MonoBehaviour
 
         // growth of starting trunk
         float branchGrowth = 0;
-        Vector3 targetScale = Vector3.one;
+        Vector3 targetScale = trunk.localScale;
         Vector3 startingScale = new Vector3(targetScale.x, 0, targetScale.z);
         trunk.localScale = startingScale;
 
@@ -130,8 +130,7 @@ public class TreeGenerator : MonoBehaviour
                 // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
-                branchSize = approximateVolumeSamples.Average();
-                Debug.Log(branchSize);
+                branchSize = Mathf.Sqrt(approximateVolumeSamples.Average());
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();

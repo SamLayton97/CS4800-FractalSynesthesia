@@ -30,10 +30,13 @@ public class TreeGenerator : MonoBehaviour
         new List<float>();
     List<float> deviatiionScaleSamples =            // list storing samples of deviation scales among frequency bands
         new List<float>();
+    List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
+        new List<float>();
 
     // structure support variables
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
     int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
+    float branchGirth = 0.7f;                       // target girth of branches created on generation -- adjusted by approximate volume
 
     #region Unity Methods
 
@@ -78,6 +81,7 @@ public class TreeGenerator : MonoBehaviour
             // sample various musical data
             dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
             deviatiionScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
+            approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
 
             // reset counter
             sampleTimeCounter = 0;
@@ -123,10 +127,11 @@ public class TreeGenerator : MonoBehaviour
             // if last branch in generation has finished growing, branch
             if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
             {
-                // TODO: calculate structure defining variables using music data
+                // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
-                Debug.Log(deviatiionScaleSamples.Average() + " " + branchCount);
+                branchGirth = approximateVolumeSamples.Average();
+                Debug.Log(branchGirth);
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -156,12 +161,14 @@ public class TreeGenerator : MonoBehaviour
                     }
                 }
 
-                // TODO: determine target scale of next branch generation
-                targetScale = Vector3.one * 0.7f;
+                // set target scale of next branch generation
+                // TODO: intelligently find length of branch
+                targetScale = new Vector3(branchGirth, 0.7f, branchGirth);
 
                 // reset music sample lists for next generation
                 dominantRangeSamples.Clear();
                 deviatiionScaleSamples.Clear();
+                approximateVolumeSamples.Clear();
 
                 // treat new branches as trunks and generating again
                 branchGrowth = 0;

@@ -144,10 +144,7 @@ public class TreeGenerator : MonoBehaviour
                 // up with song. Next major update will push scaling control to
                 // branches themselves rather than in this controller.
                 if (!TrackAnalyzer.Instance.TrackIsPlaying)
-                {
-                    Debug.Log("Stop!");
                     StopCoroutine(growTree);
-                }
             }
 
             // if last branch in generation has finished growing, branch
@@ -206,8 +203,6 @@ public class TreeGenerator : MonoBehaviour
                 toGrow = new List<Transform>(newBranches);
             }
         } while (generation <= maxGenerations);
-
-        Debug.Log("Done!");
     }
 
     #endregion

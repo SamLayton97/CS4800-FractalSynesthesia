@@ -18,9 +18,9 @@ public class TreeGenerator : MonoBehaviour
     [Range(10f, 50f)]
     [SerializeField] float angleNoiseScaler = 30f;  // max additional degrees branches can grow, caused by randomization in generation
     [Range(2, 10)]
-    [SerializeField] int averageBranchCount = 5;    // average number of branches tree can grow per generation
+    [SerializeField] int maxBranchCount = 5;        // max number of branches tree can grow per generation
     [Range(1, 5)]
-    [SerializeField] int branchDeviationRange = 3;  // +/- total number of branches made during a generation -- affected by average deviation scale
+    [SerializeField] int branchDeviationRange = 3;  // total number of branches pruned during generation -- affected by average deviation scale
 
     // generation support variables
     IEnumerator growTree;                           // coroutine controlling growth of fractal tree over course of track
@@ -155,8 +155,7 @@ public class TreeGenerator : MonoBehaviour
                 // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 float averageDeviation = deviationScaleSamples.Average();
-                branchCount = averageBranchCount + 
-                    Mathf.FloorToInt(Random.Range(-1 * branchDeviationRange * averageDeviation, branchDeviationRange * averageDeviation));
+                branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * averageDeviation));
                 branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
                 branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
                 branchNoise = Mathf.Sqrt(melodicRangeSamples.Average());

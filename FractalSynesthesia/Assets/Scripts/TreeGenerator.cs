@@ -125,7 +125,7 @@ public class TreeGenerator : MonoBehaviour
         // growth of starting trunk
         float branchGrowth = 0;
         Vector3 targetScale = trunk.localScale;
-        Vector3 startingScale = new Vector3(targetScale.x, 0, targetScale.z);
+        Vector3 startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
         trunk.localScale = startingScale;
 
         // continue to generate while fractal tree hasn't reached max generations
@@ -180,10 +180,10 @@ public class TreeGenerator : MonoBehaviour
                         // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
                         currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler, 
-                            i * 360f / branchCount), Space.Self);
+                            i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 
-                            (2f - Random.Range(0, branchNoise));          // height randomized by melodic range
-                        currBranch.localScale = startingScale * 0.4f;
+                            (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+                        currBranch.localScale = startingScale;
 
                         // add to list of future trunks
                         newBranches.Add(currBranch);

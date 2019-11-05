@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49555f59fb500ca4ca5d315ab69f9057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxGenerations: 4
+  maxGenerations: 8
   branchPrefab: {fileID: 5714919142320326094, guid: 7be178bc77ba23849b450664f5c825cd,
     type: 3}
   branchAngleRange: {x: 10, y: 60}
@@ -423,7 +423,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b5ffb1e8b0b44cc4b85f47aadc49df57, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ef725c5d36566b347b691275b91255c4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

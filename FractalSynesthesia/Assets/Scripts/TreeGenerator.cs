@@ -39,6 +39,7 @@ public class TreeGenerator : MonoBehaviour
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
     int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
     float branchSize = 0.7f;                        // target scale of branches created on generation -- adjusted by approximate volume
+    float branchHeightNoise = 0f;                   // variation in height of each branch per trunk
 
     #region Unity Methods
 
@@ -89,7 +90,6 @@ public class TreeGenerator : MonoBehaviour
             // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
             melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
                 dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
-            Debug.Log(melodicRangeSamples[melodicRangeSamples.Count - 1]);
 
             // reset counter
             sampleTimeCounter = 0;
@@ -139,6 +139,7 @@ public class TreeGenerator : MonoBehaviour
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
                 branchSize = Mathf.Sqrt(approximateVolumeSamples.Average());
+                branchHeightNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -160,7 +161,8 @@ public class TreeGenerator : MonoBehaviour
                         // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
                         currBranch.Rotate(new Vector3(branchAngle, i * 360f / branchCount), Space.Self);
-                        currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 2f;
+                        currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 
+                            (2f - Random.Range(0, branchHeightNoise));          // height randomized by melodic range
                         currBranch.localScale = startingScale * 0.4f;
 
                         // add to list of future trunks
@@ -175,6 +177,7 @@ public class TreeGenerator : MonoBehaviour
                 dominantRangeSamples.Clear();
                 deviatiionScaleSamples.Clear();
                 approximateVolumeSamples.Clear();
+                melodicRangeSamples.Clear();
 
                 // treat new branches as trunks and generating again
                 branchGrowth = 0;

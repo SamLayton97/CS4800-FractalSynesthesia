@@ -8,20 +8,24 @@ using UnityEngine;
 /// </summary>
 public class OrbitCamera : MonoBehaviour
 {
-    // public variables
-    public Transform targetTransform;       // transform of object to orbit about
-    public Vector3 lookOffset;              // initial offset to rotate camera (in degrees)
-    public float orbitSpeed = 5f;           // speed modifier to rotate camera at
+    // configuration variables
+    [SerializeField] Transform targetTransform;         // transform of object to orbit about
+    [SerializeField] Vector3 lookOffset;                // initial offset to rotate camera (in degrees)
+    [SerializeField] float orbitSpeed = 5f;             // speed modifier to rotate camera at
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Used for initialization
+    /// </summary>
+    void Awake()
     {
         // set camera to start facing object plus offset
         transform.LookAt(targetTransform);
         transform.Rotate(lookOffset);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called once per frame
+    /// </summary>
     void Update()
     {
         // if user is holding mouse button down

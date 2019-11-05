@@ -38,7 +38,8 @@ public class TreeGenerator : MonoBehaviour
     // structure support variables
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
     int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
-    float branchSize = 0.7f;                        // target scale of branches created on generation -- adjusted by approximate volume
+    float branchGirth = 0.7f;                       // target girth of branches created on generation -- adjusted by approximate volume
+    float branchLength = 0.7f;                      // target length of branches created on generation -- adjusted by approximate lead melody volume
     float branchHeightNoise = 0f;                   // variation in height of each branch per trunk
 
     #region Unity Methods
@@ -138,7 +139,7 @@ public class TreeGenerator : MonoBehaviour
                 // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
-                branchSize = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
+                branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
                 branchHeightNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
                 // initialize list storing branches to be created by this generation
@@ -171,7 +172,7 @@ public class TreeGenerator : MonoBehaviour
                 }
 
                 // set target scale of next branch generation
-                targetScale = new Vector3(branchSize, branchSize, branchSize);
+                targetScale = new Vector3(branchGirth, branchGirth, branchGirth);
 
                 // reset music sample lists for next generation
                 dominantRangeSamples.Clear();

@@ -23,6 +23,7 @@ public class TrackAnalyzer : MonoBehaviour
     float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
     float leadDominance = 0f;                       // measures how much lead voice is dominant over accompaniment
     float approximateVolume = 0f;                   // approximate volume of track at given moment, ranging from 0 to 1
+    float melodyVolume = 0f;                        // approximate volume of track's melody at given moment, ranging from 0 to 1
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -97,6 +98,14 @@ public class TrackAnalyzer : MonoBehaviour
         get { return approximateVolume; }
     }
 
+    /// <summary>
+    /// Read-access property returning approximate
+    /// volume of track's melody at given moment
+    /// </summary>
+    public float MelodicVolume
+    {
+        get { return melodyVolume; }
+    }
 
     #endregion
 
@@ -166,8 +175,10 @@ public class TrackAnalyzer : MonoBehaviour
             dominantRange = (float)System.Array.IndexOf(frequencyBands, maxBand) / (frequencyBands.Length - 1);
             leadDominance = 1 - (bandAverage / maxBand);
 
-            // update approximate volume of track
+            // update approximate volume of track and lead voice
             approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
+            melodyVolume = Mathf.Clamp01(maxBand / 3.5f);
+            Debug.Log(melodyVolume);
         }
     }
 

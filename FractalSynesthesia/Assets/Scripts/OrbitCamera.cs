@@ -10,7 +10,7 @@ public class OrbitCamera : MonoBehaviour
 {
     // configuration variables
     [SerializeField] Transform targetTransform;         // transform of object to orbit about
-    [SerializeField] Vector3 lookOffset;                // initial offset to rotate camera (in degrees)
+    [SerializeField] Vector3 positionOffset;            // vector offset relative to target transform to look at
     [SerializeField] float orbitSpeed = 5f;             // speed modifier to rotate camera at
 
     /// <summary>
@@ -19,8 +19,7 @@ public class OrbitCamera : MonoBehaviour
     void Awake()
     {
         // set camera to start facing object plus offset
-        transform.LookAt(targetTransform);
-        transform.Rotate(lookOffset);
+        transform.LookAt(targetTransform.position + positionOffset);
     }
 
     /// <summary>

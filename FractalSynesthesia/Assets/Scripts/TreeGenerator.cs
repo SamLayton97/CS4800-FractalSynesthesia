@@ -138,7 +138,7 @@ public class TreeGenerator : MonoBehaviour
                 // calculate structure defining variables using music data
                 branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
-                branchSize = Mathf.Sqrt(approximateVolumeSamples.Average());
+                branchSize = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
                 branchHeightNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
                 // initialize list storing branches to be created by this generation

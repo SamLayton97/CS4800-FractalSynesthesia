@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 1895968064}
-  positionOffset: {x: 0, y: 22, z: 0}
+  positionOffset: {x: 0, y: 20, z: 0}
   orbitSpeed: 30
 --- !u!1001 &1760943654
 PrefabInstance:
@@ -441,7 +441,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b5ffb1e8b0b44cc4b85f47aadc49df57, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1c2f8cab2b0c8bf49a02c51cc77da2ca, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

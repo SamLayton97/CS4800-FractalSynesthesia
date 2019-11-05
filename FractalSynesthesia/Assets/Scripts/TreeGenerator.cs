@@ -32,6 +32,8 @@ public class TreeGenerator : MonoBehaviour
         new List<float>();
     List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
+    List<float> melodicRangeSamples =               // list storing samples of song's melodic range
+        new List<float>();
 
     // structure support variables
     float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
@@ -78,10 +80,16 @@ public class TreeGenerator : MonoBehaviour
         // sample music data when when appropriate
         if (sampleTimeCounter >= sampleTime)
         {
-            // sample various musical data
+            // sample various musical data from analyzer
             dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
             deviatiionScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
             approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
+
+            // sample melodic range values
+            // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
+            melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
+                dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
+            Debug.Log(melodicRangeSamples[melodicRangeSamples.Count - 1]);
 
             // reset counter
             sampleTimeCounter = 0;

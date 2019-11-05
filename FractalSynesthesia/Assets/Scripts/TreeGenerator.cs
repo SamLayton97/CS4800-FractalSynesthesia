@@ -13,8 +13,10 @@ public class TreeGenerator : MonoBehaviour
     [Range(1, 10)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
     [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
-    [SerializeField] Vector2 branchAngleRange =     // range within which branches can grow at angle from
+    [SerializeField] Vector2 branchAngleRange =     // range within which branches can grow at angle from (pre-randomization)
         new Vector2();
+    [Range(10f, 50f)]
+    [SerializeField] float angleNoiseScaler = 30f;  // max additional degrees branches can grow, caused by randomization in generation
     [Range(3, 15)]
     [SerializeField] int maxBranches = 5;           // max number of branches tree can grow per generation
 
@@ -42,7 +44,7 @@ public class TreeGenerator : MonoBehaviour
     int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
     float branchGirth = 0.7f;                       // target girth of branches created on generation -- adjusted by approximate volume
     float branchLength = 0.7f;                      // target length of branches created on generation -- adjusted by approximate lead melody volume
-    float branchHeightNoise = 0f;                   // variation in height of each branch per trunk
+    float branchNoise = 0f;                         // variation in height and angle of each branch per trunk -- adjusted by melodic range
 
     #region Unity Methods
 
@@ -144,7 +146,7 @@ public class TreeGenerator : MonoBehaviour
                 branchCount = maxBranches - Mathf.FloorToInt(deviatiionScaleSamples.Average() * maxBranches);
                 branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
                 branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
-                branchHeightNoise = Mathf.Sqrt(melodicRangeSamples.Average());
+                branchNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
                 // initialize list storing branches to be created by this generation
                 List<Transform> newBranches = new List<Transform>();
@@ -165,9 +167,10 @@ public class TreeGenerator : MonoBehaviour
                     {
                         // create, rotate, position, and scale new branch
                         Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                        currBranch.Rotate(new Vector3(branchAngle, i * 360f / branchCount), Space.Self);
+                        currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler, 
+                            i * 360f / branchCount), Space.Self);
                         currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 
-                            (2f - Random.Range(0, branchHeightNoise));          // height randomized by melodic range
+                            (2f - Random.Range(0, branchNoise));          // height randomized by melodic range
                         currBranch.localScale = startingScale * 0.4f;
 
                         // add to list of future trunks
@@ -176,7 +179,6 @@ public class TreeGenerator : MonoBehaviour
                 }
 
                 // set target scale of next branch generation
-                Debug.Log(branchLength);
                 targetScale = new Vector3(branchGirth, branchLength, branchGirth);
 
                 // reset music sample lists for next generation

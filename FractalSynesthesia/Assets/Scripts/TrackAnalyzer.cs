@@ -133,7 +133,7 @@ public class TrackAnalyzer : MonoBehaviour
         if (!myAudioSource) 
             myAudioSource = GetComponent<AudioSource>();
         if (!myAudioSource.clip)
-            myAudioSource.clip = Resources.Load<AudioClip>("Gorillaz - On Melancholy Hill");
+            myAudioSource.clip = Resources.Load<AudioClip>("Tyler, The Creator - IGOR'S THEME");
 
         // start track
         myAudioSource.Play();

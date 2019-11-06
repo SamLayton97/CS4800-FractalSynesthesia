@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 8620558025845436459}
   - component: {fileID: 5344580216166152678}
   - component: {fileID: 2335590346409030882}
+  - component: {fileID: 6810985900625720318}
   m_Layer: 5
   m_Name: TracksHolder
   m_TagString: Untagged
@@ -213,3 +214,17 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
+--- !u!114 &6810985900625720318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620558025845436885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a79be4ede4c4b54aa68ae21676fcbe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
+    type: 3}

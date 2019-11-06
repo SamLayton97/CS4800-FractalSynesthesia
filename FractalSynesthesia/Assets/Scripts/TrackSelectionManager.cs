@@ -12,11 +12,11 @@ public class TrackSelectionManager : MonoBehaviour
 {
     // display support variables
     [SerializeField] GameObject selectorButton;         // button prefab used to select particular track
-    [SerializeField] GameObject buttonHolder;           // panel object holding all track button
+    Transform buttonHolder;                             // transform of panel object holding all track button
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // singleton support
-    static TrackSelectionManager instance;                     // instance of track selection singleton
+    static TrackSelectionManager instance;              // instance of track selection singleton
 
     /// <summary>
     /// Read-access property returning instance of
@@ -43,8 +43,11 @@ public class TrackSelectionManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // retrieve and initialize canvas group to invisible
+        // retrieve relevant components
         myCanvasGroup = GetComponent<CanvasGroup>();
+        buttonHolder = transform.GetChild(0);
+
+        // initialize selector to be invisible
         myCanvasGroup.alpha = 0;
         myCanvasGroup.blocksRaycasts = false;
         myCanvasGroup.interactable = false;
@@ -52,7 +55,8 @@ public class TrackSelectionManager : MonoBehaviour
         // for each track in Resources
         foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
         {
-            Debug.Log(unloadedTrack.name);
+            // create new button in holder
+            GameObject newButton = Instantiate(selectorButton, buttonHolder);
         }
     }
 

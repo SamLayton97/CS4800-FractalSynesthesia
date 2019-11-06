@@ -76,6 +76,6 @@ public class TrackSelectionManager : MonoBehaviour
     /// <param name="trackName">name of selected track</param>
     public void SelectTrack(string trackName)
     {
-
+        Debug.Log(trackName);
     }
 }

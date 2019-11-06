@@ -55,8 +55,9 @@ public class TrackSelectionManager : MonoBehaviour
         // for each track in Resources
         foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
         {
-            // create new button in holder
-            GameObject newButton = Instantiate(selectorButton, buttonHolder);
+            // create and initialize new button in holder
+            TrackSelector newButton = Instantiate(selectorButton, buttonHolder).GetComponent<TrackSelector>();
+            newButton.Initialize(unloadedTrack.name);
         }
     }
 

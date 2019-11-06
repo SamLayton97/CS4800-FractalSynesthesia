@@ -8,20 +8,21 @@ using UnityEngine.UI;
 /// user to pick from any track within the Resources folder
 /// </summary>
 [RequireComponent(typeof(CanvasGroup))]
-public class TrackSelection : MonoBehaviour
+public class TrackSelectionManager : MonoBehaviour
 {
     // display support variables
     [SerializeField] GameObject selectorButton;         // button prefab used to select particular track
+    [SerializeField] GameObject buttonHolder;           // panel object holding all track button
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // singleton support
-    static TrackSelection instance;                     // instance of track selection singleton
+    static TrackSelectionManager instance;                     // instance of track selection singleton
 
     /// <summary>
     /// Read-access property returning instance of
     /// track selection instance
     /// </summary>
-    public static TrackSelection Instance
+    public static TrackSelectionManager Instance
     {
         get { return instance; }
     }
@@ -67,5 +68,14 @@ public class TrackSelection : MonoBehaviour
             myCanvasGroup.blocksRaycasts = myCanvasGroup.blocksRaycasts ? false : true;
             myCanvasGroup.interactable = myCanvasGroup.interactable ? false : true;
         }
+    }
+
+    /// <summary>
+    /// Handles users selecting track from list of options
+    /// </summary>
+    /// <param name="trackName">name of selected track</param>
+    public void SelectTrack(string trackName)
+    {
+
     }
 }

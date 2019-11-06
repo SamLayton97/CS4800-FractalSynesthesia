@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8620558025359521669}
   - component: {fileID: 8620558025359521668}
   - component: {fileID: 5794176098118087584}
-  - component: {fileID: 2367801717542013152}
+  - component: {fileID: 5197630567762986380}
   m_Layer: 5
   m_Name: TrackSelectCanvas
   m_TagString: Untagged
@@ -113,7 +113,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2367801717542013152
+--- !u!114 &5197630567762986380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,11 +122,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8620558025359521671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a79be4ede4c4b54aa68ae21676fcbe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 24db93b406232b44a927f879d5042f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
     type: 3}
+  buttonHolder: {fileID: 8620558025845436885}
 --- !u!1 &8620558025845436885
 GameObject:
   m_ObjectHideFlags: 0

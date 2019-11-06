@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8620558025359521690}
   - component: {fileID: 8620558025359521669}
   - component: {fileID: 8620558025359521668}
+  - component: {fileID: 5794176098118087584}
+  - component: {fileID: 2367801717542013152}
   m_Layer: 5
   m_Name: TrackSelectCanvas
   m_TagString: Untagged
@@ -99,6 +101,32 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &5794176098118087584
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620558025359521671}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &2367801717542013152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620558025359521671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a79be4ede4c4b54aa68ae21676fcbe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
+    type: 3}
 --- !u!1 &8620558025845436885
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,9 +138,7 @@ GameObject:
   - component: {fileID: 8620558025845436458}
   - component: {fileID: 8620558025845436456}
   - component: {fileID: 8620558025845436459}
-  - component: {fileID: 5344580216166152678}
   - component: {fileID: 2335590346409030882}
-  - component: {fileID: 6810985900625720318}
   m_Layer: 5
   m_Name: TracksHolder
   m_TagString: Untagged
@@ -177,18 +203,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &5344580216166152678
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8620558025845436885}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &2335590346409030882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,17 +228,3 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
---- !u!114 &6810985900625720318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8620558025845436885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a79be4ede4c4b54aa68ae21676fcbe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
-    type: 3}

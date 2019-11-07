@@ -132,8 +132,7 @@ public class TrackAnalyzer : MonoBehaviour
         // retrieve and initialize audio source
         if (!myAudioSource) 
             myAudioSource = GetComponent<AudioSource>();
-        if (!myAudioSource.clip)
-            myAudioSource.clip = Resources.Load<AudioClip>("Tyler, The Creator - IGOR'S THEME");
+        myAudioSource.clip = TrackSelectionManager.Instance.CurrentTrack;
 
         // start track
         myAudioSource.Play();

@@ -31,6 +31,15 @@ public class TrackSelectionManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Read-access property returning track
+    /// currently selected by user
+    /// </summary>
+    public AudioClip CurrentTrack
+    {
+        get { return currTrack; }
+    }
+
+    /// <summary>
     /// Used for initialization
     /// </summary>
     void Awake()

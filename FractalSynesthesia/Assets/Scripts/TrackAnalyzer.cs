@@ -47,22 +47,6 @@ public class TrackAnalyzer : MonoBehaviour
     }
 
     /// <summary>
-    /// Read-access property returning the length of the track in seconds
-    /// </summary>
-    public float TrackLength
-    {
-        get
-        {
-            // get audio source component if null
-            if (!myAudioSource)
-                myAudioSource = GetComponent<AudioSource>();
-
-            // return track length
-            return myAudioSource.clip.length;
-        }
-    }
-
-    /// <summary>
     /// Read-access property returning scale of
     /// deviation among frequency bands
     /// </summary>
@@ -114,7 +98,7 @@ public class TrackAnalyzer : MonoBehaviour
     /// <summary>
     /// Used for initialization
     /// </summary>
-    void Awake()
+    void Start()
     {
         // set universally-retrievable instance to self
         instance = this;

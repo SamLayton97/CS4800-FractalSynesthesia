@@ -70,7 +70,7 @@ public class TreeGenerator : MonoBehaviour
     {
         // set trees growth rate
         // NOTE: tree should finish growing approximately when song ends
-        growthRate = (maxGenerations + 1) / TrackAnalyzer.Instance.TrackLength;
+        growthRate = (maxGenerations + 1) / TrackSelectionManager.Instance.CurrentTrack.length;
 
         // generate tree from starting branch
         growTree = GenerateTree(startingTrunk, maxGenerations);

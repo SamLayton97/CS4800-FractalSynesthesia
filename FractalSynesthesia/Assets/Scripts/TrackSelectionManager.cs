@@ -17,7 +17,7 @@ public class TrackSelectionManager : MonoBehaviour
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // track setting support
-    [SerializeField] AudioClip currTrack;               // track to play for this instance of fractal -- defaults to track set in Editor
+    [SerializeField] AudioClip currentTrack;            // track to play for this instance of fractal -- defaults to track set in Editor
     Dictionary<string, AudioClip> tracks =              // dictionary pairing names of tracks with their corresponding audio clips
         new Dictionary<string, AudioClip>();
     Dictionary<string, Button> trackSelectors =         // dictionary pairing buttons with track they enable
@@ -41,7 +41,7 @@ public class TrackSelectionManager : MonoBehaviour
     /// </summary>
     public AudioClip CurrentTrack
     {
-        get { return currTrack; }
+        get { return currentTrack; }
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public class TrackSelectionManager : MonoBehaviour
             trackSelectors.Add(unloadedTrack.name, interact);
 
             // disable button of current track
-            if (currTrack.name == unloadedTrack.name)
+            if (currentTrack.name == unloadedTrack.name)
                 interact.interactable = false;
         }
     }
@@ -111,10 +111,10 @@ public class TrackSelectionManager : MonoBehaviour
     public void SelectTrack(string newTrack)
     {
         // re-enable button of old track
-        trackSelectors[currTrack.name].interactable = true;
+        trackSelectors[currentTrack.name].interactable = true;
 
         // select track to generate from and reload scene
-        currTrack = tracks[newTrack];
+        currentTrack = tracks[newTrack];
         trackSelectors[newTrack].interactable = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

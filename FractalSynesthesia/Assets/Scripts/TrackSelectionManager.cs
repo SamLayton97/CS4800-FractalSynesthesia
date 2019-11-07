@@ -15,6 +15,9 @@ public class TrackSelectionManager : MonoBehaviour
     Transform buttonHolder;                             // transform of panel object holding all track button
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
+    // track setting support
+    [SerializeField] AudioClip currTrack;               // track to play for this instance of fractal -- defaults to track set in Editor
+
     // singleton support
     static TrackSelectionManager instance;              // instance of track selection singleton
 
@@ -56,8 +59,12 @@ public class TrackSelectionManager : MonoBehaviour
         foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
         {
             // create and initialize new button in holder
-            TrackSelector newButton = Instantiate(selectorButton, buttonHolder).GetComponent<TrackSelector>();
-            newButton.Initialize(unloadedTrack.name);
+            GameObject newButton = Instantiate(selectorButton, buttonHolder);
+            newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
+
+            // disable button corresponding to current track
+            if (currTrack.name == unloadedTrack.name)
+                newButton.GetComponent<Button>().interactable = false;
         }
     }
 

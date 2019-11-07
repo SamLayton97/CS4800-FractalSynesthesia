@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
     type: 3}
-  buttonHolder: {fileID: 8620558025845436458}
+  currTrack: {fileID: 8300000, guid: cbd91b58284506c4ba331d1565a1087e, type: 3}
 --- !u!1 &8620558025845436885
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8620558025359521668}
   - component: {fileID: 5794176098118087584}
   - component: {fileID: 5197630567762986380}
+  - component: {fileID: 754114503670123662}
   m_Layer: 5
   m_Name: TrackSelectCanvas
   m_TagString: Untagged
@@ -127,7 +128,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
     type: 3}
-  currTrack: {fileID: 8300000, guid: cbd91b58284506c4ba331d1565a1087e, type: 3}
+  currTrack: {fileID: 8300000, guid: 2f68517a36733eb4fa0e848ee92df2fc, type: 3}
+--- !u!114 &754114503670123662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620558025359521671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ec8b0b8484470448d876acca54adfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8620558025845436885
 GameObject:
   m_ObjectHideFlags: 0

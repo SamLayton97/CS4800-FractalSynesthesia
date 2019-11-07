@@ -65,9 +65,9 @@ public class TrackSelectionManager : MonoBehaviour
         buttonHolder = transform.GetChild(0);
 
         // initialize selector to be invisible
-        myCanvasGroup.alpha = 0;
-        myCanvasGroup.blocksRaycasts = false;
-        myCanvasGroup.interactable = false;
+        myCanvasGroup.alpha = 1;
+        myCanvasGroup.blocksRaycasts = true;
+        myCanvasGroup.interactable = true;
 
         // for each track in Resources
         foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))

@@ -6,7 +6,7 @@ using UnityEngine;
 /// Contols color adjustments to branch 
 /// according to track analysis data
 /// </summary>
-public class ChangeBranchColor : MonoBehaviour
+public class ColorChanger : MonoBehaviour
 {
     // configuration variables
     [Range(0, 120)]

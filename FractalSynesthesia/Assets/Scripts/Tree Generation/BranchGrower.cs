@@ -6,8 +6,9 @@ using UnityEngine;
 /// Controls growth of a particular branch
 /// according to track analysis data
 /// </summary>
-[RequireComponent(typeof(ChangeBranchColor))]
-public class GrowBranch : MonoBehaviour
+[RequireComponent(typeof(ColorChanger))]
+[RequireComponent(typeof(DataSampler))]
+public class BranchGrower : MonoBehaviour
 {
     // growth support fields
     Vector3 startingScale = new Vector3(1f, 0f, 1f);        // scale branch starts at when instantiated
@@ -15,7 +16,8 @@ public class GrowBranch : MonoBehaviour
                                                             // NOTE: reaching this scale starts next generation sprouting from this branch
 
     // generation support variables
-    ChangeBranchColor myColorChange;                        // controls momentary color changes of branch
+    ColorChanger myColorChange;                 // controls momentary color changes of branch
+    DataSampler mySampler;                      // controls sampling of structurally relevant track data
 
     /// <summary>
     /// Used for initialization
@@ -23,10 +25,11 @@ public class GrowBranch : MonoBehaviour
     void Awake()
     {
         // retrieve relevant components
-        myColorChange = GetComponent<ChangeBranchColor>();
+        myColorChange = GetComponent<ColorChanger>();
+        mySampler = GetComponent<DataSampler>();
 
         // TESTING: test initialization
-        Initialize(Vector3.one * 10, 0.1f, 1);
+        Initialize(Vector3.one * 2f, 0.1f, 1);
     }
 
     /// <summary>
@@ -69,8 +72,9 @@ public class GrowBranch : MonoBehaviour
 
         // TODO: branch once grown
 
-        // TODO: deactivate color changing and sampling
+        // deactivate color changing and sampling
         myColorChange.enabled = false;
+        mySampler.enabled = false;
 
         Debug.Log("Done!");
     }

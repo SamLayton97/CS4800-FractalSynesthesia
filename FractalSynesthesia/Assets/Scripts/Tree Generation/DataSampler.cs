@@ -13,9 +13,15 @@ public class DataSampler : MonoBehaviour
     [Range(1f, 10f)]
     [SerializeField] float sampleRate = 1f;         // rate (per second) which object samples data from track analysis
 
-    void Update()
-    {
-        Debug.Log(Time.time);
-    }
-
+    // sampling lists
+    List<float> donimantRangeSamples =              // list storing samples of dominant frequency band
+        new List<float>();
+    List<float> deviationScaleSamples =             // list storing samples of scale of std deviation among frequency bands
+        new List<float>();
+    List<float> approximateVolumeSampels =          // list storing samples of song's approximate volume
+        new List<float>();
+    List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
+        new List<float>();
+    List<float> melodicRangeSamples =               // list storing samples of song's melodic range
+        new List<float>();
 }

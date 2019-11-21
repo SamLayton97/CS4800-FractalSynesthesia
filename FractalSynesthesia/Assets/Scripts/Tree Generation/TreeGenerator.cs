@@ -73,8 +73,8 @@ public class TreeGenerator : MonoBehaviour
         growthRate = (maxGenerations + 1) / TrackSelectionManager.Instance.CurrentTrack.length;
 
         // generate tree from starting branch
-        growTree = GenerateTree(startingTrunk, maxGenerations);
-        StartCoroutine(growTree);
+        //growTree = GenerateTree(startingTrunk, maxGenerations);
+        //StartCoroutine(growTree);
     }
 
     /// <summary>

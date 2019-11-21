@@ -82,26 +82,26 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // increment sample time counter only if track is playing
-        if (TrackAnalyzer.Instance.TrackIsPlaying) sampleTimeCounter += Time.deltaTime;
+        //// increment sample time counter only if track is playing
+        //if (TrackAnalyzer.Instance.TrackIsPlaying) sampleTimeCounter += Time.deltaTime;
 
-        // sample music data when when appropriate
-        if (sampleTimeCounter >= sampleTime)
-        {
-            // sample various musical data from analyzer
-            dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
-            deviationScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
-            approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
-            melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
+        //// sample music data when when appropriate
+        //if (sampleTimeCounter >= sampleTime)
+        //{
+        //    // sample various musical data from analyzer
+        //    dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
+        //    deviationScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
+        //    approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
+        //    melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
 
-            // sample melodic range values
-            // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
-            melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
-                dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
+        //    // sample melodic range values
+        //    // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
+        //    melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
+        //        dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
 
-            // reset counter
-            sampleTimeCounter = 0;
-        }
+        //    // reset counter
+        //    sampleTimeCounter = 0;
+        //}
     }
 
     #endregion

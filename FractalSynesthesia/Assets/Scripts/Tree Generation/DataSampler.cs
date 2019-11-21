@@ -14,14 +14,54 @@ public class DataSampler : MonoBehaviour
     [SerializeField] float sampleRate = 1f;         // rate (per second) which object samples data from track analysis
 
     // sampling lists
-    List<float> donimantRangeSamples =              // list storing samples of dominant frequency band
+    List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
     List<float> deviationScaleSamples =             // list storing samples of scale of std deviation among frequency bands
         new List<float>();
-    List<float> approximateVolumeSampels =          // list storing samples of song's approximate volume
+    List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
     List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
         new List<float>();
     List<float> melodicRangeSamples =               // list storing samples of song's melodic range
         new List<float>();
+
+    // support variables
+    float sampleCounter = 0f;
+    float sampleTime = 0f;
+
+    /// <summary>
+    /// Used for initialization
+    /// </summary>
+    void Awake()
+    {
+        // calculate time between samples
+        sampleTime = 1f / sampleRate;
+    }
+
+    /// <summary>
+    /// Called once per frame
+    /// </summary>
+    void Update()
+    {
+        // increment sample counter
+        sampleCounter += Time.deltaTime;
+
+        // if counter exceeds time
+        if (sampleCounter >= sampleTime)
+        {
+            // sample various music data from track analyzer
+            dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
+            deviationScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
+            approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
+            melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
+
+            // sample melodic range values
+            // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
+            melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
+                dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
+
+            // reset counter
+            sampleCounter = 0;
+        }
+    }
 }

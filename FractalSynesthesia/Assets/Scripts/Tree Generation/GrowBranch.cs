@@ -6,19 +6,27 @@ using UnityEngine;
 /// Controls growth of a particular branch
 /// according to track analysis data
 /// </summary>
+[RequireComponent(typeof(ChangeBranchColor))]
 public class GrowBranch : MonoBehaviour
 {
     // growth support fields
-    Vector3 startingScale = new Vector3(1f, 0f, 1f);
-    Vector3 targetScale = Vector3.one;
+    Vector3 startingScale = new Vector3(1f, 0f, 1f);        // scale branch starts at when instantiated
+    Vector3 targetScale = Vector3.one;                      // scale branch grows to
+                                                            // NOTE: reaching this scale starts next generation sprouting from this branch
+
+    // generation support variables
+    ChangeBranchColor myColorChange;                        // controls momentary color changes of branch
 
     /// <summary>
     /// Used for initialization
     /// </summary>
     void Awake()
     {
+        // retrieve relevant components
+        myColorChange = GetComponent<ChangeBranchColor>();
+
         // TESTING: test initialization
-        Initialize(Vector3.one * 10, 1f, 1);
+        Initialize(Vector3.one * 10, 0.1f, 1);
     }
 
     /// <summary>
@@ -58,6 +66,11 @@ public class GrowBranch : MonoBehaviour
             yield return new WaitForEndOfFrame();
 
         } while (transform.localScale.y < targetScale.y);
+
+        // TODO: branch once grown
+
+        // TODO: deactivate color changing and sampling
+        myColorChange.enabled = false;
 
         Debug.Log("Done!");
     }

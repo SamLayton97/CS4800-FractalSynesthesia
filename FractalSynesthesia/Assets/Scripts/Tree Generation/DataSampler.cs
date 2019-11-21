@@ -29,6 +29,60 @@ public class DataSampler : MonoBehaviour
     float sampleCounter = 0f;
     float sampleTime = 0f;
 
+    #region Properties
+
+    /// <summary>
+    /// Read-access property returning average dominant
+    /// range sampled during branch's growth
+    /// </summary>
+    public float AverageDominantRange
+    {
+        get { return dominantRangeSamples.Average(); }
+    }
+
+    /// <summary>
+    /// Read-access property returning average standard
+    /// deviation scale among frequency bands sampled
+    /// during branch's growth
+    /// </summary>
+    public float AverageDeviationScale
+    {
+        get { return deviationScaleSamples.Average(); }
+    }
+
+    /// <summary>
+    /// Read-access property returning average approximate
+    /// volume sampled during branch's growth
+    /// </summary>
+    public float AverageVolume
+    {
+        get { return approximateVolumeSamples.Average(); }
+    }
+
+    /// <summary>
+    /// Read-access property returning average volume
+    /// of dominant frequency band (melody) sampled during
+    /// branch's growth
+    /// </summary>
+    public float AverageMelodyVolume
+    {
+        get { return melodyVolumeSamples.Average(); }
+    }
+
+    /// <summary>
+    /// Read-access property returning average change in
+    /// dominant frequency band (melodic range) sampled
+    /// during branch's growth.
+    /// </summary>
+    public float AverageMelodicRange
+    {
+        get { return melodicRangeSamples.Average(); }
+    }
+
+    #endregion
+
+    #region Unity Methods
+
     /// <summary>
     /// Used for initialization
     /// </summary>
@@ -64,4 +118,7 @@ public class DataSampler : MonoBehaviour
             sampleCounter = 0;
         }
     }
+
+    #endregion
+
 }

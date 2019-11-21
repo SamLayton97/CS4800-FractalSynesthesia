@@ -168,7 +168,7 @@ public class TreeGenerator : MonoBehaviour
                 {
                     // max trunk growth and lock color
                     currTrunk.localScale = targetScale;
-                    currTrunk.GetComponent<BranchChangeColor>().enabled = false;
+                    currTrunk.GetComponent<ChangeBranchColor>().enabled = false;
 
                     // skip branching if this is last generation
                     if (generation == maxGenerations)

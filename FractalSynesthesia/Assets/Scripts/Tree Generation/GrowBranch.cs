@@ -12,16 +12,31 @@ public class GrowBranch : MonoBehaviour
     Vector3 startingScale = new Vector3(1f, 0f, 1f);
     Vector3 targetScale = Vector3.one;
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Used for initialization
+    /// </summary>
+    void Awake()
     {
-        StartCoroutine(Grow(1f));
+        // TESTING: test initialization
+        Initialize(Vector3.one * 10, 1f, 1);
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Initializes growth control variables.
+    /// Called by parent branch on new generation
+    /// or generator on start of scene.
+    /// </summary>
+    /// <param name="targetScale">length/girth branch grows to</param>
+    /// <param name="growthRate">rate which branch grows to full size at</param>
+    /// <param name="currGeneration">current generation of fractal</param>
+    public void Initialize(Vector3 targetScale, float growthRate, int currGeneration)
     {
-        
+        // initialize starting and target scales
+        this.targetScale = targetScale;
+        startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
+
+        // start growing branch
+        StartCoroutine(Grow(growthRate));
     }
 
     /// <summary>

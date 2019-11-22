@@ -5,11 +5,12 @@ using UnityEngine;
 
 /// <summary>
 /// Samples structurally relevant data from
-/// track analysis at fixed rate. Data is
-/// representative of movements in track.
+/// track analysis at fixed rate. Also calculates
+/// heuristics representative of song over course
+/// of current branch generation.
 /// </summary>
 [RequireComponent(typeof(TreeGenerator))]
-public class DataSampler : MonoBehaviour
+public class MovementAnalyzer : MonoBehaviour
 {
     // sample configuration variables
     [Range(1f, 10f)]
@@ -35,7 +36,7 @@ public class DataSampler : MonoBehaviour
     float branchNoise = 0f;
 
     // support variables
-    static DataSampler instance;    // pseudo-singleton
+    static MovementAnalyzer instance;    // pseudo-singleton
     TreeGenerator myGenerator;
     float sampleCounter = 0f;
     float sampleTime = 0f;
@@ -49,7 +50,7 @@ public class DataSampler : MonoBehaviour
     /// NOTE: Not a true singleton, avoid
     /// placing multiple in scene.
     /// </summary>
-    public static DataSampler Instance
+    public static MovementAnalyzer Instance
     {
         get { return instance; }
     }

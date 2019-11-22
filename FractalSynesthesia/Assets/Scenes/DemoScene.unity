@@ -453,9 +453,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1895968064}
   - component: {fileID: 1895968065}
-  - component: {fileID: 1895968066}
   - component: {fileID: 1895968068}
   - component: {fileID: 1895968067}
+  - component: {fileID: 1895968069}
   m_Layer: 0
   m_Name: FractalTreeGenerator
   m_TagString: Untagged
@@ -498,19 +498,6 @@ MonoBehaviour:
   maxBranchCount: 5
   branchDeviationRange: 4
   startingTrunk: {fileID: 656065486}
---- !u!114 &1895968066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1895968063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64bec35b58d13034f9f06bf38864308d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sampleRate: 1
 --- !u!114 &1895968067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +606,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1895968069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895968063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f897f5a8d3778bf4aad42af3ac333a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sampleRate: 1
 --- !u!1 &2096324318
 GameObject:
   m_ObjectHideFlags: 0

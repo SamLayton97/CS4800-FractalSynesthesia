@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Pulls spectrum data from a given audio track.
-/// Also handles playing of tracks.
+/// Also handles playing of tracks and momentary analysis.
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]

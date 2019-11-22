@@ -26,10 +26,20 @@ public class DataSampler : MonoBehaviour
         new List<float>();
 
     // support variables
+    static DataSampler instance;
     float sampleCounter = 0f;
     float sampleTime = 0f;
 
     #region Properties
+
+    /// <summary>
+    /// Read-access property returning instance
+    /// of data sampler singleton
+    /// </summary>
+    public static DataSampler Instance
+    {
+        get { return instance; }
+    }
 
     /// <summary>
     /// Read-access property returning average dominant
@@ -88,6 +98,17 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        // ensure only one instance of data sampler singleton
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // set singleton instance to this object
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         // calculate time between samples
         sampleTime = 1f / sampleRate;
     }

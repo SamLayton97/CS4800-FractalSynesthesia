@@ -7,7 +7,6 @@ using UnityEngine;
 /// according to track analysis data
 /// </summary>
 [RequireComponent(typeof(ColorChanger))]
-[RequireComponent(typeof(DataSampler))]
 public class BranchGrower : MonoBehaviour
 {
     // growth support fields
@@ -17,7 +16,6 @@ public class BranchGrower : MonoBehaviour
 
     // generation support variables
     ColorChanger myColorChange;                 // controls momentary color changes of branch
-    DataSampler mySampler;                      // controls sampling of structurally relevant track data
 
     /// <summary>
     /// Used for initialization
@@ -26,7 +24,6 @@ public class BranchGrower : MonoBehaviour
     {
         // retrieve relevant components
         myColorChange = GetComponent<ColorChanger>();
-        mySampler = GetComponent<DataSampler>();
 
         // TESTING: test initialization
         Initialize(Vector3.one * 2f, 0.1f, 1);
@@ -74,7 +71,6 @@ public class BranchGrower : MonoBehaviour
 
         // deactivate color changing and sampling
         myColorChange.enabled = false;
-        mySampler.enabled = false;
 
         Debug.Log("Done!");
     }

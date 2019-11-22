@@ -7,7 +7,6 @@ using UnityEngine;
 /// Generates a fractal tree using L-system and adjusted
 /// by values of music analyzer.
 /// </summary>
-[RequireComponent(typeof(DataSampler))]
 public class TreeGenerator : MonoBehaviour
 {
     // branching configuration
@@ -25,11 +24,8 @@ public class TreeGenerator : MonoBehaviour
 
     // generation support variables
     IEnumerator growTree;                           // coroutine controlling growth of fractal tree over course of track
-    Transform startingTrunk;                        // transform of initial branch object to build tree from
+    BranchGrower startingTrunk;                     // growth controller of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
-
-    // structure support variables
-    DataSampler mySampler;                          // component sampling structurally relevant heuristics
 
     #region Properties
 
@@ -47,16 +43,18 @@ public class TreeGenerator : MonoBehaviour
     #region Unity Methods
 
     /// <summary>
-    /// Used for initialization
+    /// Used for late initialization
     /// </summary>
-    void Awake()
+    void Start()
     {
         // if not set in editor, retrieve initial trunk to grow from
         if (!startingTrunk)
-            startingTrunk = transform.GetChild(0);
+            startingTrunk = transform.GetChild(0).GetComponent<BranchGrower>();
 
-        // grab sampler and set its update rate
-        mySampler = GetComponent<DataSampler>();
+        // TODO: calculate rate of branch growth
+
+        // begin fractal tree by initializing trunk
+        startingTrunk.Initialize(Vector3.one, growthRate, 0, TotalGenerations);
     }
 
     #endregion

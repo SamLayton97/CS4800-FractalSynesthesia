@@ -76,7 +76,11 @@ public class BranchGrower : MonoBehaviour
         } while (transform.localScale.y < targetScale.y);
 
         // calculate structure-defining heuristics
-        
+        float branchAngle = branchAngleRange.x + (1 - MovementSampler.Instance.AverageDominantRange) * branchAngleRange.y;
+        int branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * MovementSampler.Instance.AverageDeviationScale));
+        float branchGirth = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageVolume));
+        float branchLength = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageMelodyVolume));
+        float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
 
         // TODO: branch once grown
 

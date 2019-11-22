@@ -151,7 +151,6 @@ public class DataSampler : MonoBehaviour
         {
             // wait duration of branch generation
             yield return new WaitForSeconds(refreshTime);
-            Debug.Log("refresh: " + Time.time);
 
             // update averages
             avgDominantRange = dominantRangeSamples.Average();

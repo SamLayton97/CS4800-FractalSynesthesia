@@ -435,6 +435,26 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
+        type: 3}
+      propertyPath: branchAngleRange.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
+        type: 3}
+      propertyPath: branchAngleRange.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
+        type: 3}
+      propertyPath: angleNoiseScaler
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
+        type: 3}
+      propertyPath: branchDeviationRange
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be178bc77ba23849b450664f5c825cd, type: 3}
 --- !u!4 &1760943655 stripped
@@ -493,10 +513,6 @@ MonoBehaviour:
   maxGenerations: 7
   branchPrefab: {fileID: 5714919142320326094, guid: 7be178bc77ba23849b450664f5c825cd,
     type: 3}
-  branchAngleRange: {x: 10, y: 50}
-  angleNoiseScaler: 20
-  maxBranchCount: 5
-  branchDeviationRange: 4
   startingTrunk: {fileID: 656065486}
 --- !u!114 &1895968066
 MonoBehaviour:

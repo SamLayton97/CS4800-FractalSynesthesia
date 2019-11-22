@@ -8,7 +8,17 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(ColorChanger))]
 public class BranchGrower : MonoBehaviour
-{
+{  
+    // structure configuration
+    [SerializeField]
+    Vector2 branchAngleRange = new Vector2();               // range within which branches can grow at angle from (pre-randomization)
+    [Range(10f, 50f)]
+    [SerializeField] float angleNoiseScaler = 30f;          // max additional degrees branches can grow, caused by randomization in generation
+    [Range(2, 10)]
+    [SerializeField] int maxBranchCount = 5;                // max number of branches tree can grow per generation
+    [Range(1, 5)]
+    [SerializeField] int branchDeviationRange = 3;          // total number of branches pruned during generation -- affected by average deviation scale
+
     // growth support fields
     Vector3 startingScale = new Vector3(1f, 0f, 1f);        // scale branch starts at when instantiated
     Vector3 targetScale = Vector3.one;                      // scale branch grows to

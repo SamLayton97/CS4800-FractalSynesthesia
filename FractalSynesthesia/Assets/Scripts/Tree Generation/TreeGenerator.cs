@@ -13,14 +13,6 @@ public class TreeGenerator : MonoBehaviour
     [Range(1, 10)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
     [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
-    [SerializeField] Vector2 branchAngleRange =     // range within which branches can grow at angle from (pre-randomization)
-        new Vector2();
-    [Range(10f, 50f)]
-    [SerializeField] float angleNoiseScaler = 30f;  // max additional degrees branches can grow, caused by randomization in generation
-    [Range(2, 10)]
-    [SerializeField] int maxBranchCount = 5;        // max number of branches tree can grow per generation
-    [Range(1, 5)]
-    [SerializeField] int branchDeviationRange = 3;  // total number of branches pruned during generation -- affected by average deviation scale
 
     // generation support variables
     [SerializeField] BranchGrower startingTrunk;    // growth controller of initial branch object to build tree from
@@ -34,23 +26,6 @@ public class TreeGenerator : MonoBehaviour
     public int TotalGenerations
     {
         get { return maxGenerations; }
-    }
-
-    /// <summary>
-    /// Read-access property returning arc within
-    /// which branches can grow from (in degrees)
-    /// </summary>
-    public Vector2 BranchAngleRange
-    {
-        get { return branchAngleRange; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public float AngleNoiseScaler
-    {
-        get { return angleNoiseScaler; }
     }
 
     #endregion

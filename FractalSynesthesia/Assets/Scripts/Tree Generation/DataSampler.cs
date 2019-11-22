@@ -17,14 +17,19 @@ public class DataSampler : MonoBehaviour
     // sampling lists
     List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
+    float avgDominantRange = 0f;
     List<float> deviationScaleSamples =             // list storing samples of scale of std deviation among frequency bands
         new List<float>();
+    float avgDeviationScale = 0f;
     List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
+    float avgApproximateVolume = 0f;
     List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
         new List<float>();
+    float avgMelodyVolume = 0f;
     List<float> melodicRangeSamples =               // list storing samples of song's melodic range
         new List<float>();
+    float avgMelodicRange = 0f;
 
     // support variables
     TreeGenerator myGenerator;
@@ -40,7 +45,7 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     public float AverageDominantRange
     {
-        get { return dominantRangeSamples.Average(); }
+        get { return avgDominantRange; }
     }
 
     /// <summary>
@@ -50,7 +55,7 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     public float AverageDeviationScale
     {
-        get { return deviationScaleSamples.Average(); }
+        get { return avgDeviationScale; }
     }
 
     /// <summary>
@@ -59,7 +64,7 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     public float AverageVolume
     {
-        get { return approximateVolumeSamples.Average(); }
+        get { return avgApproximateVolume; }
     }
 
     /// <summary>
@@ -69,7 +74,7 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     public float AverageMelodyVolume
     {
-        get { return melodyVolumeSamples.Average(); }
+        get { return avgMelodyVolume; }
     }
 
     /// <summary>
@@ -79,7 +84,7 @@ public class DataSampler : MonoBehaviour
     /// </summary>
     public float AverageMelodicRange
     {
-        get { return melodicRangeSamples.Average(); }
+        get { return avgMelodicRange; }
     }
 
     #endregion
@@ -139,8 +144,6 @@ public class DataSampler : MonoBehaviour
     /// <returns>coroutine controlling this operation</returns>
     IEnumerator RefreshAverages(float refreshTime)
     {
-        Debug.Log(refreshTime);
-
         // while the track is still playing
         do
         {

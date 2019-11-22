@@ -49,6 +49,21 @@ public class TreeGenerator : MonoBehaviour
     float branchLength = 0.7f;                      // target length of branches created on generation -- adjusted by approximate lead melody volume
     float branchNoise = 0f;                         // variation in height and angle of each branch per trunk -- adjusted by melodic range
 
+    #region Properties
+
+    /// <summary>
+    /// Read-access property returning max number
+    /// of generations tree will undergo.
+    /// With length of track, controls speed of
+    /// branch growth.
+    /// </summary>
+    public int MaxGenerations
+    {
+        get { return maxGenerations; }
+    }
+
+    #endregion
+
     #region Unity Methods
 
     /// <summary>
@@ -77,33 +92,6 @@ public class TreeGenerator : MonoBehaviour
         //StartCoroutine(growTree);
     }
 
-    /// <summary>
-    /// Called once per frame
-    /// </summary>
-    void Update()
-    {
-        //// increment sample time counter only if track is playing
-        //if (TrackAnalyzer.Instance.TrackIsPlaying) sampleTimeCounter += Time.deltaTime;
-
-        //// sample music data when when appropriate
-        //if (sampleTimeCounter >= sampleTime)
-        //{
-        //    // sample various musical data from analyzer
-        //    dominantRangeSamples.Add(TrackAnalyzer.Instance.DominantRange);
-        //    deviationScaleSamples.Add(TrackAnalyzer.Instance.BandDeviationScale);
-        //    approximateVolumeSamples.Add(TrackAnalyzer.Instance.ApproximateVolume);
-        //    melodyVolumeSamples.Add(TrackAnalyzer.Instance.MelodicVolume);
-
-        //    // sample melodic range values
-        //    // NOTE: not performed in track analyzer as difference in dominant voice between each frame is negligible
-        //    melodicRangeSamples.Add(Mathf.Abs(dominantRangeSamples[dominantRangeSamples.Count - 1] -
-        //        dominantRangeSamples[Mathf.Max(0, dominantRangeSamples.Count - 2)]));
-
-        //    // reset counter
-        //    sampleTimeCounter = 0;
-        //}
-    }
-
     #endregion
 
     #region Coroutines
@@ -117,95 +105,97 @@ public class TreeGenerator : MonoBehaviour
     /// <returns></returns>
     IEnumerator GenerateTree(Transform trunk, int maxGenerations)
     {
-        // initialize a generation counter
-        int generation = 0;
+        yield return new WaitForEndOfFrame();
 
-        // create list of trunks to grow and append starting trunk
-        List<Transform> toGrow = new List<Transform>();
-        toGrow.Add(trunk);
+        //// initialize a generation counter
+        //int generation = 0;
 
-        // growth of starting trunk
-        float branchGrowth = 0;
-        Vector3 targetScale = trunk.localScale;
-        Vector3 startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
-        trunk.localScale = startingScale;
+        //// create list of trunks to grow and append starting trunk
+        //List<Transform> toGrow = new List<Transform>();
+        //toGrow.Add(trunk);
 
-        // continue to generate while fractal tree hasn't reached max generations
-        do
-        {
-            // scale each growing branch over time
-            foreach (Transform currTrunk in toGrow)
-            {
-                // scale branch up over time
-                branchGrowth += Time.deltaTime * growthRate;
-                currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
-                yield return new WaitForEndOfFrame();
+        //// growth of starting trunk
+        //float branchGrowth = 0;
+        //Vector3 targetScale = trunk.localScale;
+        //Vector3 startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
+        //trunk.localScale = startingScale;
 
-                // if song sends before tree finishes generating, stop generating
-                // NOTE: Solution is quick fix for times where fractal cannot keep
-                // up with song. Next major update will push scaling control to
-                // branches themselves rather than in this controller.
-                if (!TrackAnalyzer.Instance.TrackIsPlaying)
-                    StopCoroutine(growTree);
-            }
+        //// continue to generate while fractal tree hasn't reached max generations
+        //do
+        //{
+        //    // scale each growing branch over time
+        //    foreach (Transform currTrunk in toGrow)
+        //    {
+        //        // scale branch up over time
+        //        branchGrowth += Time.deltaTime * growthRate;
+        //        currTrunk.localScale = Vector3.Lerp(startingScale, targetScale, branchGrowth);
+        //        yield return new WaitForEndOfFrame();
 
-            // if last branch in generation has finished growing, branch
-            if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
-            {
-                // calculate structure defining variables using music data
-                branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
-                float averageDeviation = deviationScaleSamples.Average();
-                branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * averageDeviation));
-                branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
-                branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
-                branchNoise = Mathf.Sqrt(melodicRangeSamples.Average());
+        //        // if song sends before tree finishes generating, stop generating
+        //        // NOTE: Solution is quick fix for times where fractal cannot keep
+        //        // up with song. Next major update will push scaling control to
+        //        // branches themselves rather than in this controller.
+        //        if (!TrackAnalyzer.Instance.TrackIsPlaying)
+        //            StopCoroutine(growTree);
+        //    }
 
-                // initialize list storing branches to be created by this generation
-                List<Transform> newBranches = new List<Transform>();
+        //    // if last branch in generation has finished growing, branch
+        //    if (toGrow[toGrow.Count - 1].localScale.y >= targetScale.y)
+        //    {
+        //        // calculate structure defining variables using music data
+        //        branchAngle = branchAngleRange.x + (1 - dominantRangeSamples.Average()) * branchAngleRange.y;
+        //        float averageDeviation = deviationScaleSamples.Average();
+        //        branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * averageDeviation));
+        //        branchGirth = Mathf.Sqrt(Mathf.Sqrt(approximateVolumeSamples.Average()));
+        //        branchLength = Mathf.Sqrt(Mathf.Sqrt(melodyVolumeSamples.Average()));
+        //        branchNoise = Mathf.Sqrt(melodicRangeSamples.Average());
 
-                // branch from each grown trunk
-                foreach (Transform currTrunk in toGrow)
-                {
-                    // max trunk growth and lock color
-                    currTrunk.localScale = targetScale;
-                    currTrunk.GetComponent<ColorChanger>().enabled = false;
+        //        // initialize list storing branches to be created by this generation
+        //        List<Transform> newBranches = new List<Transform>();
 
-                    // skip branching if this is last generation
-                    if (generation == maxGenerations)
-                        continue;
+        //        // branch from each grown trunk
+        //        foreach (Transform currTrunk in toGrow)
+        //        {
+        //            // max trunk growth and lock color
+        //            currTrunk.localScale = targetScale;
+        //            currTrunk.GetComponent<ColorChanger>().enabled = false;
 
-                    // create n branches from roughly top of trunk
-                    for (int i = 0; i < branchCount; i++)
-                    {
-                        // create, rotate, position, and scale new branch
-                        Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-                        currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler, 
-                            i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
-                        currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 
-                            (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
-                        currBranch.localScale = startingScale;
+        //            // skip branching if this is last generation
+        //            if (generation == maxGenerations)
+        //                continue;
 
-                        // add to list of future trunks
-                        newBranches.Add(currBranch);
-                    }
-                }
+        //            // create n branches from roughly top of trunk
+        //            for (int i = 0; i < branchCount; i++)
+        //            {
+        //                // create, rotate, position, and scale new branch
+        //                Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
+        //                currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler, 
+        //                    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+        //                currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y * 
+        //                    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+        //                currBranch.localScale = startingScale;
 
-                // set target scale of next branch generation
-                targetScale = new Vector3(branchGirth, branchLength, branchGirth);
+        //                // add to list of future trunks
+        //                newBranches.Add(currBranch);
+        //            }
+        //        }
 
-                // reset music sample lists for next generation
-                dominantRangeSamples.Clear();
-                deviationScaleSamples.Clear();
-                approximateVolumeSamples.Clear();
-                melodyVolumeSamples.Clear();
-                melodicRangeSamples.Clear();
+        //        // set target scale of next branch generation
+        //        targetScale = new Vector3(branchGirth, branchLength, branchGirth);
 
-                // treat new branches as trunks and generating again
-                branchGrowth = 0;
-                generation++;
-                toGrow = new List<Transform>(newBranches);
-            }
-        } while (generation <= maxGenerations);
+        //        // reset music sample lists for next generation
+        //        dominantRangeSamples.Clear();
+        //        deviationScaleSamples.Clear();
+        //        approximateVolumeSamples.Clear();
+        //        melodyVolumeSamples.Clear();
+        //        melodicRangeSamples.Clear();
+
+        //        // treat new branches as trunks and generating again
+        //        branchGrowth = 0;
+        //        generation++;
+        //        toGrow = new List<Transform>(newBranches);
+        //    }
+        //} while (generation <= maxGenerations);
     }
 
     #endregion

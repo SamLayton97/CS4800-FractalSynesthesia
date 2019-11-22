@@ -111,8 +111,6 @@ public class DataSampler : MonoBehaviour
 
         // calculate time between samples
         sampleTime = 1f / sampleRate;
-
-        Debug.Log("hello " + Time.time);
     }
 
     /// <summary>
@@ -140,6 +138,29 @@ public class DataSampler : MonoBehaviour
             // reset counter
             sampleCounter = 0;
         }
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Updates average sample values, clearing
+    /// lists for next generation
+    /// </summary>
+    /// <returns>coroutine controlling this operation</returns>
+    IEnumerator UpdateAverages()
+    {
+        // while the track is still playing
+        while (TrackAnalyzer.Instance.TrackIsPlaying)
+        {
+            // TODO: update averages
+
+            // TODO: clear lists and wait for duration of generation
+
+        }
+
+        yield return new WaitForSeconds(0);
     }
 
     #endregion

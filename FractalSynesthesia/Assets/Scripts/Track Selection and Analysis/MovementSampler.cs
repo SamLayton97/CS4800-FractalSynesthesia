@@ -123,7 +123,8 @@ public class MovementSampler : MonoBehaviour
 
         // start averages refresh coroutine
         myGenerator = GetComponent<TreeGenerator>();
-        StartCoroutine(RefreshAverages(TrackSelectionManager.Instance.CurrentTrack.length / (myGenerator.TotalGenerations + 1)));
+        float generationTime = TrackSelectionManager.Instance.CurrentTrack.length / (myGenerator.TotalGenerations + 1);
+        StartCoroutine(RefreshAverages(generationTime * 0.95f));        // NOTE: slightly faster to have averages before branches need them
     }
 
     /// <summary>

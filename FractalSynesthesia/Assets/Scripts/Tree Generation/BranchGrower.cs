@@ -67,7 +67,7 @@ public class BranchGrower : MonoBehaviour
     /// <param name="branchPrefab">generic prefab to create and manipulate on branching</param>
     IEnumerator Grow(float growthRate, int currGeneration, int maxGenerations, GameObject branchPrefab)
     {
-        // while branch hasn't finished growing
+        // while branch hasn't finished growing and track is still playing
         float growProgress = 0f;
         do
         {
@@ -76,13 +76,13 @@ public class BranchGrower : MonoBehaviour
             transform.localScale = Vector3.Lerp(startingScale, targetScale, growProgress);
             yield return new WaitForEndOfFrame();
 
-        } while (transform.localScale.y < targetScale.y);
+        } while (transform.localScale.y < targetScale.y && TrackAnalyzer.Instance.TrackIsPlaying);
 
         // deactivate color changing
         myColorChange.enabled = false;
 
-        // continue fractal if current generation doesn't exceed max
-        if (currGeneration < maxGenerations)
+        // continue fractal if current generation doesn't exceed max and track hasn't finished
+        if (currGeneration < maxGenerations && TrackAnalyzer.Instance.TrackIsPlaying)
         {
             // calculate structure-defining heuristics
             float branchAngle = branchAngleRange.x + (1 - MovementSampler.Instance.AverageDominantRange) * branchAngleRange.y;

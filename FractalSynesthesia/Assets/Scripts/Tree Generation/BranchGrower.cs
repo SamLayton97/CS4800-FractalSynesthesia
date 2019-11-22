@@ -65,6 +65,8 @@ public class BranchGrower : MonoBehaviour
 
         } while (transform.localScale.y < targetScale.y);
 
+        // TODO: retrieve/calculate structure defining variables
+        
         // TODO: branch once grown
 
         // deactivate color changing

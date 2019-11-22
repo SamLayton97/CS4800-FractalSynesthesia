@@ -5,7 +5,8 @@ using UnityEngine;
 
 /// <summary>
 /// Samples structurally relevant data from
-/// track analysis at fixed rate.
+/// track analysis at fixed rate. Data is
+/// representative of movements in track.
 /// </summary>
 [RequireComponent(typeof(TreeGenerator))]
 public class DataSampler : MonoBehaviour
@@ -17,19 +18,21 @@ public class DataSampler : MonoBehaviour
     // sampling lists
     List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
         new List<float>();
-    float avgDominantRange = 0f;
     List<float> deviationScaleSamples =             // list storing samples of scale of std deviation among frequency bands
         new List<float>();
-    float avgDeviationScale = 0f;
     List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
         new List<float>();
-    float avgApproximateVolume = 0f;
     List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
         new List<float>();
-    float avgMelodyVolume = 0f;
     List<float> melodicRangeSamples =               // list storing samples of song's melodic range
         new List<float>();
-    float avgMelodicRange = 0f;
+
+    // structural heuristic variables
+    float branchAngle = 0f;
+    int branchCount = 0;
+    float branchGirth = 0f;
+    float branchLength = 0f;
+    float branchNoise = 0f;
 
     // support variables
     static DataSampler instance;    // pseudo-singleton
@@ -52,51 +55,48 @@ public class DataSampler : MonoBehaviour
     }
 
     /// <summary>
-    /// Read-access property returning average dominant
-    /// range sampled during branch's growth
+    /// Read-access property returning angle at
+    /// which to grow branches on next generation
     /// </summary>
-    public float AverageDominantRange
+    public float BranchAngle
     {
-        get { return avgDominantRange; }
+        get { return branchAngle; }
     }
 
     /// <summary>
-    /// Read-access property returning average standard
-    /// deviation scale among frequency bands sampled
-    /// during branch's growth
+    /// Read-access property returning number of 
+    /// branches to grow on next generation
     /// </summary>
-    public float AverageDeviationScale
+    public int BranchCount
     {
-        get { return avgDeviationScale; }
+        get { return branchCount; }
     }
 
     /// <summary>
-    /// Read-access property returning average approximate
-    /// volume sampled during branch's growth
+    /// Read-access property returning xz-scale branches
+    /// will grow to on next generation
     /// </summary>
-    public float AverageVolume
+    public float BranchGirth
     {
-        get { return avgApproximateVolume; }
+        get { return branchGirth; }
     }
 
     /// <summary>
-    /// Read-access property returning average volume
-    /// of dominant frequency band (melody) sampled during
-    /// branch's growth
+    /// Read-access property returning y-scale branches
+    /// grow to on next generation
     /// </summary>
-    public float AverageMelodyVolume
+    public float BranchLength
     {
-        get { return avgMelodyVolume; }
+        get { return branchLength; }
     }
 
     /// <summary>
-    /// Read-access property returning average change in
-    /// dominant frequency band (melodic range) sampled
-    /// during branch's growth.
+    /// Read-access property returning randomness in
+    /// angle and height of next-generation branches
     /// </summary>
-    public float AverageMelodicRange
+    public float BranchNoise
     {
-        get { return avgMelodicRange; }
+        get { return branchNoise; }
     }
 
     #endregion
@@ -122,7 +122,7 @@ public class DataSampler : MonoBehaviour
 
         // start averages refresh coroutine
         myGenerator = GetComponent<TreeGenerator>();
-        StartCoroutine(RefreshAverages(TrackSelectionManager.Instance.CurrentTrack.length / (myGenerator.TotalGenerations + 1)));
+        StartCoroutine(RefreshHeuristics(TrackSelectionManager.Instance.CurrentTrack.length / (myGenerator.TotalGenerations + 1)));
     }
 
     /// <summary>
@@ -157,13 +157,13 @@ public class DataSampler : MonoBehaviour
     #region Private Methods
 
     /// <summary>
-    /// Updates average sample values, clearing
+    /// Updates structural heuristic values, clearing
     /// lists for next generation
     /// </summary>
     /// <param name="refreshTime">seconds coroutine waits before
     /// refreshing sample averages</param>
     /// <returns>coroutine controlling this operation</returns>
-    IEnumerator RefreshAverages(float refreshTime)
+    IEnumerator RefreshHeuristics(float refreshTime)
     {
         // while the track is still playing
         do
@@ -171,12 +171,8 @@ public class DataSampler : MonoBehaviour
             // wait duration of branch generation
             yield return new WaitForSeconds(refreshTime);
 
-            // update averages
-            avgDominantRange = dominantRangeSamples.Average();
-            avgDeviationScale = deviationScaleSamples.Average();
-            avgApproximateVolume = approximateVolumeSamples.Average();
-            avgMelodyVolume = melodyVolumeSamples.Average();
-            avgMelodicRange = melodicRangeSamples.Average();
+            // TODO: update heuristics
+            
 
             // clear lists
             dominantRangeSamples.Clear();

@@ -7,6 +7,7 @@ using UnityEngine;
 /// Generates a fractal tree using L-system and adjusted
 /// by values of music analyzer.
 /// </summary>
+[RequireComponent(typeof(DataSampler))]
 public class TreeGenerator : MonoBehaviour
 {
     // branching configuration
@@ -27,37 +28,16 @@ public class TreeGenerator : MonoBehaviour
     Transform startingTrunk;                        // transform of initial branch object to build tree from
     float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
 
-    // music data sampling variables
-    [SerializeField] float sampleRate = 1f;         // rate (per second) which generator samples values from track analyzer
-    float sampleTime = 0;
-    float sampleTimeCounter = 0;
-    List<float> dominantRangeSamples =              // list storing samples of dominant frequency band
-        new List<float>();
-    List<float> deviationScaleSamples =            // list storing samples of deviation scales among frequency bands
-        new List<float>();
-    List<float> approximateVolumeSamples =          // list storing samples of song's approximate volume
-        new List<float>();
-    List<float> melodyVolumeSamples =               // list storing samples of approximate volume of melody
-        new List<float>();
-    List<float> melodicRangeSamples =               // list storing samples of song's melodic range
-        new List<float>();
-
     // structure support variables
-    float branchAngle = 45f;                        // angle at which to grow branches -- adjusted by average dominant range
-    int branchCount = 5;                            // number of branches created on generation -- adjusted by average deviation scale
-    float branchGirth = 0.7f;                       // target girth of branches created on generation -- adjusted by approximate volume
-    float branchLength = 0.7f;                      // target length of branches created on generation -- adjusted by approximate lead melody volume
-    float branchNoise = 0f;                         // variation in height and angle of each branch per trunk -- adjusted by melodic range
+    DataSampler mySampler;                          // component sampling structurally relevant heuristics
 
     #region Properties
 
     /// <summary>
-    /// Read-access property returning max number
-    /// of generations tree will undergo.
-    /// With length of track, controls speed of
-    /// branch growth.
+    /// Read-access property returning max number of
+    /// generations fractal undergoes before stopping.
     /// </summary>
-    public int MaxGenerations
+    public int TotalGenerations
     {
         get { return maxGenerations; }
     }
@@ -71,25 +51,12 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        // retrieve references to trunk to grow tree from
-        startingTrunk = transform.GetChild(0);
+        // if not set in editor, retrieve initial trunk to grow from
+        if (!startingTrunk)
+            startingTrunk = transform.GetChild(0);
 
-        // calculate time between samples
-        sampleTime = 1f / sampleRate;
-    }
-
-    /// <summary>
-    /// Called once before first frame of Update()
-    /// </summary>
-    void Start()
-    {
-        // set trees growth rate
-        // NOTE: tree should finish growing approximately when song ends
-        growthRate = (maxGenerations + 1) / TrackSelectionManager.Instance.CurrentTrack.length;
-
-        // generate tree from starting branch
-        //growTree = GenerateTree(startingTrunk, maxGenerations);
-        //StartCoroutine(growTree);
+        // grab sampler and set its update rate
+        mySampler = GetComponent<DataSampler>();
     }
 
     #endregion

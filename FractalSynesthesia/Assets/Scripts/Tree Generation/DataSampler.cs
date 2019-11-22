@@ -7,6 +7,7 @@ using UnityEngine;
 /// Samples structurally relevant data from
 /// track analysis at fixed rate.
 /// </summary>
+[RequireComponent(typeof(TreeGenerator))]
 public class DataSampler : MonoBehaviour
 {
     // sample configuration variables
@@ -26,20 +27,12 @@ public class DataSampler : MonoBehaviour
         new List<float>();
 
     // support variables
-    static DataSampler instance;
+    TreeGenerator myGenerator;
     float sampleCounter = 0f;
     float sampleTime = 0f;
+    float updateTime = 0;
 
     #region Properties
-
-    /// <summary>
-    /// Read-access property returning instance
-    /// of data sampler singleton
-    /// </summary>
-    public static DataSampler Instance
-    {
-        get { return instance; }
-    }
 
     /// <summary>
     /// Read-access property returning average dominant
@@ -96,21 +89,14 @@ public class DataSampler : MonoBehaviour
     /// <summary>
     /// Used for initialization
     /// </summary>
-    void Awake()
+    void Start()
     {
-        // ensure only one instance of data sampler singleton
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // set singleton instance to this object
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
         // calculate time between samples
         sampleTime = 1f / sampleRate;
+
+        // start averages refresh coroutine
+        myGenerator = GetComponent<TreeGenerator>();
+        StartCoroutine(RefreshAverages(TrackSelectionManager.Instance.CurrentTrack.length / (myGenerator.TotalGenerations + 1)));
     }
 
     /// <summary>
@@ -148,17 +134,22 @@ public class DataSampler : MonoBehaviour
     /// Updates average sample values, clearing
     /// lists for next generation
     /// </summary>
+    /// <param name="refreshTime">seconds coroutine waits before
+    /// refreshing sample averages</param>
     /// <returns>coroutine controlling this operation</returns>
-    IEnumerator UpdateAverages()
+    IEnumerator RefreshAverages(float refreshTime)
     {
+        Debug.Log(refreshTime);
+
         // while the track is still playing
-        while (TrackAnalyzer.Instance.TrackIsPlaying)
+        do
         {
             // TODO: update averages
 
             // TODO: clear lists and wait for duration of generation
 
-        }
+            yield return new WaitForSeconds(refreshTime);
+        } while (TrackAnalyzer.Instance.TrackIsPlaying);
 
         yield return new WaitForSeconds(0);
     }

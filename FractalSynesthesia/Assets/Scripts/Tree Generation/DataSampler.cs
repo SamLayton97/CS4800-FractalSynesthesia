@@ -32,12 +32,24 @@ public class DataSampler : MonoBehaviour
     float avgMelodicRange = 0f;
 
     // support variables
+    static DataSampler instance;    // pseudo-singleton
     TreeGenerator myGenerator;
     float sampleCounter = 0f;
     float sampleTime = 0f;
     float updateTime = 0;
 
     #region Properties
+
+    /// <summary>
+    /// Read-access property returning instance
+    /// of sampler from this scene.
+    /// NOTE: Not a true singleton, avoid
+    /// placing multiple in scene.
+    /// </summary>
+    public static DataSampler Instance
+    {
+        get { return instance; }
+    }
 
     /// <summary>
     /// Read-access property returning average dominant
@@ -92,7 +104,16 @@ public class DataSampler : MonoBehaviour
     #region Unity Methods
 
     /// <summary>
-    /// Used for initialization
+    /// Used for early initialization
+    /// </summary>
+    void Awake()
+    {
+        // set pseudo-singleton to this object
+        instance = this;
+    }
+
+    /// <summary>
+    /// Used for late initialization
     /// </summary>
     void Start()
     {

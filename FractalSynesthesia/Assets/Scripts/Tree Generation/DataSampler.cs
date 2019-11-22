@@ -144,8 +144,6 @@ public class DataSampler : MonoBehaviour
     /// <returns>coroutine controlling this operation</returns>
     IEnumerator RefreshAverages(float refreshTime)
     {
-        Debug.Log(refreshTime);
-
         // while the track is still playing
         do
         {

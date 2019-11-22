@@ -34,7 +34,8 @@ public class BranchGrower : MonoBehaviour
     /// <param name="targetScale">length/girth branch grows to</param>
     /// <param name="growthRate">rate which branch grows to full size at</param>
     /// <param name="currGeneration">current generation of fractal</param>
-    public void Initialize(Vector3 targetScale, float growthRate, int currGeneration)
+    /// <param name="maxGenerations">max number of generations fractal will undergo before stopping</param>
+    public void Initialize(Vector3 targetScale, float growthRate, int currGeneration, int maxGenerations)
     {
         // initialize starting and target scales
         this.targetScale = targetScale;
@@ -66,9 +67,7 @@ public class BranchGrower : MonoBehaviour
 
         // TODO: branch once grown
 
-        // deactivate color changing and sampling
+        // deactivate color changing
         myColorChange.enabled = false;
-
-        Debug.Log("Done!");
     }
 }

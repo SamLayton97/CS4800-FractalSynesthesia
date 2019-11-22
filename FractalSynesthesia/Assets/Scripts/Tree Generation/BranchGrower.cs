@@ -101,8 +101,9 @@ public class BranchGrower : MonoBehaviour
                 newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
                     (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
 
-                // start growth of new branch
-                newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration + 1, maxGenerations, branchPrefab);
+                // start growth of new branch, with calculated target scale
+                newBranch.GetComponent<BranchGrower>().Initialize(new Vector3(branchGirth, branchLength, branchGirth), 
+                    growthRate, currGeneration + 1, maxGenerations, branchPrefab);
             }
         }
     }

@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectorButton: {fileID: 925858408252917824, guid: d595b47e0b9c3354dbfff02bc3b1c87b,
     type: 3}
-  currentTrack: {fileID: 8300000, guid: 2f68517a36733eb4fa0e848ee92df2fc, type: 3}
+  currentTrack: {fileID: 8300000, guid: cf1fdaf6db9c4274e92f9fdb2ac94c0f, type: 3}
 --- !u!114 &754114503670123662
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4553218774613064827}
   - component: {fileID: 634963673547359305}
   m_Layer: 0
-  m_Name: BranchHolder
+  m_Name: ScalableBranch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

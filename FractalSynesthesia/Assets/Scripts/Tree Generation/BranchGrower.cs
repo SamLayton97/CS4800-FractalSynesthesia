@@ -67,6 +67,8 @@ public class BranchGrower : MonoBehaviour
     /// <returns></returns>
     IEnumerator Grow(float growthRate, int currGeneration, int maxGenerations)
     {
+        Debug.Log(currGeneration);
+
         // while branch hasn't finished growing
         float growProgress = 0f;
         do
@@ -92,17 +94,17 @@ public class BranchGrower : MonoBehaviour
             float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
 
             // for as many branches this branch should grow
-            for (int i = 0; i < branchCount; i++)
+            for (int i = 0; i < 5; i++)
             {
                 // create, rotate, position, and scale new branch
-                Transform newBranch = Instantiate(branchPrefab, gameObject.transform).transform;
-                newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
-                    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
-                newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
-                    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+                Transform newBranch = Instantiate(branchPrefab, transform).transform;
+                //newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
+                //    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+                //newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
+                //    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
 
                 // start growth of new branch
-                newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration++, maxGenerations);
+                //newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration++, maxGenerations);
             }
         }
     }

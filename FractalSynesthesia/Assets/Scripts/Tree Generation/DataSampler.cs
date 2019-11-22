@@ -111,6 +111,8 @@ public class DataSampler : MonoBehaviour
 
         // calculate time between samples
         sampleTime = 1f / sampleRate;
+
+        Debug.Log("hello " + Time.time);
     }
 
     /// <summary>

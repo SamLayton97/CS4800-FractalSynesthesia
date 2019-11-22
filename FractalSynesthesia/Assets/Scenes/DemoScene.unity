@@ -435,26 +435,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
-        type: 3}
-      propertyPath: branchAngleRange.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
-        type: 3}
-      propertyPath: branchAngleRange.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
-        type: 3}
-      propertyPath: angleNoiseScaler
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 634963673547359305, guid: 7be178bc77ba23849b450664f5c825cd,
-        type: 3}
-      propertyPath: branchDeviationRange
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be178bc77ba23849b450664f5c825cd, type: 3}
 --- !u!4 &1760943655 stripped

@@ -24,9 +24,6 @@ public class BranchGrower : MonoBehaviour
     {
         // retrieve relevant components
         myColorChange = GetComponent<ColorChanger>();
-
-        // TESTING: test initialization
-        Initialize(Vector3.one * 2f, 0.1f, 1);
     }
 
     /// <summary>

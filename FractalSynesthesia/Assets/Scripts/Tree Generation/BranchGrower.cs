@@ -53,7 +53,7 @@ public class BranchGrower : MonoBehaviour
         startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
 
         // start growing branch
-        StartCoroutine(Grow(growthRate));
+        StartCoroutine(Grow(growthRate, currGeneration, maxGenerations));
     }
 
     /// <summary>
@@ -62,8 +62,10 @@ public class BranchGrower : MonoBehaviour
     /// <param name="growthRate">Rate at which branch grows.
     /// Note: Scaled such that tree finishes growing when
     /// track ends.</param>
+    /// <param name="currGeneration">current generation of fractal</param>
+    /// <param name="maxGenerations">max number of generations fractal will undergo before stopping</param>
     /// <returns></returns>
-    IEnumerator Grow(float growthRate)
+    IEnumerator Grow(float growthRate, int currGeneration, int maxGenerations)
     {
         // while branch hasn't finished growing
         float growProgress = 0f;
@@ -76,26 +78,32 @@ public class BranchGrower : MonoBehaviour
 
         } while (transform.localScale.y < targetScale.y);
 
-        // calculate structure-defining heuristics
-        float branchAngle = branchAngleRange.x + (1 - MovementSampler.Instance.AverageDominantRange) * branchAngleRange.y;
-        int branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * MovementSampler.Instance.AverageDeviationScale));
-        float branchGirth = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageVolume));
-        float branchLength = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageMelodyVolume));
-        float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
-
-        // for as many branches this branch should grow
-        for (int i = 0; i < branchCount; i++)
-        {
-            // create, rotate, position, and scale new branch
-            //Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
-            //currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
-            //    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
-            //currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y *
-            //    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
-            //currBranch.localScale = startingScale;
-        }
-
         // deactivate color changing
         myColorChange.enabled = false;
+
+        // continue fractal if current generation doesn't exceed max
+        if (currGeneration < maxGenerations)
+        {
+            // calculate structure-defining heuristics
+            float branchAngle = branchAngleRange.x + (1 - MovementSampler.Instance.AverageDominantRange) * branchAngleRange.y;
+            int branchCount = maxBranchCount - Mathf.FloorToInt(Random.Range(0, branchDeviationRange * MovementSampler.Instance.AverageDeviationScale));
+            float branchGirth = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageVolume));
+            float branchLength = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageMelodyVolume));
+            float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
+
+            // for as many branches this branch should grow
+            for (int i = 0; i < branchCount; i++)
+            {
+                // create, rotate, position, and scale new branch
+                Transform newBranch = Instantiate(branchPrefab, gameObject.transform).transform;
+                newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
+                    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+                newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
+                    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+
+                // start growth of new branch
+                newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration++, maxGenerations);
+            }
+        }
     }
 }

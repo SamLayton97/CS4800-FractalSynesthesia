@@ -36,6 +36,23 @@ public class TreeGenerator : MonoBehaviour
         get { return maxGenerations; }
     }
 
+    /// <summary>
+    /// Read-access property returning arc within
+    /// which branches can grow from (in degrees)
+    /// </summary>
+    public Vector2 BranchAngleRange
+    {
+        get { return branchAngleRange; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float AngleNoiseScaler
+    {
+        get { return angleNoiseScaler; }
+    }
+
     #endregion
 
     #region Unity Methods

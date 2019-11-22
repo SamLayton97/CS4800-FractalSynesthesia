@@ -491,8 +491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxGenerations: 7
-  branchPrefab: {fileID: 5714919142320326094, guid: 7be178bc77ba23849b450664f5c825cd,
-    type: 3}
   startingTrunk: {fileID: 656065486}
 --- !u!114 &1895968066
 MonoBehaviour:

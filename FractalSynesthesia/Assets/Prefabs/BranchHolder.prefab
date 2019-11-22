@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae3238c5a4a91a46998f8ac8fdb05cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  branchPrefab: {fileID: 5714919142320326094}
   branchAngleRange: {x: 10, y: 50}
   angleNoiseScaler: 20
   maxBranchCount: 5

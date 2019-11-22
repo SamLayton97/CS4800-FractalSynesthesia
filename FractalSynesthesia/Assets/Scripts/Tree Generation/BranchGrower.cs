@@ -8,8 +8,9 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(ColorChanger))]
 public class BranchGrower : MonoBehaviour
-{  
+{
     // structure configuration
+    [SerializeField] GameObject branchPrefab;               // generic branch prefab to spawn and manipulate
     [SerializeField]
     Vector2 branchAngleRange = new Vector2();               // range within which branches can grow at angle from (pre-randomization)
     [Range(10f, 50f)]
@@ -82,7 +83,17 @@ public class BranchGrower : MonoBehaviour
         float branchLength = Mathf.Sqrt(Mathf.Sqrt(MovementSampler.Instance.AverageMelodyVolume));
         float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
 
-        // TODO: branch once grown
+        // for as many branches this branch should grow
+        for (int i = 0; i < branchCount; i++)
+        {
+            // create, rotate, position, and scale new branch
+            //Transform currBranch = Instantiate(branchPrefab, currTrunk).transform;
+            //currBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
+            //    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+            //currBranch.localPosition += Vector3.up * currTrunk.GetChild(0).localScale.y *
+            //    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+            //currBranch.localScale = startingScale;
+        }
 
         // deactivate color changing
         myColorChange.enabled = false;

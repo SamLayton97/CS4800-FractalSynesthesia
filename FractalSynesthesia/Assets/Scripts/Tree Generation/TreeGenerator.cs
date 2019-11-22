@@ -12,7 +12,6 @@ public class TreeGenerator : MonoBehaviour
     // branching configuration
     [Range(1, 10)]
     [SerializeField] int maxGenerations = 10;       // max number of generations fractal will undergo before stopping
-    [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
 
     // generation support variables
     [SerializeField] BranchGrower startingTrunk;    // growth controller of initial branch object to build tree from

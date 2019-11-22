@@ -23,9 +23,7 @@ public class TreeGenerator : MonoBehaviour
     [SerializeField] int branchDeviationRange = 3;  // total number of branches pruned during generation -- affected by average deviation scale
 
     // generation support variables
-    IEnumerator growTree;                           // coroutine controlling growth of fractal tree over course of track
-    BranchGrower startingTrunk;                     // growth controller of initial branch object to build tree from
-    float growthRate = 1f;                          // rate at which branches grow before splitting -- entire tree finishes growing when song is over
+    [SerializeField] BranchGrower startingTrunk;    // growth controller of initial branch object to build tree from
 
     #region Properties
 
@@ -51,7 +49,9 @@ public class TreeGenerator : MonoBehaviour
         if (!startingTrunk)
             startingTrunk = transform.GetChild(0).GetComponent<BranchGrower>();
 
-        // TODO: calculate rate of branch growth
+        // calculate rate of branch growth
+        // NOTE: tree should finish growing approximately when song ends
+        float growthRate = (TotalGenerations + 1) / TrackSelectionManager.Instance.CurrentTrack.length;
 
         // begin fractal tree by initializing trunk
         startingTrunk.Initialize(Vector3.one, growthRate, 0, TotalGenerations);

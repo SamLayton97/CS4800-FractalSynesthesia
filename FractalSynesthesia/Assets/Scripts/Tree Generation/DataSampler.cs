@@ -144,17 +144,30 @@ public class DataSampler : MonoBehaviour
     /// <returns>coroutine controlling this operation</returns>
     IEnumerator RefreshAverages(float refreshTime)
     {
+        Debug.Log(refreshTime);
+
         // while the track is still playing
         do
         {
-            // TODO: update averages
-
-            // TODO: clear lists and wait for duration of generation
-
+            // wait duration of branch generation
             yield return new WaitForSeconds(refreshTime);
-        } while (TrackAnalyzer.Instance.TrackIsPlaying);
+            Debug.Log("refresh: " + Time.time);
 
-        yield return new WaitForSeconds(0);
+            // update averages
+            avgDominantRange = dominantRangeSamples.Average();
+            avgDeviationScale = deviationScaleSamples.Average();
+            avgApproximateVolume = approximateVolumeSamples.Average();
+            avgMelodyVolume = melodyVolumeSamples.Average();
+            avgMelodicRange = melodicRangeSamples.Average();
+
+            // clear lists
+            dominantRangeSamples.Clear();
+            deviationScaleSamples.Clear();
+            approximateVolumeSamples.Clear();
+            melodyVolumeSamples.Clear();
+            melodicRangeSamples.Clear();
+            
+        } while (TrackAnalyzer.Instance.TrackIsPlaying);
     }
 
     #endregion

@@ -98,10 +98,10 @@ public class BranchGrower : MonoBehaviour
             {
                 // create, rotate, position, and scale new branch
                 Transform newBranch = Instantiate(branchPrefab, transform).transform;
-                //newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
-                //    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
-                //newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
-                //    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+                newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
+                    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+                newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
+                    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
 
                 // start growth of new branch
                 //newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration++, maxGenerations);

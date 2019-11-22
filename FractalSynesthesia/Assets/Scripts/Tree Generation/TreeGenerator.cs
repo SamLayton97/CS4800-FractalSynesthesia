@@ -15,6 +15,7 @@ public class TreeGenerator : MonoBehaviour
 
     // generation support variables
     [SerializeField] BranchGrower startingTrunk;    // growth controller of initial branch object to build tree from
+    [SerializeField] GameObject branchPrefab;       // generic branch prefab to spawn and manipulate
 
     #region Properties
 
@@ -45,7 +46,7 @@ public class TreeGenerator : MonoBehaviour
         float growthRate = (TotalGenerations + 1) / TrackSelectionManager.Instance.CurrentTrack.length;
 
         // begin fractal tree by initializing trunk
-        startingTrunk.Initialize(Vector3.one, growthRate, 0, TotalGenerations);
+        startingTrunk.Initialize(Vector3.one, growthRate, 0, TotalGenerations, branchPrefab);
     }
 
     #endregion

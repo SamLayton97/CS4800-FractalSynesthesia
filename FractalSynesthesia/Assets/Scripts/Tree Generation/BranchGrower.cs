@@ -10,7 +10,6 @@ using UnityEngine;
 public class BranchGrower : MonoBehaviour
 {
     // structure configuration
-    [SerializeField] GameObject branchPrefab;               // generic branch prefab to spawn and manipulate
     [SerializeField]
     Vector2 branchAngleRange = new Vector2();               // range within which branches can grow at angle from (pre-randomization)
     [Range(10f, 50f)]
@@ -46,14 +45,15 @@ public class BranchGrower : MonoBehaviour
     /// <param name="growthRate">rate which branch grows to full size at</param>
     /// <param name="currGeneration">current generation of fractal</param>
     /// <param name="maxGenerations">max number of generations fractal will undergo before stopping</param>
-    public void Initialize(Vector3 targetScale, float growthRate, int currGeneration, int maxGenerations)
+    /// <param name="branchPrefab">generic branch prefab to manipulate</param>
+    public void Initialize(Vector3 targetScale, float growthRate, int currGeneration, int maxGenerations, GameObject branchPrefab)
     {
         // initialize starting and target scales
         this.targetScale = targetScale;
         startingScale = new Vector3(targetScale.x, 0.05f, targetScale.z);
 
         // start growing branch
-        StartCoroutine(Grow(growthRate, currGeneration, maxGenerations));
+        StartCoroutine(Grow(growthRate, currGeneration, maxGenerations, branchPrefab));
     }
 
     /// <summary>
@@ -64,11 +64,9 @@ public class BranchGrower : MonoBehaviour
     /// track ends.</param>
     /// <param name="currGeneration">current generation of fractal</param>
     /// <param name="maxGenerations">max number of generations fractal will undergo before stopping</param>
-    /// <returns></returns>
-    IEnumerator Grow(float growthRate, int currGeneration, int maxGenerations)
+    /// <param name="branchPrefab">generic prefab to create and manipulate on branching</param>
+    IEnumerator Grow(float growthRate, int currGeneration, int maxGenerations, GameObject branchPrefab)
     {
-        Debug.Log(currGeneration);
-
         // while branch hasn't finished growing
         float growProgress = 0f;
         do
@@ -94,17 +92,17 @@ public class BranchGrower : MonoBehaviour
             float branchNoise = Mathf.Sqrt(MovementSampler.Instance.AverageMelodicRange);
 
             // for as many branches this branch should grow
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < branchCount; i++)
             {
                 // create, rotate, position, and scale new branch
                 Transform newBranch = Instantiate(branchPrefab, transform).transform;
-                newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
-                    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
-                newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
-                    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
+                //newBranch.Rotate(new Vector3(branchAngle + Random.Range(-1f * branchNoise, branchNoise) * angleNoiseScaler,
+                //    i * 360f / branchCount), Space.Self);               // angle randomized by melodic range
+                //newBranch.localPosition += Vector3.up * transform.GetChild(0).localScale.y *
+                //    (2f - Random.Range(0, branchNoise));                // height randomized by melodic range
 
-                // start growth of new branch
-                //newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration++, maxGenerations);
+                //// start growth of new branch
+                //newBranch.GetComponent<BranchGrower>().Initialize(Vector3.one, growthRate, currGeneration + 1, maxGenerations);
             }
         }
     }

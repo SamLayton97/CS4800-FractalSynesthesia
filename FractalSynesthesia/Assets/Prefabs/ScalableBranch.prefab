@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjustRate: 5
-  minValue: 0
+  minValue: 0.3
   valueUpswing: 0.65
   valueFalloff: -0.02
 --- !u!114 &634963673547359305

@@ -540,7 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thresholdWindowSize: 30
-  beatInsensitivity: 3
+  beatInsensitivity: 3.15
 --- !u!82 &1895968068
 AudioSource:
   m_ObjectHideFlags: 0

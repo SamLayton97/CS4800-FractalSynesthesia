@@ -9,8 +9,14 @@ using UnityEngine;
 public class ColorChanger : MonoBehaviour
 {
     // configuration variables
-    [Range(0, 120)]
-    [SerializeField] float adjustRate = 1f;             // rate at which branch color shifts to its target
+    [Range(0, 20)]
+    [SerializeField] float adjustRate = 1f;             // rate at which branch's hue and saturation shift to its target
+    [Range(0f, 1f)]
+    [SerializeField] float minValue = 0f;               // minimum value branch's color can be under no beat
+    [Range(0f, 1f)]
+    [SerializeField] float valueUpswing = 1f;           // rate at which color value increases when beat is heard
+    [Range(-1f, 0f)]
+    [SerializeField] float valueFalloff = -1f;          // rate at which color value decreases when no beat is heard
 
     // color setting support variables
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
@@ -39,7 +45,7 @@ public class ColorChanger : MonoBehaviour
             // match HSV-color of branch with track analysis values
             currHue = Mathf.Lerp(currHue, TrackAnalyzer.Instance.DominantRange, Mathf.Min(Time.deltaTime * adjustRate, 1));
             currSaturation = Mathf.Lerp(currSaturation, 1 - TrackAnalyzer.Instance.BandDeviationScale, Mathf.Min(Time.deltaTime * adjustRate, 1));
-            currValue = Mathf.Clamp01(currValue + (TrackAnalyzer.Instance.Beat ? 0.5f : -0.02f));
+            currValue = Mathf.Clamp01(currValue + (TrackAnalyzer.Instance.Beat ? valueUpswing : valueFalloff));
             branchRenderer.material.color = Color.HSVToRGB(currHue, currSaturation, currValue);
         }
     }

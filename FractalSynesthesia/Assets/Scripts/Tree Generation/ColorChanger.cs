@@ -45,7 +45,7 @@ public class ColorChanger : MonoBehaviour
             // match HSV-color of branch with track analysis values
             currHue = Mathf.Lerp(currHue, TrackAnalyzer.Instance.DominantRange, Mathf.Min(Time.deltaTime * adjustRate, 1));
             currSaturation = Mathf.Lerp(currSaturation, 1 - TrackAnalyzer.Instance.BandDeviationScale, Mathf.Min(Time.deltaTime * adjustRate, 1));
-            currValue = Mathf.Clamp01(currValue + (TrackAnalyzer.Instance.Beat ? valueUpswing : valueFalloff));
+            currValue = Mathf.Clamp(currValue + (TrackAnalyzer.Instance.Beat ? valueUpswing : valueFalloff), minValue, 1);
             branchRenderer.material.color = Color.HSVToRGB(currHue, currSaturation, currValue);
         }
     }

@@ -45,7 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171f0f5edda2e184d9156a57ac4b9cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adjustRate: 4
+  adjustRate: 5
+  minValue: 0
+  valueUpswing: 0.65
+  valueFalloff: -0.02
 --- !u!114 &634963673547359305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae3238c5a4a91a46998f8ac8fdb05cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  branchPrefab: {fileID: 5714919142320326094}
   branchAngleRange: {x: 10, y: 50}
   angleNoiseScaler: 20
   maxBranchCount: 5

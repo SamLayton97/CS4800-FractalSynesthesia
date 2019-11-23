@@ -40,7 +40,7 @@ public class SpectralFluxAnalyzer
     /// </summary>
     /// <param name="spectrum">FFT spectrum data</param>
     /// <param name="time">temporal position in song (seconds)</param>
-    public void AnalyzeSpectrum(float[] spectrum, float time)
+    public bool AnalyzeSpectrum(float[] spectrum, float time)
     {
         // update previous spectrum data to find flux next frame
         currSpectrum.CopyTo(prevSpectrum, 0);
@@ -61,13 +61,13 @@ public class SpectralFluxAnalyzer
             fluxQueue[indexToProcess].threshold = GetFluxThreshold(indexToProcess);
             CullSpectralFlux(indexToProcess);
 
-            // determine if flux signifies beat (i.e., peak among culled fluxes)
+            // return true if there is a beat now
             if (IsBeat(indexToProcess - 1))
-            {
-                fluxQueue[indexToProcess - 1].isBeat = true;
-                Debug.Log("beat at " + time);
-            }
+                return true;
         }
+
+        // return false if either not enough data or no beat
+        return false;
     }
 
     /// <summary>
@@ -146,5 +146,4 @@ public class SpectralFluxInfo
     public float spectralFlux = 0f;         // aggregate of positive change in spectrum data between frames
     public float threshold = 0f;            // change threshold other fluxes must exceed to be considered an onset
     public float culledSpectralFlux = 0f;   // aggregate of positive changes that exceed beat threshold
-    public bool isBeat = false;             // whether flux at this point in time is a beat in song
 }

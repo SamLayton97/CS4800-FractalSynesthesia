@@ -31,6 +31,7 @@ public class TrackAnalyzer : MonoBehaviour
     float leadDominance = 0f;                           // measures how much lead voice is dominant over accompaniment
     float approximateVolume = 0f;                       // approximate volume of track at given moment, ranging from 0 to 1
     float melodyVolume = 0f;                            // approximate volume of track's melody at given moment, ranging from 0 to 1
+    bool beat = false;                                  // flag true when song's beat plays on current frame
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -98,6 +99,15 @@ public class TrackAnalyzer : MonoBehaviour
         get { return melodyVolume; }
     }
 
+    /// <summary>
+    /// Read-access property returning whether
+    /// there was a beat just now in track.
+    /// </summary>
+    public bool Beat
+    {
+        get { return beat; }
+    }
+
     #endregion
 
     #region Unity Methods
@@ -143,9 +153,6 @@ public class TrackAnalyzer : MonoBehaviour
             // retrieve spectrum data of audio clip
             myAudioSource.GetSpectrumData(currSpectrum, 0, FFTWindow.BlackmanHarris);
 
-            // analyze spectral flux at current time in track
-            fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
-
             // update frequency bands
             // NOTE: calculations for each band based on: https://www.youtube.com/watch?v=mHk3ZiKNH48
             int currSample = 0;
@@ -174,6 +181,12 @@ public class TrackAnalyzer : MonoBehaviour
             // update approximate volume of track and lead voice
             approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
             melodyVolume = Mathf.Clamp01(maxBand / 3.5f);
+
+            // update whether beat is heard this frame
+            beat = fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
+
+            if (beat)
+                Debug.Log("beat at " + myAudioSource.time);
         }
     }
 

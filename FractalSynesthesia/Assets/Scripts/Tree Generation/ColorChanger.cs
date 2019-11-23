@@ -15,6 +15,9 @@ public class ColorChanger : MonoBehaviour
     // color setting support variables
     Renderer branchRenderer;                    // reference to renderer of child branch primative -- used to control branch color
                                                 // NOTE: assumes child objects has Material component attached to it
+    float currHue = 0f;                         // current hue of branch color
+    float currSaturation = 0f;                  // curren saturation of branch color
+    float currValue = 0f;                       // current value of branch color
 
     /// <summary>
     /// Used for initialization
@@ -30,12 +33,14 @@ public class ColorChanger : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // if track is playing, match HSV-color of branch with track analysis values
+        // if track is playing
         if (TrackAnalyzer.Instance.TrackIsPlaying)
-            branchRenderer.material.color = Color.Lerp(branchRenderer.material.color,
-                Color.HSVToRGB(TrackAnalyzer.Instance.DominantRange,
-                1 - TrackAnalyzer.Instance.BandDeviationScale,
-                TrackAnalyzer.Instance.LeadVoiceDominance),
-                Mathf.Min(Time.deltaTime * adjustRate, 1f));
+        {
+            // match HSV-color of branch with track analysis values
+            currHue = Mathf.Lerp(currHue, TrackAnalyzer.Instance.DominantRange, Mathf.Min(Time.deltaTime * adjustRate, 1));
+            currSaturation = Mathf.Lerp(currSaturation, 1 - TrackAnalyzer.Instance.BandDeviationScale, Mathf.Min(Time.deltaTime * adjustRate, 1));
+            currValue = Mathf.Clamp01(currValue + (TrackAnalyzer.Instance.Beat ? 0.5f : -0.02f));
+            branchRenderer.material.color = Color.HSVToRGB(currHue, currSaturation, currValue);
+        }
     }
 }

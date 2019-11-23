@@ -60,7 +60,12 @@ public class SpectralFluxAnalyzer
             CullSpectralFlux(indexToProcess);
 
             // determine if flux signifies beat (i.e., peak among culled fluxes)
-
+            if (IsBeat(indexToProcess - 1))
+            {
+                fluxSamples[indexToProcess - 1].isBeat = true;
+                Debug.Log("Beat at " + time);
+            }
+            indexToProcess++;
         }
 
     }
@@ -121,7 +126,7 @@ public class SpectralFluxAnalyzer
     /// </summary>
     /// <param name="spectralFluxIndex">index to analyze</param>
     /// <returns>true if index is a beat</returns>
-    bool isBeat(int spectralFluxIndex)
+    bool IsBeat(int spectralFluxIndex)
     {
         // signify beat if culled flux at index is greater than neighbors
         if (fluxSamples[spectralFluxIndex].culledSpectralFlux > fluxSamples[spectralFluxIndex - 1].culledSpectralFlux &&

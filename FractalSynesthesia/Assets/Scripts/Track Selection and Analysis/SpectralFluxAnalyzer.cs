@@ -71,7 +71,7 @@ public class SpectralFluxAnalyzer
     /// an onset -- culls non-beat changes.
     /// </summary>
     /// <param name="spectralFluxIndex"></param>
-    /// <returns></returns>
+    /// <returns>threshold used to cull non-beats</returns>
     float GetFluxThreshold(int spectralFluxIndex)
     {
         // determine how far forward and back to make threshold window
@@ -87,6 +87,29 @@ public class SpectralFluxAnalyzer
         // return threshold (average) multiplied by custom sensitivity
         return threshold * beatInsensitivity;
     }
+
+    /// <summary>
+    /// Culls fluxes that do not exceed threshold
+    /// to be considered a beat
+    /// </summary>
+    /// <param name="spectralFluxIndex">index to analyze</param>
+    /// <returns>culled flux, 0 if too insignificant</returns>
+    void CullSpectralFlux(int spectralFluxIndex)
+    {
+        fluxSamples[spectralFluxIndex].culledSpectralFlux =
+            Mathf.Max(0, fluxSamples[spectralFluxIndex].spectralFlux - fluxSamples[spectralFluxIndex].threshold);
+    }
+
+    /// <summary>
+    /// Determines whether index of spectral flux should
+    /// be considered a beat.
+    /// </summary>
+    /// <param name="spectralFluxIndex">index to analyze</param>
+    /// <returns>true if index is a beat</returns>
+    bool isPeak(int spectralFluxIndex)
+    {
+        return false;
+    }
 }
 
 /// <summary>
@@ -97,6 +120,6 @@ public class SpectralFluxInfo
     public float time;                  // time in audio track info was gathered
     public float spectralFlux;          // aggregate of positive change in spectrum data between frames
     public float threshold;             // change threshold other fluxes must exceed to be considered an onset
-    public float prunedSpectralFlux;    // aggregate of positive changes that exceed beat threshold
+    public float culledSpectralFlux;    // aggregate of positive changes that exceed beat threshold
     public bool isBeat;                 // whether flux at this point in time is a beat in song
 }

@@ -12,16 +12,24 @@ using UnityEngine;
 public class SpectralFluxAnalyzer
 {
     // analysis configuration variables
-    [Range(15, 60)]
-    [SerializeField] int thresholdWindowSize = 30;          // size of window within which analyzer compares beats with non-beats
-    [Range(0.1f, 10f)]
-    [SerializeField] float beatInsensitivity = 1f;          // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
+    int thresholdWindowSize = 30;          // size of window within which analyzer compares beats with non-beats
+    float beatInsensitivity = 1f;          // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
 
     // analysis support variables
     float[] prevSpectrum = new float[1024];                 // FFT spectrum of audio clip on previous frame
     float[] currSpectrum = new float[1024];                 // FFT spectrum of audio clip on current frame
     List<SpectralFluxInfo> fluxSamples =                    // collection of spectal flux samples used to compare beats with non-beats
         new List<SpectralFluxInfo>();
+
+    /// <summary>
+    /// Constructor for analyzer. Allows users
+    /// to set custom parameters for beat analysis.
+    /// </summary>
+    public SpectralFluxAnalyzer(int thresholdWindowSize = 30, float beatInsensitivity = 1f)
+    {
+        this.thresholdWindowSize = thresholdWindowSize;
+        this.beatInsensitivity = beatInsensitivity;
+    }
 
     /// <summary>
     /// Analyzes spectral flux of FFT spectrum data
@@ -106,8 +114,14 @@ public class SpectralFluxAnalyzer
     /// </summary>
     /// <param name="spectralFluxIndex">index to analyze</param>
     /// <returns>true if index is a beat</returns>
-    bool isPeak(int spectralFluxIndex)
+    bool isBeat(int spectralFluxIndex)
     {
+        // signify beat if culled flux at index is greater than neighbors
+        if (fluxSamples[spectralFluxIndex].culledSpectralFlux > fluxSamples[spectralFluxIndex - 1].culledSpectralFlux &&
+            fluxSamples[spectralFluxIndex].culledSpectralFlux > fluxSamples[spectralFluxIndex + 1].culledSpectralFlux)
+            return true;
+
+        // otherwise, no beat
         return false;
     }
 }

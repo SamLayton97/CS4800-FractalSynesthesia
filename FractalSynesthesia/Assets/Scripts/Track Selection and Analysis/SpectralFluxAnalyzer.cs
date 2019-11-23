@@ -6,8 +6,9 @@ using UnityEngine;
 /// Analyzes spectral flux of the current moment
 /// of a audio clip. Used for algorithmic beat
 /// mapping.
-/// Credit to Jesse of Giant Scam Industries
+/// Based on beat mapper from:
 /// https://medium.com/giant-scam/algorithmic-beat-mapping-in-unity-real-time-audio-analysis-using-the-unity-api-6e9595823ce4
+/// Credit to Jesse of Giant Scam Industries
 /// </summary>
 public class SpectralFluxAnalyzer
 {

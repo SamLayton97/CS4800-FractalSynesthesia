@@ -184,9 +184,6 @@ public class TrackAnalyzer : MonoBehaviour
 
             // update whether beat is heard this frame
             beat = fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
-
-            if (beat)
-                Debug.Log("beat at " + myAudioSource.time);
         }
     }
 

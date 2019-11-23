@@ -13,7 +13,8 @@ public class TrackAnalyzer : MonoBehaviour
 {
     // audio support variables
     AudioSource myAudioSource;                      // audio source to play tracks from
-    float[] samples = new float[1024];              // array of audio samples
+    float[] currSpectrum = new float[1024];         // array of audio samples
+    float[] prevSpectrum = new float[1024];         // array of audio samples from previous frame -- used for beat mapping
     float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
     int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
     float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
@@ -131,7 +132,11 @@ public class TrackAnalyzer : MonoBehaviour
         if (TrackIsPlaying)
         {
             // retrieve spectrum data of audio clip
-            myAudioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
+            currSpectrum.CopyTo(prevSpectrum, 0);
+            myAudioSource.GetSpectrumData(currSpectrum, 0, FFTWindow.BlackmanHarris);
+
+            // TODO: retrieve spectral flux analysis
+
 
             // update frequency bands
             // NOTE: calculations for each band based on: https://www.youtube.com/watch?v=mHk3ZiKNH48
@@ -142,7 +147,7 @@ public class TrackAnalyzer : MonoBehaviour
                 float sampleSum = 0;
                 for (int j = 0; j < sampleCounts[i]; j++)
                 {
-                    sampleSum += samples[currSample] * (currSample + 1);
+                    sampleSum += currSpectrum[currSample] * (currSample + 1);
                     currSample++;
                 }
                 frequencyBands[i] = sampleSum / currSample * frequencyMagnifier;

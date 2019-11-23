@@ -11,15 +11,14 @@ using UnityEngine;
 /// </summary>
 public class SpectralFluxAnalyzer
 {
-    // analysis configuration variables
-    int thresholdWindowSize = 30;          // size of window within which analyzer compares beats with non-beats
-    float beatInsensitivity = 1f;          // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
-
     // analysis support variables
     float[] prevSpectrum = new float[1024];                 // FFT spectrum of audio clip on previous frame
     float[] currSpectrum = new float[1024];                 // FFT spectrum of audio clip on current frame
     List<SpectralFluxInfo> fluxSamples =                    // collection of spectal flux samples used to compare beats with non-beats
         new List<SpectralFluxInfo>();
+    int thresholdWindowSize = 30;                           // size of window within which analyzer compares beats with non-beats
+    float beatInsensitivity = 1f;                           // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
+    int indexToProcess = 0;                                 // index representing "now" -- slightly back in time to analyze peaks
 
     /// <summary>
     /// Constructor for analyzer. Allows users
@@ -27,8 +26,12 @@ public class SpectralFluxAnalyzer
     /// </summary>
     public SpectralFluxAnalyzer(int thresholdWindowSize = 30, float beatInsensitivity = 1f)
     {
+        // intialize configrable data
         this.thresholdWindowSize = thresholdWindowSize;
         this.beatInsensitivity = beatInsensitivity;
+
+        // set starting index to process
+        indexToProcess = thresholdWindowSize / 2;
     }
 
     /// <summary>
@@ -52,7 +55,11 @@ public class SpectralFluxAnalyzer
         // if sample collection is large enough to analyze beats from
         if (fluxSamples.Count >= thresholdWindowSize)
         {
-            // get threshold to consider beats
+            // cull fluxes that do not exceed threshold set by neighbors
+            fluxSamples[indexToProcess].threshold = GetFluxThreshold(indexToProcess);
+            CullSpectralFlux(indexToProcess);
+
+            // determine if flux signifies beat (i.e., peak among culled fluxes)
 
         }
 
@@ -131,9 +138,9 @@ public class SpectralFluxAnalyzer
 /// </summary>
 public class SpectralFluxInfo
 {
-    public float time;                  // time in audio track info was gathered
-    public float spectralFlux;          // aggregate of positive change in spectrum data between frames
-    public float threshold;             // change threshold other fluxes must exceed to be considered an onset
-    public float culledSpectralFlux;    // aggregate of positive changes that exceed beat threshold
-    public bool isBeat;                 // whether flux at this point in time is a beat in song
+    public float time = 0f;                 // time in audio track info was gathered
+    public float spectralFlux = 0f;         // aggregate of positive change in spectrum data between frames
+    public float threshold = 0f;            // change threshold other fluxes must exceed to be considered an onset
+    public float culledSpectralFlux = 0f;   // aggregate of positive changes that exceed beat threshold
+    public bool isBeat = false;             // whether flux at this point in time is a beat in song
 }

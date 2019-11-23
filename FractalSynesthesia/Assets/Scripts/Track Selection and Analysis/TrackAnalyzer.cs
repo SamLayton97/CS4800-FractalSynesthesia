@@ -11,10 +11,11 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class TrackAnalyzer : MonoBehaviour
 {
-    // audio support variables
+    // audio analysis support variables
     AudioSource myAudioSource;                      // audio source to play tracks from
+    SpectralFluxAnalyzer fluxAnalyzer =             // analyzes spectral flux to determine beats of audio clip
+        new SpectralFluxAnalyzer();
     float[] currSpectrum = new float[1024];         // array of audio samples
-    float[] prevSpectrum = new float[1024];         // array of audio samples from previous frame -- used for beat mapping
     float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
     int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
     float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
@@ -132,11 +133,10 @@ public class TrackAnalyzer : MonoBehaviour
         if (TrackIsPlaying)
         {
             // retrieve spectrum data of audio clip
-            currSpectrum.CopyTo(prevSpectrum, 0);
             myAudioSource.GetSpectrumData(currSpectrum, 0, FFTWindow.BlackmanHarris);
 
-            // TODO: retrieve spectral flux analysis
-
+            // analyze spectral flux at current time in track
+            fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
 
             // update frequency bands
             // NOTE: calculations for each band based on: https://www.youtube.com/watch?v=mHk3ZiKNH48

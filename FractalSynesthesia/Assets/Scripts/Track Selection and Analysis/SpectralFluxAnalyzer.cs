@@ -19,6 +19,6 @@ public class SpectralFluxAnalyzer
     /// <param name="time">temporal position in song (seconds)</param>
     public void AnalyzeSpectrum (float[] spectrum, float time)
     {
-
+        Debug.Log("here " + Time.time);
     }
 }

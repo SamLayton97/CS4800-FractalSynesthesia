@@ -11,6 +11,10 @@ using UnityEngine;
 /// </summary>
 public class SpectralFluxAnalyzer
 {
+    // analysis support variables
+    float[] prevSpectrum = new float[1024];     // FFT spectrum of audio clip on previous frame
+    float[] currSpectrum = new float[1024];     // FFT spectrum of audio clip on current frame
+
     /// <summary>
     /// Analyzes spectral flux of FFT spectrum data
     /// of an audio clip.
@@ -19,6 +23,27 @@ public class SpectralFluxAnalyzer
     /// <param name="time">temporal position in song (seconds)</param>
     public void AnalyzeSpectrum (float[] spectrum, float time)
     {
-        Debug.Log("here " + Time.time);
+        // update previous spectrum data to find flux next frame
+        currSpectrum.CopyTo(prevSpectrum, 0);
+        spectrum.CopyTo(currSpectrum, 0);
+
+        // get current spectral flux from spectrum
+        Debug.Log(CalculateSpectralFlux());
+    }
+
+    /// <summary>
+    /// Finds aggregate positive difference between
+    /// current and previous spectrum data.
+    /// </summary>
+    /// <returns>aggregate positive difference</returns>
+    float CalculateSpectralFlux()
+    {
+        // calculate aggregate positive difference in data
+        float aggregate = 0;
+        for (int i = 0; i < 1024; i++)
+            aggregate += Mathf.Max(0, currSpectrum[i] - prevSpectrum[i]);
+
+        // return sum of positive changes
+        return aggregate;
     }
 }

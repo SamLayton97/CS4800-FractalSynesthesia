@@ -11,21 +11,26 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class TrackAnalyzer : MonoBehaviour
 {
+    // beat mapping configuration variables
+    [Range(10, 60)]
+    [SerializeField] int thresholdWindowSize = 30;      // size of window within which analyzer compares beats with non-beats
+    [Range(0.1f, 5f)]
+    [SerializeField] float beatInsensitivity = 1f;      // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
+
     // audio analysis support variables
-    AudioSource myAudioSource;                      // audio source to play tracks from
-    SpectralFluxAnalyzer fluxAnalyzer =             // analyzes spectral flux to determine beats of audio clip
-        new SpectralFluxAnalyzer();
-    float[] currSpectrum = new float[1024];         // array of audio samples
-    float[] frequencyBands = new float[8];          // array storing amplitudes of simplified frequency bands
-    int[] sampleCounts = new int[8];                // array storing amount of samples covered by each band
-    float frequencyMagnifier = 10f;                 // simple scalar to magnify small values of frequency bands
+    AudioSource myAudioSource;                          // audio source to play tracks from
+    SpectralFluxAnalyzer fluxAnalyzer;                  // analyzes spectral flux to determine beats of audio clip
+    float[] currSpectrum = new float[1024];             // array of audio samples
+    float[] frequencyBands = new float[8];              // array storing amplitudes of simplified frequency bands
+    int[] sampleCounts = new int[8];                    // array storing amount of samples covered by each band
+    float frequencyMagnifier = 10f;                     // simple scalar to magnify small values of frequency bands
 
     // analysis variables
-    float bandDevScale = 0f;                        // scale of deviation among frequency bands
-    float dominantRange = 0f;                       // dominant range of frequency bands, ranging from 0 to 1
-    float leadDominance = 0f;                       // measures how much lead voice is dominant over accompaniment
-    float approximateVolume = 0f;                   // approximate volume of track at given moment, ranging from 0 to 1
-    float melodyVolume = 0f;                        // approximate volume of track's melody at given moment, ranging from 0 to 1
+    float bandDevScale = 0f;                            // scale of deviation among frequency bands
+    float dominantRange = 0f;                           // dominant range of frequency bands, ranging from 0 to 1
+    float leadDominance = 0f;                           // measures how much lead voice is dominant over accompaniment
+    float approximateVolume = 0f;                       // approximate volume of track at given moment, ranging from 0 to 1
+    float melodyVolume = 0f;                            // approximate volume of track's melody at given moment, ranging from 0 to 1
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -119,6 +124,9 @@ public class TrackAnalyzer : MonoBehaviour
         if (!myAudioSource) 
             myAudioSource = GetComponent<AudioSource>();
         myAudioSource.clip = TrackSelectionManager.Instance.CurrentTrack;
+
+        // initialize beat analysis device
+        fluxAnalyzer = new SpectralFluxAnalyzer(thresholdWindowSize, beatInsensitivity);
 
         // start track
         myAudioSource.Play();

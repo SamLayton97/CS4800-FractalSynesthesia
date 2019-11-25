@@ -70,9 +70,9 @@ public class TrackSelectionManager : MonoBehaviour
         myCanvasGroup.blocksRaycasts = true;
         myCanvasGroup.interactable = true;
 
-        // load each track from StreamingAssets
+        // TODO: load each track from StreamingAssets
         customLoader = new CustomTrackLoader();
-        Debug.Log(customLoader.LoadTracks().Length);
+        customLoader.LoadTracks();
 
         // for each track in Resources
         //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))

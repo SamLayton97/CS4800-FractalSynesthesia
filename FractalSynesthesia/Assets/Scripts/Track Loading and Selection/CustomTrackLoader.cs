@@ -8,10 +8,6 @@ using UnityEngine;
 /// </summary>
 public class CustomTrackLoader
 {
-    // custom audio support variables
-    List<AudioClip> customTracks =              // list of tracks loaded from StreamingAssets
-        new List<AudioClip>();
-
     /// <summary>
     /// Loads all PCM WAV files from StreamingAssets,
     /// returning them as an array of playable audioclips
@@ -19,9 +15,10 @@ public class CustomTrackLoader
     /// <returns></returns>
     public AudioClip[] LoadTracks()
     {
-        // get path to streaming assets directory
+        // load all .wav files from streaming assets
         DirectoryInfo streamingAssets = new DirectoryInfo(Application.streamingAssetsPath);
-        Debug.Log(streamingAssets);
+        FileInfo[] wavFiles = streamingAssets.GetFiles("*.mp3");
+        Debug.Log(wavFiles.Length);
 
         return new AudioClip[0];
     }

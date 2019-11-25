@@ -17,6 +17,7 @@ public class TrackSelectionManager : MonoBehaviour
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // track setting support
+    CustomTrackLoader customLoader;                     // loads custom tracks from StreamingAssets
     [SerializeField] AudioClip currentTrack;            // track to play for this instance of fractal -- defaults to track set in Editor
     Dictionary<string, AudioClip> tracks =              // dictionary pairing names of tracks with their corresponding audio clips
         new Dictionary<string, AudioClip>();
@@ -69,25 +70,29 @@ public class TrackSelectionManager : MonoBehaviour
         myCanvasGroup.blocksRaycasts = true;
         myCanvasGroup.interactable = true;
 
+        // load each track from StreamingAssets
+        customLoader = new CustomTrackLoader();
+        Debug.Log(customLoader.LoadTracks().Length);
+
         // for each track in Resources
-        foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
-        {
-            // load into dictionary
-            tracks.Add(unloadedTrack.name, unloadedTrack);
+        //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
+        //{
+        //    // load into dictionary
+        //    tracks.Add(unloadedTrack.name, unloadedTrack);
 
-            // create and initialize new button in holder
-            GameObject newButton = Instantiate(selectorButton, buttonHolder);
-            newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
+        //    // create and initialize new button in holder
+        //    GameObject newButton = Instantiate(selectorButton, buttonHolder);
+        //    newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
 
-            // load button's button component into dictionary
-            // NOTE: controls interactability on consecutive scene loads
-            Button interact = newButton.GetComponent<Button>();
-            trackSelectors.Add(unloadedTrack.name, interact);
+        //    // load button's button component into dictionary
+        //    // NOTE: controls interactability on consecutive scene loads
+        //    Button interact = newButton.GetComponent<Button>();
+        //    trackSelectors.Add(unloadedTrack.name, interact);
 
-            // disable button of current track
-            if (currentTrack.name == unloadedTrack.name)
-                interact.interactable = false;
-        }
+        //    // disable button of current track
+        //    if (currentTrack.name == unloadedTrack.name)
+        //        interact.interactable = false;
+        //}
     }
 
     /// <summary>

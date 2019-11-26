@@ -143,8 +143,6 @@ public class TrackSelectionManager : MonoBehaviour
             string filePath = audioFiles[i].FullName.ToString();
             string uri = string.Format("file://{0}", filePath);
 
-            Debug.Log(uri);
-
             // determine audio type from file extension
             AudioType type = AudioType.WAV;
             switch (audioFiles[i].Extension)
@@ -173,7 +171,7 @@ public class TrackSelectionManager : MonoBehaviour
                 {
                     // initialize custom track
                     AudioClip newTrack = DownloadHandlerAudioClip.GetContent(www);
-                    newTrack.name = audioFiles[i].Name.ToString();
+                    newTrack.name = Path.GetFileNameWithoutExtension(audioFiles[i].Name);
                     InitializeTrack(newTrack);
                 }
             }

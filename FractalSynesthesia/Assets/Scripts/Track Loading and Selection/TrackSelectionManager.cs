@@ -75,26 +75,51 @@ public class TrackSelectionManager : MonoBehaviour
 
         // TODO: load each track from StreamingAssets
 
-
         // for each track in Resources
-        //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
-        //{
-        //    // load into dictionary
-        //    tracks.Add(unloadedTrack.name, unloadedTrack);
+        foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
+        {
+            InitializeTrack(unloadedTrack);
 
-        //    // create and initialize new button in holder
-        //    GameObject newButton = Instantiate(selectorButton, buttonHolder);
-        //    newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
+            // load into dictionary
+            //tracks.Add(unloadedTrack.name, unloadedTrack);
 
-        //    // load button's button component into dictionary
-        //    // NOTE: controls interactability on consecutive scene loads
-        //    Button interact = newButton.GetComponent<Button>();
-        //    trackSelectors.Add(unloadedTrack.name, interact);
+            //// create and initialize new button in holder
+            //GameObject newButton = Instantiate(selectorButton, buttonHolder);
+            //newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
 
-        //    // disable button of current track
-        //    if (currentTrack.name == unloadedTrack.name)
-        //        interact.interactable = false;
-        //}
+            //// load button's button component into dictionary
+            //// NOTE: controls interactability on consecutive scene loads
+            //Button interact = newButton.GetComponent<Button>();
+            //trackSelectors.Add(unloadedTrack.name, interact);
+
+            //// disable button of current track
+            //if (currentTrack.name == unloadedTrack.name)
+            //    interact.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// Loads track into dictionary and initializes
+    /// UI that allows users to select it
+    /// </summary>
+    /// <param name="unloadedTrack">unloaded audio clip to initialize</param>
+    void InitializeTrack(AudioClip unloadedTrack)
+    {
+        // load into dictionary
+        tracks.Add(unloadedTrack.name, unloadedTrack);
+
+        // create and initialize new button in holder
+        GameObject newButton = Instantiate(selectorButton, buttonHolder);
+        newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
+
+        // load button's button component into dictionary
+        // NOTE: controls interactability on consecutive scene loads
+        Button interact = newButton.GetComponent<Button>();
+        trackSelectors.Add(unloadedTrack.name, interact);
+
+        // disable button of current track
+        if (currentTrack.name == unloadedTrack.name)
+            interact.interactable = false;
     }
 
     /// <summary>
@@ -119,8 +144,9 @@ public class TrackSelectionManager : MonoBehaviour
     /// Loads all .wav files from StreamingAssets,
     /// returning them as an list of playable audioclips
     /// </summary>
+    /// <param name="callback">callback flag to control sequencing</param>
     /// <returns>array of specific audio types</returns>
-    public IEnumerator LoadTracks()
+    public IEnumerator LoadTracks(System.Action<bool> callback)
     {
         // load all .wav files from streaming assets
         DirectoryInfo streamingAssets = new DirectoryInfo(Application.streamingAssetsPath);

@@ -25,6 +25,14 @@ public class CoroutineWithData
     }
 
     /// <summary>
+    /// Provides read-access to data returned by coroutine
+    /// </summary>
+    public object Data
+    {
+        get { return data; }
+    }
+
+    /// <summary>
     /// Constructor for a coroutine that returns data
     /// </summary>
     /// <param name="owner">MonoBehavior object that initates coroutine</param>

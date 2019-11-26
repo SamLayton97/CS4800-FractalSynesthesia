@@ -76,27 +76,27 @@ public class TrackSelectionManager : MonoBehaviour
         // TODO: load each track from StreamingAssets
 
         // for each track in Resources
-        foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
+        //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
+        //    InitializeTrack(unloadedTrack);
+    }
+
+    /// <summary>
+    /// Called once per frame
+    /// </summary>
+    void Update()
+    {
+        // on user input, toggle visibility of selector canvas
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            InitializeTrack(unloadedTrack);
-
-            // load into dictionary
-            //tracks.Add(unloadedTrack.name, unloadedTrack);
-
-            //// create and initialize new button in holder
-            //GameObject newButton = Instantiate(selectorButton, buttonHolder);
-            //newButton.GetComponent<TrackSelector>().Initialize(unloadedTrack.name);
-
-            //// load button's button component into dictionary
-            //// NOTE: controls interactability on consecutive scene loads
-            //Button interact = newButton.GetComponent<Button>();
-            //trackSelectors.Add(unloadedTrack.name, interact);
-
-            //// disable button of current track
-            //if (currentTrack.name == unloadedTrack.name)
-            //    interact.interactable = false;
+            myCanvasGroup.alpha = myCanvasGroup.alpha < 1 ? 1 : 0;
+            myCanvasGroup.blocksRaycasts = myCanvasGroup.blocksRaycasts ? false : true;
+            myCanvasGroup.interactable = myCanvasGroup.interactable ? false : true;
         }
     }
+
+    #endregion
+
+    #region Private Methods
 
     /// <summary>
     /// Loads track into dictionary and initializes
@@ -121,24 +121,6 @@ public class TrackSelectionManager : MonoBehaviour
         if (currentTrack.name == unloadedTrack.name)
             interact.interactable = false;
     }
-
-    /// <summary>
-    /// Called once per frame
-    /// </summary>
-    void Update()
-    {
-        // on user input, toggle visibility of selector canvas
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            myCanvasGroup.alpha = myCanvasGroup.alpha < 1 ? 1 : 0;
-            myCanvasGroup.blocksRaycasts = myCanvasGroup.blocksRaycasts ? false : true;
-            myCanvasGroup.interactable = myCanvasGroup.interactable ? false : true;
-        }
-    }
-
-    #endregion
-
-    #region Private Methods
 
     /// <summary>
     /// Loads all .wav files from StreamingAssets,

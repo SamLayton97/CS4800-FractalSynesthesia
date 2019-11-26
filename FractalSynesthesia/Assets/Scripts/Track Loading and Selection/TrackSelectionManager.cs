@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -9,7 +11,6 @@ using UnityEngine.SceneManagement;
 /// user to pick from any track within the Resources folder
 /// </summary>
 [RequireComponent(typeof(CanvasGroup))]
-[RequireComponent(typeof(CustomTrackLoader))]
 public class TrackSelectionManager : MonoBehaviour
 {
     // display support variables
@@ -18,7 +19,6 @@ public class TrackSelectionManager : MonoBehaviour
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // track setting support
-    CustomTrackLoader customLoader;                     // loads custom tracks from StreamingAssets
     [SerializeField] AudioClip currentTrack;            // track to play for this instance of fractal -- defaults to track set in Editor
     Dictionary<string, AudioClip> tracks =              // dictionary pairing names of tracks with their corresponding audio clips
         new Dictionary<string, AudioClip>();
@@ -46,6 +46,8 @@ public class TrackSelectionManager : MonoBehaviour
         get { return currentTrack; }
     }
 
+    #region Unity Methods
+
     /// <summary>
     /// Used for initialization
     /// </summary>
@@ -72,8 +74,7 @@ public class TrackSelectionManager : MonoBehaviour
         myCanvasGroup.interactable = true;
 
         // TODO: load each track from StreamingAssets
-        customLoader = GetComponent<CustomTrackLoader>();
-        //customLoader.LoadTracks();
+
 
         // for each track in Resources
         //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
@@ -110,6 +111,55 @@ public class TrackSelectionManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Loads all .wav files from StreamingAssets,
+    /// returning them as an list of playable audioclips
+    /// </summary>
+    /// <returns>array of specific audio types</returns>
+    public IEnumerator LoadTracks()
+    {
+        // load all .wav files from streaming assets
+        DirectoryInfo streamingAssets = new DirectoryInfo(Application.streamingAssetsPath);
+        FileInfo[] wavFiles = streamingAssets.GetFiles("*.wav");
+
+        // iterate and convert each file
+        List<AudioClip> customTracks = new List<AudioClip>();
+        for (int i = 0; i < wavFiles.Length; i++)
+        {
+            // construct uri
+            string filePath = wavFiles[i].FullName.ToString();
+            string uri = string.Format("file://{0}", filePath);
+
+            // create web request to particular audio file
+            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.WAV))
+            {
+                yield return www.SendWebRequest();
+
+                // catch and log errors
+                if (www.isNetworkError)
+                    Debug.LogError(www.error);
+                // otherwise (no problems getting track)
+                else
+                {
+                    // append track to list of custom songs
+                    AudioClip newTrack = DownloadHandlerAudioClip.GetContent(www);
+                    customTracks.Add(newTrack);
+                }
+            }
+        }
+
+        // return list of custom tracks
+        yield return customTracks;
+    }
+
+    #endregion
+
+    #region Public Methods
+
     /// <summary>
     /// Handles users selecting track from list of options
     /// </summary>
@@ -124,4 +174,7 @@ public class TrackSelectionManager : MonoBehaviour
         trackSelectors[newTrack].interactable = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    #endregion
+
 }

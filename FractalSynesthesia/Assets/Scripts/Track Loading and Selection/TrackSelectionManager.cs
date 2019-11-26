@@ -75,15 +75,12 @@ public class TrackSelectionManager : MonoBehaviour
 
         // initialize default track from Resources
         if (!currentTrack)
-            currentTrack = Resources.Load<AudioClip>("John Coltrane - Giant Steps");    // if not set prior to launch, default clip
+            currentTrack = Resources.Load<AudioClip>("DEFAULT John Coltrane - Giant Steps");    // if not set prior to launch, default clip
         InitializeTrack(currentTrack);
 
-        // TODO: load each track from StreamingAssets
+        // load each track from StreamingAssets
+        StartCoroutine(LoadCustomTracks());
 
-
-        // for each track in Resources
-        //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))
-        //    InitializeTrack(unloadedTrack);
     }
 
     /// <summary>
@@ -132,16 +129,14 @@ public class TrackSelectionManager : MonoBehaviour
     /// Loads all .wav files from StreamingAssets,
     /// returning them as an list of playable audioclips
     /// </summary>
-    /// <param name="callback">callback flag to control sequencing</param>
     /// <returns>array of specific audio types</returns>
-    public IEnumerator LoadTracks(System.Action<bool> callback)
+    public IEnumerator LoadCustomTracks()
     {
         // load all .wav files from streaming assets
         DirectoryInfo streamingAssets = new DirectoryInfo(Application.streamingAssetsPath);
         FileInfo[] wavFiles = streamingAssets.GetFiles("*.wav");
 
-        // iterate and convert each file
-        List<AudioClip> customTracks = new List<AudioClip>();
+        // iterate over and convert each file
         for (int i = 0; i < wavFiles.Length; i++)
         {
             // construct uri
@@ -159,15 +154,13 @@ public class TrackSelectionManager : MonoBehaviour
                 // otherwise (no problems getting track)
                 else
                 {
-                    // append track to list of custom songs
+                    // initialize custom track
                     AudioClip newTrack = DownloadHandlerAudioClip.GetContent(www);
-                    customTracks.Add(newTrack);
+                    newTrack.name = wavFiles[i].Name.ToString();
+                    InitializeTrack(newTrack);
                 }
             }
         }
-
-        // return list of custom tracks
-        yield return customTracks;
     }
 
     #endregion

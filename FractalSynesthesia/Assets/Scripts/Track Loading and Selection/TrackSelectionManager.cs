@@ -76,7 +76,7 @@ public class TrackSelectionManager : MonoBehaviour
 
         // initialize default track from Resources
         if (!currentTrack)
-            currentTrack = Resources.Load<AudioClip>("DEFAULT John Coltrane - Giant Steps");    // if not set prior to launch, default clip
+            currentTrack = Resources.Load<AudioClip>("Mozart - Menuettos");    // if not set prior to launch, default clip
         InitializeTrack(currentTrack);
 
         // load custom tracks from StreamingAssets

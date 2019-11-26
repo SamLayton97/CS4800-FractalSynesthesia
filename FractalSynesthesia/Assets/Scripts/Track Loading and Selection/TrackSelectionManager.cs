@@ -73,7 +73,13 @@ public class TrackSelectionManager : MonoBehaviour
         myCanvasGroup.blocksRaycasts = true;
         myCanvasGroup.interactable = true;
 
+        // initialize default track from Resources
+        if (!currentTrack)
+            currentTrack = Resources.Load<AudioClip>("John Coltrane - Giant Steps");    // if not set prior to launch, default clip
+        InitializeTrack(currentTrack);
+
         // TODO: load each track from StreamingAssets
+
 
         // for each track in Resources
         //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))

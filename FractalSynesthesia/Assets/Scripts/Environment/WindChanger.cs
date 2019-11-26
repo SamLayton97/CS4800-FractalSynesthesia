@@ -6,17 +6,18 @@ using UnityEngine;
 /// Control scale, speed, tint of wind over
 /// grass according to track analysis data.
 /// </summary>
+[RequireComponent(typeof(Terrain))]
 public class WindChanger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // wind change support variables
+    TerrainData terrainData;
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Used for intialization
+    /// </summary>
+    void Awake()
     {
-        
+        // retrieve terrain data
+        terrainData = GetComponent<Terrain>().terrainData;
     }
 }

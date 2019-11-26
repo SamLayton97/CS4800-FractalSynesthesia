@@ -32,6 +32,7 @@ public class TrackAnalyzer : MonoBehaviour
     float approximateVolume = 0f;                       // approximate volume of track at given moment, ranging from 0 to 1
     float melodyVolume = 0f;                            // approximate volume of track's melody at given moment, ranging from 0 to 1
     bool beat = false;                                  // flag true when song's beat plays on current frame
+    float bpm = 0f;                                     // approximate beats per minute of song
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -108,6 +109,15 @@ public class TrackAnalyzer : MonoBehaviour
         get { return beat; }
     }
 
+    /// <summary>
+    /// Read-access property returning song's
+    /// beats per minute
+    /// </summary>
+    public float BPM
+    {
+        get { return 0; }
+    }
+
     #endregion
 
     #region Unity Methods
@@ -182,8 +192,10 @@ public class TrackAnalyzer : MonoBehaviour
             approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
             melodyVolume = Mathf.Clamp01(maxBand / 3.5f);
 
-            // update whether beat is heard this frame
+            // update beats per minute
             beat = fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
+            if (beat)
+                Debug.Log("beat!");
         }
     }
 

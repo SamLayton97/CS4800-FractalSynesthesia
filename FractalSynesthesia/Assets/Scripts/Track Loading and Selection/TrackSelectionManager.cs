@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 /// user to pick from any track within the Resources folder
 /// </summary>
 [RequireComponent(typeof(CanvasGroup))]
+[RequireComponent(typeof(CustomTrackLoader))]
 public class TrackSelectionManager : MonoBehaviour
 {
     // display support variables
@@ -71,8 +72,8 @@ public class TrackSelectionManager : MonoBehaviour
         myCanvasGroup.interactable = true;
 
         // TODO: load each track from StreamingAssets
-        customLoader = new CustomTrackLoader();
-        customLoader.LoadTracks();
+        customLoader = GetComponent<CustomTrackLoader>();
+        //customLoader.LoadTracks();
 
         // for each track in Resources
         //foreach (AudioClip unloadedTrack in Resources.LoadAll("", typeof(AudioClip)))

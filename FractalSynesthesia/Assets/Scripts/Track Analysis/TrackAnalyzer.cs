@@ -16,6 +16,8 @@ public class TrackAnalyzer : MonoBehaviour
     [SerializeField] int thresholdWindowSize = 30;      // size of window within which analyzer compares beats with non-beats
     [Range(0.1f, 5f)]
     [SerializeField] float beatInsensitivity = 1f;      // multiplier of how insensitive beat mapping is -- higher value requires stronger beat
+    [Range(5, 60)]
+    [SerializeField] int bpmWindow = 60;                // temporal length of window to analyze beats per minute in
 
     // audio analysis support variables
     AudioSource myAudioSource;                          // audio source to play tracks from
@@ -33,6 +35,7 @@ public class TrackAnalyzer : MonoBehaviour
     float melodyVolume = 0f;                            // approximate volume of track's melody at given moment, ranging from 0 to 1
     bool beat = false;                                  // flag true when song's beat plays on current frame
     float bpm = 0f;                                     // approximate beats per minute of song
+    Queue<float> beatWindow = new Queue<float>();       // window within which to analyze bpm
 
     // pseudo-singleton support
     static TrackAnalyzer instance;
@@ -115,7 +118,7 @@ public class TrackAnalyzer : MonoBehaviour
     /// </summary>
     public float BPM
     {
-        get { return 0; }
+        get { return bpm; }
     }
 
     #endregion
@@ -192,10 +195,18 @@ public class TrackAnalyzer : MonoBehaviour
             approximateVolume = Mathf.Clamp01(bandAverage / 3.5f);
             melodyVolume = Mathf.Clamp01(maxBand / 3.5f);
 
-            // update beats per minute
+            // add new beats to beat window
             beat = fluxAnalyzer.AnalyzeSpectrum(currSpectrum, myAudioSource.time);
             if (beat)
-                Debug.Log("beat!");
+                beatWindow.Enqueue(myAudioSource.time + bpmWindow);
+
+            // clear window of expired beats
+            if (beatWindow.Any() && beatWindow.Peek() <= myAudioSource.time)
+                beatWindow.Dequeue();
+
+            // update beats per minute
+            bpm = beatWindow.Count * (60 / bpmWindow);
+            Debug.Log(BPM);
         }
     }
 

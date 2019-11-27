@@ -40,8 +40,8 @@ public class WindChanger : MonoBehaviour
             currSaturation = Mathf.Lerp(currSaturation, 1 - TrackAnalyzer.Instance.BandDeviationScale, Mathf.Min(Time.deltaTime * colorAdjustRate, 1));
             terrainData.wavingGrassTint = Color.HSVToRGB(currHue, currSaturation, 0.85f);
 
-            // TODO: match wind speed with song's beats per minute
-            //terrainData.wavingGrassSpeed = Random.Range(0.5f, 0.51f);
+            // match wind speed with song's beats per minute
+            terrainData.wavingGrassSpeed = TrackAnalyzer.Instance.BPM / 300f;
         }
     }
 }

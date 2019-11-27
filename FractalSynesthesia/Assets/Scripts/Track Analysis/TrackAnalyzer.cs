@@ -34,7 +34,7 @@ public class TrackAnalyzer : MonoBehaviour
     float approximateVolume = 0f;                       // approximate volume of track at given moment, ranging from 0 to 1
     float melodyVolume = 0f;                            // approximate volume of track's melody at given moment, ranging from 0 to 1
     bool beat = false;                                  // flag true when song's beat plays on current frame
-    float bpm = 0f;                                     // approximate beats per minute of song
+    int bpm = 0;                                        // approximate beats per minute of song
     Queue<float> beatWindow = new Queue<float>();       // window within which to analyze bpm
 
     // pseudo-singleton support
@@ -116,7 +116,7 @@ public class TrackAnalyzer : MonoBehaviour
     /// Read-access property returning song's
     /// beats per minute
     /// </summary>
-    public float BPM
+    public int BPM
     {
         get { return bpm; }
     }
@@ -206,6 +206,7 @@ public class TrackAnalyzer : MonoBehaviour
 
             // update beats per minute
             bpm = beatWindow.Count * (60 / bpmWindow);
+            Debug.Log(bpm);
         }
     }
 

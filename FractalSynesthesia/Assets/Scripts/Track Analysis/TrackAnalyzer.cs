@@ -121,6 +121,15 @@ public class TrackAnalyzer : MonoBehaviour
         get { return bpm; }
     }
 
+    /// <summary>
+    /// Read-access property returning current
+    /// progress (0-1) through track
+    /// </summary>
+    public float Progress
+    {
+        get { return myAudioSource.time / myAudioSource.clip.length; }
+    }
+
     #endregion
 
     #region Unity Methods

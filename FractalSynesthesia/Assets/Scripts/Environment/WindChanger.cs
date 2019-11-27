@@ -47,7 +47,6 @@ public class WindChanger : MonoBehaviour
             // match wind speed with song's beats per minute
             terrainData.wavingGrassStrength = Mathf.Lerp(terrainData.wavingGrassSpeed, 
                 TrackAnalyzer.Instance.BPM / bpmCap, Mathf.Min(Time.deltaTime * colorAdjustRate, colorAdjustRate));
-            Debug.Log(terrainData.wavingGrassStrength);
         }
     }
 }

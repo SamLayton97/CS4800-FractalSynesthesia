@@ -754,6 +754,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorAdjustRate: 0.4
+  windSpeedAdjustRate: 1.5
+  bpmCap: 250
 --- !u!1 &1895968063
 GameObject:
   m_ObjectHideFlags: 0

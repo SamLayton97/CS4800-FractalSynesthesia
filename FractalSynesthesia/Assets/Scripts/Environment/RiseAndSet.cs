@@ -42,7 +42,8 @@ public class RiseAndSet : MonoBehaviour
             // adjust rotation and color of light to match progress through track
             transform.eulerAngles = Vector3.Slerp(sunrise, sunset,
                 TrackAnalyzer.Instance.Progress);
-
+            sunlight.color = Color.Lerp(noonColor, riseSetColor, 
+                Mathf.Abs((0.5f - TrackAnalyzer.Instance.Progress) / 0.5f));
         }
     }
 }

@@ -206,7 +206,6 @@ public class TrackAnalyzer : MonoBehaviour
 
             // update beats per minute
             bpm = beatWindow.Count * (60 / bpmWindow);
-            Debug.Log(BPM);
         }
     }
 

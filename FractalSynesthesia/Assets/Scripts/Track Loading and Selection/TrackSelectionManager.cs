@@ -16,7 +16,7 @@ public class TrackSelectionManager : MonoBehaviour
 {
     // display support variables
     [SerializeField] GameObject selectorButton;         // button prefab used to select particular track
-    Transform buttonHolder;                             // transform of panel object holding all track button
+    [SerializeField] Transform buttonHolder;            // transform of panel object holding all track button
     CanvasGroup myCanvasGroup;                          // selector's canvas group component -- used to control visibility
 
     // track setting support
@@ -67,7 +67,8 @@ public class TrackSelectionManager : MonoBehaviour
 
         // retrieve relevant components
         myCanvasGroup = GetComponent<CanvasGroup>();
-        buttonHolder = transform.GetChild(0);
+        if (!buttonHolder)
+            buttonHolder = transform.GetChild(0);   // assume content holder is immediate child if not set in editor
 
         // initialize selector to be invisible
         myCanvasGroup.alpha = 1;

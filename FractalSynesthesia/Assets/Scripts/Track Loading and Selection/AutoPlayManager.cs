@@ -92,7 +92,11 @@ public class AutoPlayManager : MonoBehaviour
     /// <param name="optionOn">whether auto-play option should turn on</param>
     public void ToggleAutoPlay(bool optionOn)
     {
+        // toggle option
         autoPlayIsOn = optionOn;
+
+        // toggle interactablility of shuffle play
+        shuffleToggle.interactable = optionOn;
     }
 
     /// <summary>

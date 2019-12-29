@@ -589,7 +589,7 @@ MonoBehaviour:
   targetTransform: {fileID: 1895968064}
   positionOffset: {x: 0, y: 20, z: 0}
   orbitSpeed: 30
---- !u!1001 &1141154411
+--- !u!1001 &1000330597
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -711,6 +711,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8620558025845436458, guid: 582dc45c48a5d2246b329fd3a0a7892b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000017225742
+      objectReference: {fileID: 0}
     - target: {fileID: 8712941049692500704, guid: 582dc45c48a5d2246b329fd3a0a7892b,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -719,6 +724,11 @@ PrefabInstance:
     - target: {fileID: 8712941049692500704, guid: 582dc45c48a5d2246b329fd3a0a7892b,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712941049692500704, guid: 582dc45c48a5d2246b329fd3a0a7892b,
+        type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

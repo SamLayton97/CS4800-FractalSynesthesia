@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages automatic starting of another song in 
@@ -10,9 +11,12 @@ public class AutoPlayManager : MonoBehaviour
 {
     // auto-play support variables
     bool autoPlayIsOn = false;
-    bool shuffleIsOn = false;
     List<string> trackNames = new List<string>();   // list of default & custom tracks selectable by user -- used for playing next song in queue
     static AutoPlayManager instance;                // singleton instance
+
+    // song shuffle support variables
+    [SerializeField] Toggle shuffleToggle;
+    bool shuffleIsOn = false;
 
     /// <summary>
     /// Read-access property returning static instance
@@ -54,10 +58,17 @@ public class AutoPlayManager : MonoBehaviour
         // if option is on, play another song
         if (autoPlayIsOn)
         {
-            // find and play next song in queue
-            int songIndex = trackNames.IndexOf(TrackSelectionManager.Instance.CurrentTrack.name);
-            songIndex = (songIndex + 1 < trackNames.Count) ? songIndex + 1 : 0;
-            TrackSelectionManager.Instance.SelectTrack(trackNames[songIndex]);
+            // if shuffle is on, play random song
+            if (shuffleIsOn)
+                TrackSelectionManager.Instance.SelectTrack(trackNames[Random.Range(0, trackNames.Count)]);
+            // otherwise (i.e., shuffle is off)
+            else
+            {
+                // find and play next song in queue
+                int songIndex = trackNames.IndexOf(TrackSelectionManager.Instance.CurrentTrack.name);
+                songIndex = (songIndex + 1 < trackNames.Count) ? songIndex + 1 : 0;
+                TrackSelectionManager.Instance.SelectTrack(trackNames[songIndex]);
+            }
         }
     }
 

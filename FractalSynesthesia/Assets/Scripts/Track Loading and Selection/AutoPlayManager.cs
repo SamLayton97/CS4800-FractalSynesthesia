@@ -8,5 +8,8 @@ using UnityEngine;
 /// </summary>
 public class AutoPlayManager : MonoBehaviour
 {
-    
+    public void ToggleAutoPlay(bool optionOn)
+    {
+        Debug.Log(optionOn);
+    }
 }

@@ -979,6 +979,36 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7987262872468422642}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleAutoPlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134964536672956390, guid: c6067f845c75ba748834b357e57e3338,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7383717591869414054, guid: c6067f845c75ba748834b357e57e3338,
         type: 3}
       propertyPath: m_Text

@@ -37,6 +37,9 @@ public class TrackAnalyzer : MonoBehaviour
     int bpm = 0;                                        // approximate beats per minute of song
     Queue<float> beatWindow = new Queue<float>();       // window within which to analyze bpm
 
+    // tear-down support variables
+    IEnumerator tearDownCoroutine;                      // coroutine controlling analyzer uninitialization
+
     // pseudo-singleton support
     static TrackAnalyzer instance;
 
@@ -123,7 +126,7 @@ public class TrackAnalyzer : MonoBehaviour
 
     /// <summary>
     /// Read-access property returning current
-    /// progress (0-1) through track
+    /// percent progress through track
     /// </summary>
     public float Progress
     {
@@ -162,6 +165,11 @@ public class TrackAnalyzer : MonoBehaviour
 
         // start track
         myAudioSource.Play();
+
+        // (re)start coroutine to call tear-down functions after song ends
+        if (tearDownCoroutine != null) StopCoroutine(tearDownCoroutine);
+        tearDownCoroutine = TearDownAfterSong();
+        StartCoroutine(tearDownCoroutine);
     }
 
     /// <summary>
@@ -216,6 +224,24 @@ public class TrackAnalyzer : MonoBehaviour
             // update beats per minute
             bpm = beatWindow.Count * (60 / bpmWindow);
         }
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Waits for duration of clip before calling tear-down functions
+    /// </summary>
+    IEnumerator TearDownAfterSong()
+    {
+        Debug.Log("song started!");
+
+        // wait song duration
+        yield return new WaitForSeconds(myAudioSource.clip.length);
+
+        // TODO: initiate end-of-song actions
+        Debug.Log("song over!");
     }
 
     #endregion

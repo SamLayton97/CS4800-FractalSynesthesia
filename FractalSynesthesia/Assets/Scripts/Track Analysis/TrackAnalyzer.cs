@@ -238,8 +238,8 @@ public class TrackAnalyzer : MonoBehaviour
         // wait song duration
         yield return new WaitForSeconds(myAudioSource.clip.length);
 
-        // TODO: initiate end-of-song actions
-        
+        // initiate end-of-song actions
+        AutoPlayManager.Instance.HandleAutoPlay();
     }
 
     #endregion

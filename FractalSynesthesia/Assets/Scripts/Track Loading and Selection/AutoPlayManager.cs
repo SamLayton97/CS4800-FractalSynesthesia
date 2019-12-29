@@ -10,7 +10,8 @@ public class AutoPlayManager : MonoBehaviour
 {
     // auto-play support variables
     bool autoPlayIsOn = false;
-    static AutoPlayManager instance;    // singleton instance
+    List<string> trackNames = new List<string>();   // list of default & custom tracks selectable by user -- used for playing next song in queue
+    static AutoPlayManager instance;                // singleton instance
 
     /// <summary>
     /// Read-access property returning static instance
@@ -36,6 +37,30 @@ public class AutoPlayManager : MonoBehaviour
         // not duplicate, set this instance as auto-play manager singleton
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    /// <summary>
+    /// Determines whether to play next song in track list
+    /// </summary>
+    public void HandleAutoPlay()
+    {
+        // if option is on, play next song
+        if (autoPlayIsOn)
+        {
+            Debug.Log("play next");
+        }
+    }
+
+    /// <summary>
+    /// Adds new string to list of track names. 
+    /// Used to easily find next track to play
+    /// </summary>
+    /// <param name="newName">name of track to add</param>
+    public void AddTrackName(string newName)
+    {
+        trackNames.Add(newName);
+
+        Debug.Log(newName);
     }
 
     /// <summary>

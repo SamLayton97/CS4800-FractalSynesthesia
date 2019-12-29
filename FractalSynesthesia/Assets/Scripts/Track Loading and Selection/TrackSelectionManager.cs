@@ -121,6 +121,9 @@ public class TrackSelectionManager : MonoBehaviour
         Button interact = newButton.GetComponent<Button>();
         trackSelectors.Add(unloadedTrack.name, interact);
 
+        // initialize auto-play capabilities for track
+        AutoPlayManager.Instance.AddTrackName(unloadedTrack.name);
+
         // disable button of current track
         if (currentTrack.name == unloadedTrack.name)
             interact.interactable = false;

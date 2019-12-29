@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages automatic starting of next song in 
+/// Manages automatic starting of another song in 
 /// track list when current one ends
 /// </summary>
 public class AutoPlayManager : MonoBehaviour
 {
     // auto-play support variables
     bool autoPlayIsOn = false;
+    bool shuffleIsOn = false;
     List<string> trackNames = new List<string>();   // list of default & custom tracks selectable by user -- used for playing next song in queue
     static AutoPlayManager instance;                // singleton instance
 
@@ -21,6 +22,8 @@ public class AutoPlayManager : MonoBehaviour
     {
         get { return instance; }
     }
+
+    #region Unity Methods
 
     /// <summary>
     /// Used for initialization
@@ -38,6 +41,10 @@ public class AutoPlayManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// Determines whether to play next song in track list
@@ -64,6 +71,10 @@ public class AutoPlayManager : MonoBehaviour
         trackNames.Add(newName);
     }
 
+    #endregion
+
+    #region Option Toggling Methods
+
     /// <summary>
     /// Handles user toggling 'auto-play' option on and off
     /// </summary>
@@ -72,4 +83,7 @@ public class AutoPlayManager : MonoBehaviour
     {
         autoPlayIsOn = optionOn;
     }
+
+    #endregion
+
 }

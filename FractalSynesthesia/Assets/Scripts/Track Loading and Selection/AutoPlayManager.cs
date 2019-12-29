@@ -44,10 +44,13 @@ public class AutoPlayManager : MonoBehaviour
     /// </summary>
     public void HandleAutoPlay()
     {
-        // if option is on, play next song
+        // if option is on, play another song
         if (autoPlayIsOn)
         {
-            Debug.Log("play next");
+            // find and play next song in queue
+            int songIndex = trackNames.IndexOf(TrackSelectionManager.Instance.CurrentTrack.name);
+            songIndex = (songIndex + 1 < trackNames.Count) ? songIndex + 1 : 0;
+            TrackSelectionManager.Instance.SelectTrack(trackNames[songIndex]);
         }
     }
 
@@ -59,8 +62,6 @@ public class AutoPlayManager : MonoBehaviour
     public void AddTrackName(string newName)
     {
         trackNames.Add(newName);
-
-        Debug.Log(newName);
     }
 
     /// <summary>

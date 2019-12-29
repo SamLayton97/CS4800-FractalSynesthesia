@@ -84,6 +84,15 @@ public class AutoPlayManager : MonoBehaviour
         autoPlayIsOn = optionOn;
     }
 
+    /// <summary>
+    /// Handles user toggling 'shuffle' option on and off
+    /// </summary>
+    /// <param name="optionOn">whether shuffle option should turn on</param>
+    public void ToggleShufflePlay(bool optionOn)
+    {
+        shuffleIsOn = optionOn;
+    }
+
     #endregion
 
 }

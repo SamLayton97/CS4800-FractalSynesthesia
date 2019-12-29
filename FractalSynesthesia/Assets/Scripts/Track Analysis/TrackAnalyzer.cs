@@ -235,13 +235,11 @@ public class TrackAnalyzer : MonoBehaviour
     /// </summary>
     IEnumerator TearDownAfterSong()
     {
-        Debug.Log("song started!");
-
         // wait song duration
         yield return new WaitForSeconds(myAudioSource.clip.length);
 
         // TODO: initiate end-of-song actions
-        Debug.Log("song over!");
+        
     }
 
     #endregion

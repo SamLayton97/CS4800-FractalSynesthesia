@@ -1,6 +1,8 @@
 # CS4800-FractalSynesthesia
 Fractal Synesthesia is a program which uses fractals' trait of self-similarity to visualize both the immediate and developmental changes of a given song. When users launch the program, an underlying fractal tree begins to generate. As it grows, an algorithmic analysis of the user-selected song adjusts the color of currently growing branches and the tint of the grass below to reflect the mood of the song's moment. And as the tree branches, the program determines the structure of the next branch generation using values calculated over an entire movement, thus capturing the song's development. This results in a tree that is both unique to and representative of the song's growth and character.
 
+Download for Windows: https://samlayton.com/wp-content/uploads/2019/12/FractalSynesthesia.zip
+
 To launch Fractal Synesthesia, perform the following steps:
  * Download, unzip, and open the FractalSynesthesia program folder.
  * Run FractalSynesthesia.exe.

@@ -78,6 +78,15 @@ public class TrackSelectionManager : MonoBehaviour
         // initialize default track from Resources
         if (!currentTrack)
             currentTrack = Resources.Load<AudioClip>("Mozart - Menuettos");    // if not set prior to launch, default clip
+    }
+
+    /// <summary>
+    /// Used for late initialization
+    /// </summary>
+    void Start()
+    {
+        // NOTE: by now, all singletons should have initialized
+        // initialize UI for default track
         InitializeTrack(currentTrack);
 
         // load custom tracks from StreamingAssets

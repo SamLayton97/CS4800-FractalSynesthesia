@@ -85,12 +85,13 @@ public class TrackSelectionManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        // NOTE: by now, all singletons should have initialized
+        // NOTE: by now, all UI singletons should have initialized
         // initialize UI for default track
         InitializeTrack(currentTrack);
 
-        // load custom tracks from StreamingAssets
-        StartCoroutine(LoadCustomTracks());
+        // if proper filepath exists, load custom tracks from StreamingAssets
+        if (System.IO.Directory.Exists(Application.streamingAssetsPath))
+            StartCoroutine(LoadCustomTracks());
     }
 
     /// <summary>

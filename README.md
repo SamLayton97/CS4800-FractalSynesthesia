@@ -10,7 +10,7 @@ While the base program includes a *royalty-free* song to visualize, Fractal Syne
 1. Download, unzip, and open the FractalSynesthesia program folder.
 2. Navigate to the FractalSynesthesia>FractalSynesthesia_Data>StreamingAssets folder.
 3. If this folder does not exist, create a folder named StreamingAssets under FractalSynesthesia_Data.
-4. Ensure that the custom songs are either in a .wav or .ogg format. NOTE: There are plenty of online resources to convert .mp3 sound files to .wav or .ogg. Here's a good one: https://audio.online-convert.com/convert-to-wav
+4. Ensure that the custom songs are either in a .wav or .ogg format. Other formats are not yet supported. There are plenty of online resources to convert .mp3 sound files to .wav or .ogg. Here's a good one: https://audio.online-convert.com/convert-to-wav
 5. Move or copy the custom songs in to the StreamingAssets folder.
 6. Run FractalSynesthesia.exe. The custom songs should appear in the song selection window.
 
